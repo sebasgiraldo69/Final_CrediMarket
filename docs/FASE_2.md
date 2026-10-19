@@ -11,6 +11,7 @@ Requisitos: Docker Desktop con motor Linux/WSL2 activo, Docker Compose y Python 
 Desde la raíz, en PowerShell:
 
 ```powershell
+python -m pip install -r requirements-bootstrap.txt
 python scripts/bootstrap.py
 docker compose config --quiet
 docker compose up -d --build --wait --wait-timeout 300

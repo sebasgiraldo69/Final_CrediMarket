@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
+import { Clientes } from './Clientes';
 
 const sections = ['Inicio', 'Catálogo', 'Mis solicitudes', 'Clientes', 'Inventario', 'Modelo'];
 const services = ['productos', 'clientes', 'prestamos', 'inventario'];
@@ -23,11 +24,11 @@ function App() {
     <header><a href="#" onClick={() => setActive('Inicio')} className="brand">CrediMarket<span>Financiación de tecnología</span></a><span className="badge">En desarrollo</span></header>
     <nav aria-label="Navegación principal">{sections.map(section => <button key={section} aria-current={active === section ? 'page' : undefined} onClick={() => setActive(section)}>{section}</button>)}</nav>
     <main>{active === 'Inicio' ? <>
-      <p className="eyebrow">Proyecto académico · Fase 2</p>
+      <p className="eyebrow">Proyecto académico · Fase 3</p>
       <h1>La base de CrediMarket<br />ya está en marcha.</h1>
-      <p className="intro">Estamos preparando el catálogo y las solicitudes de financiación. Las operaciones de clientes, compras y préstamos se incorporarán en las siguientes etapas.</p>
-      <section className="panel" aria-label="Conectividad de servicios"><h2>Conexión con los servicios</h2><div className="grid">{services.map(service => <article key={service}><h3>{service}</h3><p aria-live="polite">{status[service] || 'Comprobando…'}</p></article>)}</div><p className="note">Esta comprobación confirma que los procesos responden. El modelo y las operaciones de negocio aún no están disponibles.</p></section>
-    </> : <section className="panel"><p className="eyebrow">Próxima etapa</p><h1>{active}</h1><p>Este módulo todavía no está implementado. Aquí aparecerán las operaciones conectadas a los servicios reales.</p><button className="back" onClick={() => setActive('Inicio')}>Volver al inicio</button></section>}</main>
+      <p className="intro">Ya puedes registrarte y administrar tu perfil desde Clientes. El catálogo y las solicitudes de financiación se incorporarán en las siguientes etapas.</p>
+      <section className="panel" aria-label="Conectividad de servicios"><h2>Conexión con los servicios</h2><div className="grid">{services.map(service => <article key={service}><h3>{service}</h3><p aria-live="polite">{status[service] || 'Comprobando…'}</p></article>)}</div><p className="note">Clientes ya permite registro y acceso. Los servicios de las siguientes fases siguen en desarrollo.</p></section>
+    </> : active === 'Clientes' ? null : <section className="panel"><p className="eyebrow">Próxima etapa</p><h1>{active}</h1><p>Este módulo todavía no está implementado. Aquí aparecerán las operaciones conectadas a los servicios reales.</p><button className="back" onClick={() => setActive('Inicio')}>Volver al inicio</button></section>}<div hidden={active !== 'Clientes'}><Clientes /></div></main>
     <footer>Datos y operaciones ficticios para aprendizaje.</footer>
   </div>;
 }

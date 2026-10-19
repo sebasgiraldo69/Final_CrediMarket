@@ -3,6 +3,9 @@ name: credimarket
 x-api: &api
   restart: unless-stopped
   networks: [backend]
+  secrets:
+    - source: jwt_public
+      target: jwt_public.pem
   healthcheck:
     test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
     interval: 15s
@@ -156,6 +159,11 @@ services:
 
   clientes:
     <<: *api
+    secrets:
+      - source: jwt_public
+        target: jwt_public.pem
+      - source: jwt_private
+        target: jwt_private.pem
     build:
       context: .
       dockerfile: infra/python/Dockerfile
@@ -226,6 +234,10 @@ volumes:
   mlflow_artifacts:
 
 secrets:
+  jwt_private:
+    file: ./.secrets/jwt_private.pem
+  jwt_public:
+    file: ./.secrets/jwt_public.pem
   kafka_server_jaas:
     file: ./.secrets/kafka_server_jaas.conf
     name: credimarket_kafka_server_jaas

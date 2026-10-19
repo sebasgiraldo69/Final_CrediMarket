@@ -46,3 +46,18 @@ for name, content in [("kafka_server_jaas.conf", jaas), ("kafka_admin.properties
     if not target.exists():
         target.write_text(content, encoding="utf-8")
 print("Local configuration ready. Credentials not displayed; existing values preserved.")
+
+# Signing key only goes to Clientes; all other APIs receive only the public key.
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+private_file = secret_dir / "jwt_private.pem"
+public_file = secret_dir / "jwt_public.pem"
+if private_file.exists() != public_file.exists():
+    raise SystemExit("Incomplete JWT key pair. Restore the missing key; do not rotate silently.")
+if not private_file.exists():
+    key = rsa.generate_private_key(public_exponent=65537, key_size=3072)
+    private_file.write_bytes(key.private_bytes(serialization.Encoding.PEM,
+        serialization.PrivateFormat.PKCS8, serialization.NoEncryption()))
+    public_file.write_bytes(key.public_key().public_bytes(serialization.Encoding.PEM,
+        serialization.PublicFormat.SubjectPublicKeyInfo))
+print("JWT keys ready; existing keys preserved.")

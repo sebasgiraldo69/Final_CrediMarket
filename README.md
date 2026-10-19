@@ -4,19 +4,20 @@ Proyecto académico de cuatro microservicios: Productos, Clientes, Préstamos e 
 
 ## Estado
 
-Fases 1 y 2 completadas: arquitectura y contratos, infraestructura con Docker Compose, cuatro esqueletos FastAPI, PostgreSQL aislado por servicio, Kafka, Redis, MLflow y frontend inicial. Ver [resultados de verificación](docs/validacion-fase-2.md). La siguiente fase es Clientes, acceso e importación; las operaciones de negocio y el modelo entrenado siguen pendientes.
+Fases 1–3 completadas: arquitectura, infraestructura y Clientes con registro, acceso, roles, perfiles e importación CSV. Ver [fase 3 y pruebas](docs/FASE_3.md). La siguiente fase es Productos y Redis. El flujo de préstamos y el modelo entrenado siguen pendientes.
 
 ## Ejecutar localmente
 
 Con Docker Desktop (motor Linux) activo, desde la raíz:
 
 ```powershell
+python -m pip install -r requirements-bootstrap.txt
 python scripts/bootstrap.py
 docker compose up -d --build --wait --wait-timeout 300
 python scripts/check_infrastructure.py
 ```
 
-Frontend: http://localhost:8080. MLflow: http://localhost:5000. Los módulos de negocio todavía se muestran como pendientes. Préstamos devuelve 503 en `/ready` porque aún no tiene modelo; su `/health` sí debe responder 200.
+Frontend: http://localhost:8080; abrir **Clientes** para registrarse. MLflow: http://localhost:5000. Catálogo, préstamos, inventario y modelo siguen pendientes. Préstamos devuelve 503 en `/ready` porque aún no tiene modelo; su `/health` sí debe responder 200.
 
 Consultar [la guía de fase 2](docs/FASE_2.md) para secretos locales, puertos, volúmenes, reinicios y comprobación de persistencia.
 
@@ -26,6 +27,8 @@ Consultar [la guía de fase 2](docs/FASE_2.md) para secretos locales, puertos, v
 - [Análisis del enunciado y datos](PLAN_IMPLEMENTACION_CREDIMARKET.md)
 - [Índice y decisiones de la fase 1](docs/FASE_1.md)
 - [Infraestructura de fase 2](docs/FASE_2.md)
+- [Clientes, acceso e importación: fase 3](docs/FASE_3.md)
+- [Código de fase 3 para estudiar](docs/CODIGO_FASE_3.md)
 - [Arquitectura y datos](docs/arquitectura.md)
 - [Estados y consistencia](docs/estados.md)
 - [APIs y permisos](docs/api-y-seguridad.md)

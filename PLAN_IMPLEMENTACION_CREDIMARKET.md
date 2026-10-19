@@ -376,4 +376,4 @@ Terminado significa: levantar lo entregado desde un clon limpio con secretos gen
 
 Los pesos orientan la revisión: negocio 15 %, broker 15 %, Redis 10 %, experimentación 15 %, exportación/API/versiones 15 %, seguridad/consistencia 15 %, frontend 10 % y documentación 5 %. Ninguna extensión reemplaza un faltante obligatorio.
 
-Las etapas 1 y 2 están cerradas; ver docs/validacion-fase-2.md. El siguiente paso es la etapa 3 de PLAN_DESARROLLO_POR_ETAPAS.md: Clientes, acceso e importación CSV.
+Las etapas 1–3 están cerradas; ver docs/FASE_3.md. El siguiente paso es la etapa 4 de PLAN_DESARROLLO_POR_ETAPAS.md: Productos y Redis.
