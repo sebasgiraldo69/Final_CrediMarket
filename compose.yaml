@@ -1,0 +1,234 @@
+name: credimarket
+
+x-api: &api
+  restart: unless-stopped
+  networks: [backend]
+  healthcheck:
+    test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+    interval: 15s
+    timeout: 5s
+    retries: 5
+    start_period: 30s
+
+x-api-env: &api-env
+  DB_HOST: postgres
+  CORS_ORIGINS: http://localhost:${FRONTEND_PORT:-8080}
+
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: credimarket_root
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run python scripts/bootstrap.py}
+      PRODUCTOS_DB_PASSWORD: ${PRODUCTOS_DB_PASSWORD:?Missing password}
+      CLIENTES_DB_PASSWORD: ${CLIENTES_DB_PASSWORD:?Missing password}
+      PRESTAMOS_DB_PASSWORD: ${PRESTAMOS_DB_PASSWORD:?Missing password}
+      INVENTARIO_DB_PASSWORD: ${INVENTARIO_DB_PASSWORD:?Missing password}
+      MLFLOW_DB_PASSWORD: ${MLFLOW_DB_PASSWORD:?Missing password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init.sh:/docker-entrypoint-initdb.d/10-databases.sh:ro
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U credimarket_root -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:8.2.1-alpine
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Missing password}
+    command: [sh, -c, 'exec redis-server --requirepass "$$REDIS_PASSWORD" --maxmemory 128mb --maxmemory-policy allkeys-lru --save "" --appendonly no']
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, 'REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping | grep -q PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  kafka-volume-init:
+    image: apache/kafka:4.1.0
+    user: "0:0"
+    entrypoint: [chown, "1000:1000", /data]
+    volumes:
+      - kafka_data:/data
+    network_mode: none
+    restart: "no"
+
+  kafka:
+    image: apache/kafka:4.1.0
+    restart: unless-stopped
+    depends_on:
+      kafka-volume-init: {condition: service_completed_successfully}
+    ports:
+      - "127.0.0.1:${KAFKA_EXTERNAL_PORT:-19092}:${KAFKA_EXTERNAL_PORT:-19092}"
+    environment:
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:${KAFKA_EXTERNAL_PORT:-19092},CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:${KAFKA_EXTERNAL_PORT:-19092}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SASL_PLAINTEXT,EXTERNAL:SASL_PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
+      KAFKA_SUPER_USERS: User:admin;User:ANONYMOUS
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      KAFKA_HEAP_OPTS: -Xms256m -Xmx512m
+      KAFKA_OPTS: -Djava.security.auth.login.config=/run/secrets/kafka_server_jaas.conf
+    secrets:
+      - source: kafka_server_jaas
+        target: kafka_server_jaas.conf
+      - source: kafka_admin
+        target: kafka_admin.properties
+    volumes:
+      - kafka_data:/tmp/kraft-combined-logs
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, '/opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --command-config /run/secrets/kafka_admin.properties --list >/dev/null']
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 45s
+
+  kafka-init:
+    image: apache/kafka:4.1.0
+    depends_on:
+      kafka: {condition: service_healthy}
+    entrypoint: [sh, /init.sh]
+    volumes:
+      - ./infra/kafka/init.sh:/init.sh:ro
+    secrets:
+      - source: kafka_admin
+        target: kafka_admin.properties
+    networks: [backend]
+    restart: "no"
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: infra/mlflow/Dockerfile
+    environment:
+      MLFLOW_DB_PASSWORD: ${MLFLOW_DB_PASSWORD:?Missing password}
+    ports:
+      - "127.0.0.1:${MLFLOW_PORT:-5000}:5000"
+    volumes:
+      - mlflow_artifacts:/mlartifacts
+    depends_on:
+      postgres: {condition: service_healthy}
+    networks: [backend]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:5000/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
+
+  productos:
+    <<: *api
+    build:
+      context: .
+      dockerfile: infra/python/Dockerfile
+      args: {SERVICE: productos}
+    environment:
+      <<: *api-env
+      DB_NAME: productos_db
+      DB_USER: productos_app
+      DB_PASSWORD: ${PRODUCTOS_DB_PASSWORD:?Missing password}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Missing password}
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  clientes:
+    <<: *api
+    build:
+      context: .
+      dockerfile: infra/python/Dockerfile
+      args: {SERVICE: clientes}
+    environment:
+      <<: *api-env
+      DB_NAME: clientes_db
+      DB_USER: clientes_app
+      DB_PASSWORD: ${CLIENTES_DB_PASSWORD:?Missing password}
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  prestamos:
+    <<: *api
+    build:
+      context: .
+      dockerfile: infra/python/Dockerfile
+      args: {SERVICE: prestamos}
+    environment:
+      <<: *api-env
+      DB_NAME: prestamos_db
+      DB_USER: prestamos_app
+      DB_PASSWORD: ${PRESTAMOS_DB_PASSWORD:?Missing password}
+      KAFKA_PASSWORD: ${KAFKA_PRESTAMOS_PASSWORD:?Missing password}
+    depends_on:
+      postgres: {condition: service_healthy}
+      kafka-init: {condition: service_completed_successfully}
+
+  inventario:
+    <<: *api
+    build:
+      context: .
+      dockerfile: infra/python/Dockerfile
+      args: {SERVICE: inventario}
+    environment:
+      <<: *api-env
+      DB_NAME: inventario_db
+      DB_USER: inventario_app
+      DB_PASSWORD: ${INVENTARIO_DB_PASSWORD:?Missing password}
+      KAFKA_PASSWORD: ${KAFKA_INVENTARIO_PASSWORD:?Missing password}
+    depends_on:
+      postgres: {condition: service_healthy}
+      kafka-init: {condition: service_completed_successfully}
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      productos: {condition: service_healthy}
+      clientes: {condition: service_healthy}
+      prestamos: {condition: service_healthy}
+      inventario: {condition: service_healthy}
+    networks: [backend]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://127.0.0.1/]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+networks:
+  backend:
+
+volumes:
+  postgres_data:
+  kafka_data:
+  mlflow_artifacts:
+
+secrets:
+  kafka_server_jaas:
+    file: ./.secrets/kafka_server_jaas.conf
+    name: credimarket_kafka_server_jaas
+  kafka_admin:
+    file: ./.secrets/kafka_admin.properties
+    name: credimarket_kafka_admin

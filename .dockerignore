@@ -1,0 +1,10 @@
+.git
+.env
+.secrets
+.venv
+.local
+**/__pycache__
+**/node_modules
+**/dist
+*.csv
+*.docx

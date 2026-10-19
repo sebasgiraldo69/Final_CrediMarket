@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "type": {
+      "const": "EntregaSolicitada"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "prestamo_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reserva_id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "reserva_id"
+      ]
+    }
+  },
+  "required": [
+    "event_id",
+    "type",
+    "schema_version",
+    "occurred_at",
+    "correlation_id",
+    "causation_id",
+    "prestamo_id",
+    "payload"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EntregaSolicitada"
+}

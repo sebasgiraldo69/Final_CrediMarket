@@ -1,0 +1,157 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "type": {
+      "const": "InventarioInsuficiente"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causation_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "prestamo_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reserva_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "estado_reserva": {
+          "enum": [
+            "SIN_STOCK"
+          ]
+        },
+        "revision_reserva": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "vence_en": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "motivo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 250
+        }
+      },
+      "required": [
+        "reserva_id",
+        "estado_reserva",
+        "revision_reserva",
+        "vence_en",
+        "motivo"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "estado_reserva": {
+                "const": "SIN_RESERVA"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reserva_id": {
+                "type": "null"
+              },
+              "revision_reserva": {
+                "const": 0
+              },
+              "vence_en": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "reserva_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "revision_reserva": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "estado_reserva": {
+                "enum": [
+                  "ACTIVA",
+                  "VENCIDA",
+                  "ENTREGADA"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vence_en": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "required": [
+    "event_id",
+    "type",
+    "schema_version",
+    "occurred_at",
+    "correlation_id",
+    "causation_id",
+    "prestamo_id",
+    "payload"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "InventarioInsuficiente"
+}

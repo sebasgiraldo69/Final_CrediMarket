@@ -1,0 +1,88 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "failure_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "failed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "consumer_group": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 250
+    },
+    "original_topic": {
+      "enum": [
+        "credimarket.inventario.comandos.v1",
+        "credimarket.inventario.eventos.v1"
+      ]
+    },
+    "original_partition": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "original_offset": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "original_key": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "original_value_base64": {
+      "type": "string",
+      "contentEncoding": "base64"
+    },
+    "event_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "attempts": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+    },
+    "error_code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 250
+    },
+    "error_message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 250
+    }
+  },
+  "required": [
+    "failure_id",
+    "failed_at",
+    "consumer_group",
+    "original_topic",
+    "original_partition",
+    "original_offset",
+    "original_key",
+    "original_value_base64",
+    "event_id",
+    "attempts",
+    "error_code",
+    "error_message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

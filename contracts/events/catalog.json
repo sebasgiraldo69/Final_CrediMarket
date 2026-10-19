@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "key": "prestamo_id",
+  "messages": [
+    {
+      "type": "ReservaSolicitada",
+      "topic": "credimarket.inventario.comandos.v1",
+      "producer": "prestamos",
+      "consumer_group": "inventario-v1",
+      "schema": "schemas/ReservaSolicitada.schema.json",
+      "example": "examples/ReservaSolicitada.json"
+    },
+    {
+      "type": "LiberacionSolicitada",
+      "topic": "credimarket.inventario.comandos.v1",
+      "producer": "prestamos",
+      "consumer_group": "inventario-v1",
+      "schema": "schemas/LiberacionSolicitada.schema.json",
+      "example": "examples/LiberacionSolicitada.json"
+    },
+    {
+      "type": "EntregaSolicitada",
+      "topic": "credimarket.inventario.comandos.v1",
+      "producer": "prestamos",
+      "consumer_group": "inventario-v1",
+      "schema": "schemas/EntregaSolicitada.schema.json",
+      "example": "examples/EntregaSolicitada.json"
+    },
+    {
+      "type": "InventarioReservado",
+      "topic": "credimarket.inventario.eventos.v1",
+      "producer": "inventario",
+      "consumer_group": "prestamos-v1",
+      "schema": "schemas/InventarioReservado.schema.json",
+      "example": "examples/InventarioReservado.json"
+    },
+    {
+      "type": "InventarioInsuficiente",
+      "topic": "credimarket.inventario.eventos.v1",
+      "producer": "inventario",
+      "consumer_group": "prestamos-v1",
+      "schema": "schemas/InventarioInsuficiente.schema.json",
+      "example": "examples/InventarioInsuficiente.json"
+    },
+    {
+      "type": "ReservaLiberada",
+      "topic": "credimarket.inventario.eventos.v1",
+      "producer": "inventario",
+      "consumer_group": "prestamos-v1",
+      "schema": "schemas/ReservaLiberada.schema.json",
+      "example": "examples/ReservaLiberada.json"
+    },
+    {
+      "type": "ReservaExpirada",
+      "topic": "credimarket.inventario.eventos.v1",
+      "producer": "inventario",
+      "consumer_group": "prestamos-v1",
+      "schema": "schemas/ReservaExpirada.schema.json",
+      "example": "examples/ReservaExpirada.json"
+    },
+    {
+      "type": "EntregaConfirmada",
+      "topic": "credimarket.inventario.eventos.v1",
+      "producer": "inventario",
+      "consumer_group": "prestamos-v1",
+      "schema": "schemas/EntregaConfirmada.schema.json",
+      "example": "examples/EntregaConfirmada.json"
+    },
+    {
+      "type": "EntregaRechazada",
+      "topic": "credimarket.inventario.eventos.v1",
+      "producer": "inventario",
+      "consumer_group": "prestamos-v1",
+      "schema": "schemas/EntregaRechazada.schema.json",
+      "example": "examples/EntregaRechazada.json"
+    },
+    {
+      "type": "LiberacionRechazada",
+      "topic": "credimarket.inventario.eventos.v1",
+      "producer": "inventario",
+      "consumer_group": "prestamos-v1",
+      "schema": "schemas/LiberacionRechazada.schema.json",
+      "example": "examples/LiberacionRechazada.json"
+    }
+  ]
+}

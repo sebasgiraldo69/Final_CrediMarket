@@ -1,0 +1,2091 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CrediMarket - prestamos",
+    "version": "1.0.0",
+    "description": "Contrato de diseño de fase 1. Ver docs/api-y-seguridad.md y docs/estados.md."
+  },
+  "servers": [
+    {
+      "url": "/api/prestamos"
+    }
+  ],
+  "security": [
+    {
+      "UserBearer": []
+    }
+  ],
+  "paths": {
+    "/prestamos": {
+      "post": {
+        "operationId": "crearPrestamo",
+        "summary": "Evaluar solicitud; 201 rechazo o 202 pendiente/evaluando",
+        "x-roles": [
+          "cliente"
+        ],
+        "x-acceptance-cases": [
+          1,
+          2,
+          3,
+          5,
+          9,
+          15
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Evaluar solicitud; 201 rechazo o 202 pendiente/evaluando",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "Location": {
+                "description": "URL relativa de consulta del recurso",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamo"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Evaluar solicitud; 201 rechazo o 202 pendiente/evaluando",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "Location": {
+                "description": "URL relativa de consulta del recurso",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credencial ausente o inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permiso insuficiente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no visible o inexistente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado, versión o idempotencia",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependencia no disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrestamoCrear"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listarPrestamos",
+        "summary": "Listar propios; admin puede consultar todos",
+        "x-roles": [
+          "cliente",
+          "administrador"
+        ],
+        "x-acceptance-cases": [
+          13,
+          14
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listar propios; admin puede consultar todos",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamos"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credencial ausente o inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permiso insuficiente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no visible o inexistente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado, versión o idempotencia",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependencia no disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-owner": "Cliente solo recurso propio; administrador todos; ajeno devuelve 404."
+      }
+    },
+    "/prestamos/{id}": {
+      "get": {
+        "operationId": "consultarPrestamo",
+        "summary": "Consultar estado y decisión autorizados",
+        "x-roles": [
+          "cliente",
+          "administrador"
+        ],
+        "x-acceptance-cases": [
+          1,
+          2,
+          3,
+          13,
+          15
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consultar estado y decisión autorizados",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credencial ausente o inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permiso insuficiente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no visible o inexistente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado, versión o idempotencia",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependencia no disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-owner": "Cliente solo recurso propio; administrador todos; ajeno devuelve 404."
+      }
+    },
+    "/prestamos/{id}/cancelacion": {
+      "post": {
+        "operationId": "cancelarPrestamo",
+        "summary": "Solicitar liberación; no declarar cancelada antes de confirmar",
+        "x-roles": [
+          "cliente",
+          "administrador"
+        ],
+        "x-acceptance-cases": [
+          7,
+          13,
+          14
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Solicitar liberación; no declarar cancelada antes de confirmar",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamo"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Solicitar liberación; no declarar cancelada antes de confirmar",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "Location": {
+                "description": "URL relativa de consulta del recurso",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credencial ausente o inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permiso insuficiente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no visible o inexistente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado, versión o idempotencia",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependencia no disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-owner": "Cliente solo recurso propio; administrador todos; ajeno devuelve 404.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cancelacion"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/prestamos/{id}/entrega": {
+      "post": {
+        "operationId": "entregarPrestamo",
+        "summary": "Solicitar salida de inventario autorizada",
+        "x-roles": [
+          "administrador"
+        ],
+        "x-acceptance-cases": [
+          1,
+          7,
+          14
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Solicitar salida de inventario autorizada",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamo"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Solicitar salida de inventario autorizada",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "Location": {
+                "description": "URL relativa de consulta del recurso",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prestamo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credencial ausente o inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permiso insuficiente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no visible o inexistente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado, versión o idempotencia",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependencia no disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/riesgo/predict": {
+      "post": {
+        "operationId": "predecirRiesgo",
+        "summary": "Evaluar features sin reservar inventario",
+        "x-roles": [
+          "administrador",
+          "servicio"
+        ],
+        "x-acceptance-cases": [
+          10
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evaluar features sin reservar inventario",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Riesgo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credencial ausente o inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permiso insuficiente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no visible o inexistente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado, versión o idempotencia",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependencia no disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "UserBearer": []
+          },
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "x-scope": "riesgo:predict",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Features"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/modelo/info": {
+      "get": {
+        "operationId": "informacionModelo",
+        "summary": "Consultar versión y umbral activos",
+        "x-roles": [
+          "administrador",
+          "servicio"
+        ],
+        "x-acceptance-cases": [
+          10,
+          11,
+          14
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consultar versión y umbral activos",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModeloInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credencial ausente o inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permiso insuficiente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no visible o inexistente",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado, versión o idempotencia",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependencia no disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "UserBearer": []
+          },
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "x-scope": "modelo:read"
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "prestamosHealth",
+        "summary": "Comprobar proceso vivo",
+        "x-roles": [
+          "publico"
+        ],
+        "x-acceptance-cases": [
+          6,
+          16
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Proceso vivo",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/ready": {
+      "get": {
+        "operationId": "prestamosReady",
+        "summary": "Comprobar dependencias críticas",
+        "x-roles": [
+          "publico"
+        ],
+        "x-acceptance-cases": [
+          6,
+          10,
+          16
+        ],
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listo o degradado tolerable",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ready"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No disponible",
+            "headers": {
+              "X-Correlation-ID": {
+                "description": "UUID de correlación generado o propagado.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ready"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "aud=credimarket-api; rol y propietario validados por backend"
+      },
+      "ServiceBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "aud=credimarket-internal; identidad de servicio y scopes"
+      }
+    },
+    "schemas": {
+      "Cancelacion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "motivo": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "motivo"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 250
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 250
+                }
+              },
+              "required": [
+                "field",
+                "message"
+              ]
+            }
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "correlation_id",
+          "details"
+        ]
+      },
+      "Features": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ingresos_mensuales_cop": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "obligaciones_mensuales_cop": {
+            "type": "number",
+            "minimum": 0
+          },
+          "tipo_empleo": {
+            "enum": [
+              "dependiente",
+              "independiente",
+              "temporal",
+              null
+            ]
+          },
+          "antiguedad_laboral_meses": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meses_historial_crediticio": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "creditos_previos": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "atrasos_previos_30d": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "porcentaje_pago_puntual": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "monto_solicitado_cop": {
+            "type": "number",
+            "minimum": 500000,
+            "maximum": 15000000
+          },
+          "plazo_meses": {
+            "type": "integer",
+            "enum": [
+              6,
+              12,
+              18,
+              24,
+              36
+            ]
+          },
+          "cuota_estimada_cop": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "ingresos_mensuales_cop",
+          "obligaciones_mensuales_cop",
+          "tipo_empleo",
+          "antiguedad_laboral_meses",
+          "meses_historial_crediticio",
+          "creditos_previos",
+          "atrasos_previos_30d",
+          "porcentaje_pago_puntual",
+          "monto_solicitado_cop",
+          "plazo_meses",
+          "cuota_estimada_cop"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "creditos_previos": {
+                  "const": 0
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "porcentaje_pago_puntual": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "porcentaje_pago_puntual": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Health": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ok"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "status",
+          "service"
+        ]
+      },
+      "ModeloInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "model_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          },
+          "run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          },
+          "variables": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 250
+            }
+          },
+          "clase_positiva": {
+            "const": 1
+          },
+          "umbral": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "model_version",
+          "run_id",
+          "variables",
+          "clase_positiva",
+          "umbral",
+          "artifact_sha256"
+        ]
+      },
+      "Prestamo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cliente_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "producto_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cantidad": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "plazo_meses": {
+            "type": "integer",
+            "enum": [
+              6,
+              12,
+              18,
+              24,
+              36
+            ]
+          },
+          "estado": {
+            "enum": [
+              "EVALUANDO",
+              "RECHAZADA",
+              "ERROR_TECNICO",
+              "PENDIENTE_INVENTARIO",
+              "APROBADA",
+              "CANCELACION_PENDIENTE",
+              "ENTREGA_PENDIENTE",
+              "VERIFICACION_PENDIENTE",
+              "CANCELADA_SIN_STOCK",
+              "CANCELADA",
+              "COMPLETADA"
+            ]
+          },
+          "motivo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 250
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "precio_unitario_cop": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,15})\\.[0-9]{2}$",
+                "description": "COP decimal exacto; reglas de positividad en la operación."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "version_producto": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "monto_cop": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,15})\\.[0-9]{2}$",
+                "description": "COP decimal exacto; reglas de positividad en la operación."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cuota_cop": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,15})\\.[0-9]{2}$",
+                "description": "COP decimal exacto; reglas de positividad en la operación."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "riesgo": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Riesgo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reserva_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "vence_en": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reserva_utilizable": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "cliente_id",
+          "producto_id",
+          "cantidad",
+          "plazo_meses",
+          "estado",
+          "motivo",
+          "precio_unitario_cop",
+          "version_producto",
+          "monto_cop",
+          "cuota_cop",
+          "riesgo",
+          "reserva_id",
+          "vence_en",
+          "reserva_utilizable",
+          "created_at",
+          "updated_at"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "estado": {
+                  "const": "APROBADA"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reserva_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "vence_en": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "riesgo": {
+                  "$ref": "#/components/schemas/Riesgo"
+                },
+                "reserva_utilizable": {
+                  "const": true
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "reserva_utilizable": {
+                  "const": false
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "estado": {
+                  "enum": [
+                    "PENDIENTE_INVENTARIO",
+                    "APROBADA",
+                    "ENTREGA_PENDIENTE",
+                    "COMPLETADA"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "riesgo": {
+                  "$ref": "#/components/schemas/Riesgo"
+                },
+                "precio_unitario_cop": {
+                  "type": "string",
+                  "pattern": "^(?!0\\.00$)(0|[1-9][0-9]{0,15})\\.[0-9]{2}$"
+                },
+                "version_producto": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "monto_cop": {
+                  "type": "string",
+                  "pattern": "^(?!0\\.00$)(0|[1-9][0-9]{0,15})\\.[0-9]{2}$"
+                },
+                "cuota_cop": {
+                  "type": "string",
+                  "pattern": "^(?!0\\.00$)(0|[1-9][0-9]{0,15})\\.[0-9]{2}$"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PrestamoCrear": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "producto_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cantidad": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "plazo_meses": {
+            "type": "integer",
+            "enum": [
+              6,
+              12,
+              18,
+              24,
+              36
+            ]
+          }
+        },
+        "required": [
+          "producto_id",
+          "cantidad",
+          "plazo_meses"
+        ]
+      },
+      "Prestamos": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Prestamo"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ]
+      },
+      "Ready": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ready",
+              "degraded",
+              "unavailable"
+            ]
+          },
+          "dependencies": {
+            "type": "object",
+            "additionalProperties": {
+              "enum": [
+                "ok",
+                "degraded",
+                "unavailable"
+              ]
+            }
+          }
+        },
+        "required": [
+          "status",
+          "dependencies"
+        ]
+      },
+      "Riesgo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "probabilidad_incumplimiento": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "decision_riesgo": {
+            "enum": [
+              "FAVORABLE",
+              "DESFAVORABLE"
+            ]
+          },
+          "umbral": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "model_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          },
+          "run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "probabilidad_incumplimiento",
+          "decision_riesgo",
+          "umbral",
+          "model_version",
+          "run_id"
+        ]
+      }
+    }
+  }
+}

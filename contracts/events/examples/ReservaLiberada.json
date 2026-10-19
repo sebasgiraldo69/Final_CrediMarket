@@ -1,0 +1,16 @@
+{
+  "event_id": "55555555-5555-4555-8555-000000000006",
+  "type": "ReservaLiberada",
+  "schema_version": 1,
+  "occurred_at": "2026-10-18T15:00:00Z",
+  "correlation_id": "44444444-4444-4444-8444-444444444444",
+  "causation_id": "55555555-5555-4555-8555-000000000002",
+  "prestamo_id": "11111111-1111-4111-8111-111111111111",
+  "payload": {
+    "reserva_id": "33333333-3333-4333-8333-333333333333",
+    "estado_reserva": "CANCELADA",
+    "revision_reserva": 2,
+    "vence_en": null,
+    "motivo": "CANCELADA"
+  }
+}
