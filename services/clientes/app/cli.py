@@ -18,10 +18,11 @@ def main():
     provision.add_argument('--role', choices=['cliente', 'administrador'], required=True)
     provision.add_argument('--cliente-id', type=UUID)
     internal = sub.add_parser('service-token')
-    internal.add_argument('--service', choices=['prestamos'], required=True)
+    internal.add_argument('--service', choices=['prestamos'], default='prestamos')
+    internal.add_argument('--scopes', nargs='*', default=['clientes:read', 'productos:cotizar'])
     args = parser.parse_args()
     if args.command == 'service-token':
-        print(issue_token(args.service, scopes=['clientes:read']))
+        print(issue_token(args.service, scopes=args.scopes))
         return
     if args.role == 'cliente' and not args.cliente_id:
         parser.error('Un usuario cliente requiere --cliente-id de un perfil existente')

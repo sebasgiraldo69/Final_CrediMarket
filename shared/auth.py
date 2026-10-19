@@ -31,10 +31,17 @@ def user_claims(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
     return claims
 
 
-def internal_claims(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
-    if not credentials:
-        raise HTTPException(401, 'Credencial interna requerida')
-    claims = decode_token(credentials.credentials, 'credimarket-internal')
-    if claims['sub'] != 'prestamos' or 'clientes:read' not in claims.get('scopes', []):
-        raise HTTPException(403, 'Servicio o alcance no autorizado')
-    return claims
+def require_internal(required_scope: str):
+    def dependency(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
+        if not credentials:
+            raise HTTPException(401, 'Credencial interna requerida')
+        claims = decode_token(credentials.credentials, 'credimarket-internal')
+        if claims.get('sub') != 'prestamos' or required_scope not in claims.get('scopes', []):
+            raise HTTPException(403, 'Servicio o alcance no autorizado')
+        return claims
+    return dependency
+
+
+internal_claims = require_internal('clientes:read')
+cotizar_claims = require_internal('productos:cotizar')
+

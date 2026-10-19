@@ -76,7 +76,7 @@ url = database_url()
 with create_engine(url).connect() as c:
     row = c.execute(text("SELECT service, created_at::text FROM infrastructure_metadata WHERE id=1")).one()
     revision = c.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-    assert revision == ('0002' if row[0] == 'clientes' else '0001')
+    assert revision == ('0002' if row[0] in ('clientes', 'productos') else '0001')
     own = c.execute(text("SELECT current_database(), current_user")).one()
     assert own[0] == row[0] + '_db' and own[1] == row[0] + '_app'
     role = c.execute(text("SELECT rolsuper, rolcreatedb, rolcreaterole FROM pg_roles WHERE rolname=current_user")).one()

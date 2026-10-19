@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 
-type Session = { access_token: string; role: string; cliente_id: string | null; email: string };
+export type Session = { access_token: string; role: string; cliente_id: string | null; email: string };
 type Finances = Record<string, string | number | null>;
 type Client = { id: string; nombre: string | null; email: string | null; clave_externa: string | null; activo: boolean; version: number; finanzas: Finances | null };
 type Report = { id: string; total_filas: number; insertados: number; actualizados: number; sin_cambios: number; rechazados: number; errores: { fila: number; mensaje: string }[] };
@@ -13,9 +13,17 @@ const fields = [
   ['porcentaje_pago_puntual', 'Pago puntual (%)'],
 ];
 
-export function Clientes() {
-  const [session, setSession] = useState<Session | null>(null);
+interface ClientesProps {
+  session?: Session | null;
+  setSession?: (s: Session | null) => void;
+}
+
+export function Clientes({ session: propSession, setSession: propSetSession }: ClientesProps = {}) {
+  const [localSession, setLocalSession] = useState<Session | null>(null);
+  const session = propSession !== undefined ? propSession : localSession;
+  const setSession = propSetSession !== undefined ? propSetSession : setLocalSession;
   const [register, setRegister] = useState(false);
+
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
