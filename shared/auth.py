@@ -1,6 +1,8 @@
 """Signature verification only: other services never receive the signing key."""
+from datetime import datetime, timezone, timedelta
 from functools import lru_cache
 from pathlib import Path
+from uuid import uuid4
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 import jwt
@@ -10,7 +12,32 @@ bearer = HTTPBearer(auto_error=False)
 
 @lru_cache
 def public_key():
-    return Path('/run/secrets/jwt_public.pem').read_bytes()
+    path = Path('/run/secrets/jwt_public.pem')
+    if not path.exists():
+        path = Path(__file__).resolve().parents[1] / '.secrets' / 'jwt_public.pem'
+    return path.read_bytes()
+
+
+@lru_cache
+def private_key():
+    path = Path('/run/secrets/jwt_private.pem')
+    if not path.exists():
+        path = Path(__file__).resolve().parents[1] / '.secrets' / 'jwt_private.pem'
+    return path.read_bytes()
+
+
+def issue_service_token(service: str, scopes: list[str], expires_in_minutes: int = 30) -> str:
+    now = datetime.now(timezone.utc)
+    payload = {
+        'sub': str(service),
+        'iss': 'credimarket-clientes',
+        'aud': 'credimarket-internal',
+        'iat': now,
+        'exp': now + timedelta(minutes=expires_in_minutes),
+        'jti': str(uuid4()),
+        'scopes': scopes,
+    }
+    return jwt.encode(payload, private_key(), algorithm='RS256')
 
 
 def decode_token(token, audience='credimarket-api'):

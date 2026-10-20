@@ -1,6 +1,6 @@
 # CrediMarket: desarrollo por etapas con Kafka
 
-Este documento define el orden de trabajo con Codex. Complementa el análisis de `PLAN_IMPLEMENTACION_CREDIMARKET.md` y reemplaza su cronograma inicial. Kafka es el broker elegido. Las etapas 1–6 están implementadas; ver [fase 6](docs/FASE_6.md) y [verificación](docs/validacion-fase-6.md). Las etapas 7–13 siguen pendientes.
+Este documento define el orden de trabajo con Codex. Complementa el análisis de `PLAN_IMPLEMENTACION_CREDIMARKET.md` y reemplaza su cronograma inicial. Kafka es el broker elegido. Las etapas 1–9 están implementadas; ver [fase 8](docs/FASE_8.md) y [fase 9](docs/FASE_9.md). Las etapas 10–13 continúan a continuación.
 
 Stack base: cuatro microservicios FastAPI, PostgreSQL con bases y credenciales separadas, Kafka, Redis, React con TypeScript, scikit-learn, MLflow y Docker Compose. El entrenamiento es offline; el modelo se sirve dentro de Préstamos.
 
@@ -158,9 +158,9 @@ El orden por partición no sustituye la reserva atómica: dos préstamos del mis
 - Resolver eventos tardíos, duplicados, operaciones incompatibles y solicitudes detenidas por caídas.
 - Exponer consulta/listado con control de propietario y conectar la primera compra completa al navegador.
 
-**Entregables:** flujo completo, máquina de estados implementada e historial auditable.
+**Entregables:** flujo completo, máquina de estados implementada e historial auditable. Ver informe en [docs/FASE_9.md](docs/FASE_9.md) y cuaderno en [docs/CODIGO_FASE_9.md](docs/CODIGO_FASE_9.md).
 
-**Se termina cuando:** funcionan aprobación, rechazo, falta de stock, entrega y cancelación; ningún evento tardío reactiva un préstamo cancelado y ningún fallo técnico se registra como rechazo crediticio.
+**Se termina cuando:** funcionan aprobación, rechazo, falta de stock, entrega y cancelación; ningún evento tardío reactiva un préstamo cancelado y ningún fallo técnico se registra como rechazo crediticio. (Verificado mediante [scripts/check_phase9.py](scripts/check_phase9.py)). Estado: **COMPLETADO**.
 
 ## Etapa 10. Completar el frontend
 

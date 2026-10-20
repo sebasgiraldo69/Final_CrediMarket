@@ -159,3 +159,61 @@ class ModeloInfo(BaseModel):
     clase_positiva: Literal[1]
     umbral: float = Field(..., ge=0.0, le=1.0)
     artifact_sha256: str = Field(..., pattern=r"^[a-f0-9]{64}$")
+
+
+class PrestamoCrear(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    producto_id: str = Field(..., min_length=36, max_length=36)
+    cantidad: int = Field(..., ge=1, le=100)
+    plazo_meses: Literal[6, 12, 18, 24, 36]
+
+
+class Cancelacion(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    motivo: str = Field(..., min_length=1, max_length=250)
+
+
+class Prestamo(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str = Field(..., min_length=36, max_length=36)
+    cliente_id: str = Field(..., min_length=36, max_length=36)
+    producto_id: str = Field(..., min_length=36, max_length=36)
+    cantidad: int = Field(..., ge=1, le=100)
+    plazo_meses: Literal[6, 12, 18, 24, 36]
+    estado: Literal[
+        "EVALUANDO",
+        "RECHAZADA",
+        "ERROR_TECNICO",
+        "PENDIENTE_INVENTARIO",
+        "APROBADA",
+        "CANCELACION_PENDIENTE",
+        "ENTREGA_PENDIENTE",
+        "VERIFICACION_PENDIENTE",
+        "CANCELADA_SIN_STOCK",
+        "CANCELADA",
+        "COMPLETADA",
+    ]
+    motivo: str | None = Field(default=None, max_length=250)
+    precio_unitario_cop: str | None = Field(default=None, pattern=r"^(0|[1-9][0-9]{0,15})\.[0-9]{2}$")
+    version_producto: int | None = Field(default=None, ge=1)
+    monto_cop: str | None = Field(default=None, pattern=r"^(0|[1-9][0-9]{0,15})\.[0-9]{2}$")
+    cuota_cop: str | None = Field(default=None, pattern=r"^(0|[1-9][0-9]{0,15})\.[0-9]{2}$")
+    riesgo: Riesgo | None = None
+    reserva_id: str | None = Field(default=None, min_length=36, max_length=36)
+    vence_en: str | None = None
+    reserva_utilizable: bool
+    created_at: str
+    updated_at: str
+
+
+class Prestamos(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    items: List[Prestamo]
+    total: int = Field(..., ge=0)
+    limit: int = Field(..., ge=1, le=100)
+    offset: int = Field(..., ge=0)
+

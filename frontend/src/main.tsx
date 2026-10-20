@@ -4,6 +4,7 @@ import './style.css';
 import { Clientes, type Session } from './Clientes';
 import { Catalogo } from './Catalogo';
 import { Inventario } from './Inventario';
+import { Solicitudes } from './Solicitudes';
 
 const sections = ['Inicio', 'Catálogo', 'Mis solicitudes', 'Clientes', 'Inventario', 'Modelo'];
 const services = ['productos', 'clientes', 'prestamos', 'inventario'];
@@ -37,7 +38,7 @@ function App() {
               Conectado como: <strong>{session.email}</strong> ({session.role})
             </span>
           )}
-          <span className="badge">Fase 6: Integración con Kafka</span>
+          <span className="badge">Fase 9: Flujo de Préstamos</span>
         </div>
       </header>
 
@@ -77,7 +78,7 @@ function App() {
               </p>
             </section>
           </>
-        ) : active === 'Clientes' || active === 'Catálogo' || active === 'Inventario' ? null : (
+        ) : active === 'Clientes' || active === 'Catálogo' || active === 'Inventario' || active === 'Mis solicitudes' ? null : (
           <section className="panel">
             <p className="eyebrow">Próxima etapa</p>
             <h1>{active}</h1>
@@ -87,7 +88,11 @@ function App() {
         )}
 
         <div hidden={active !== 'Catálogo'}>
-          <Catalogo session={session} onNavigateToClients={() => setActive('Clientes')} />
+          <Catalogo session={session} onNavigateToClients={() => setActive('Clientes')} onNavigateToLoans={() => setActive('Mis solicitudes')} />
+        </div>
+
+        <div hidden={active !== 'Mis solicitudes'}>
+          <Solicitudes session={session} onNavigateToCatalog={() => setActive('Catálogo')} onNavigateToClients={() => setActive('Clientes')} />
         </div>
 
         <div hidden={active !== 'Clientes'}>

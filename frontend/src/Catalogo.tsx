@@ -15,9 +15,10 @@ export type Product = {
 interface CatalogoProps {
   session: Session | null;
   onNavigateToClients?: () => void;
+  onNavigateToLoans?: () => void;
 }
 
-export function Catalogo({ session, onNavigateToClients }: CatalogoProps) {
+export function Catalogo({ session, onNavigateToClients, onNavigateToLoans }: CatalogoProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -32,7 +33,19 @@ export function Catalogo({ session, onNavigateToClients }: CatalogoProps) {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [creating, setCreating] = useState(false);
 
+  // Estados de solicitud de crédito (Fase 9)
+  const [requestingProduct, setRequestingProduct] = useState<Product | null>(null);
+  const [loanTerm, setLoanTerm] = useState(12);
+  const [loanQuantity, setLoanQuantity] = useState(1);
+
   const isAdmin = session?.role === 'administrador';
+  const isClient = session?.role === 'cliente';
+
+  function calculateInstallment(amount: number, months: number): number {
+    const r = 0.018;
+    const factor = 1 - Math.pow(1 + r, -months);
+    return (amount * r) / factor;
+  }
 
   async function api(path: string, options: RequestInit = {}) {
     const headers = new Headers(options.headers);
@@ -156,6 +169,49 @@ export function Catalogo({ session, onNavigateToClients }: CatalogoProps) {
       await loadProducts();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desactivando producto');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleApplyLoan(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!requestingProduct || !session) return;
+    setBusy(true);
+    setError('');
+    setNotice('');
+    try {
+      const idemKey = `sol-${requestingProduct.id}-${Date.now()}`;
+      const headers = new Headers({
+        'Authorization': `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': idemKey,
+      });
+      const resp = await fetch('/api/prestamos/prestamos', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          producto_id: requestingProduct.id,
+          cantidad: Number(loanQuantity),
+          plazo_meses: Number(loanTerm),
+        }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        const details = data.details?.map((d: { field: string; message: string }) => `${d.field}: ${d.message}`).join(' · ');
+        throw new Error([data.message || 'Error en la solicitud', details].filter(Boolean).join(' · '));
+      }
+      if (data.estado === 'RECHAZADA') {
+        setError(`Solicitud de crédito rechazada: ${data.motivo || 'No cumple con las políticas de riesgo'}`);
+      } else {
+        setNotice(`¡Solicitud registrada exitosamente! Estado: ${data.estado}. Puedes consultar el avance en "Mis solicitudes".`);
+        if (onNavigateToLoans) {
+          setTimeout(() => onNavigateToLoans(), 1500);
+        }
+      }
+      setRequestingProduct(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al solicitar crédito');
     } finally {
       setBusy(false);
     }
@@ -305,13 +361,13 @@ export function Catalogo({ session, onNavigateToClients }: CatalogoProps) {
               <th>Precio COP</th>
               <th>Versión</th>
               <th>Estado</th>
-              {isAdmin && <th>Acciones</th>}
+              {(isAdmin || isClient) && <th>Acciones</th>}
             </tr>
           </thead>
           <tbody>
             {filteredProducts.length === 0 ? (
               <tr>
-                <td colSpan={isAdmin ? 6 : 5} style={{ textAlign: 'center', padding: 24 }}>
+                <td colSpan={(isAdmin || isClient) ? 6 : 5} style={{ textAlign: 'center', padding: 24 }}>
                   No se encontraron productos en este catálogo.
                 </td>
               </tr>
@@ -364,6 +420,27 @@ export function Catalogo({ session, onNavigateToClients }: CatalogoProps) {
                       </div>
                     </td>
                   )}
+                  {isClient && (
+                    <td>
+                      {product.activo ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setRequestingProduct(product);
+                            setLoanQuantity(1);
+                            setLoanTerm(12);
+                          }}
+                          disabled={busy}
+                          className="button-primary"
+                          style={{ padding: '4px 12px', fontSize: 12 }}
+                        >
+                          Solicitar a crédito
+                        </button>
+                      ) : (
+                        <span style={{ fontSize: 12, color: '#999' }}>No disponible</span>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))
             )}
@@ -388,6 +465,64 @@ export function Catalogo({ session, onNavigateToClients }: CatalogoProps) {
           </button>
         </div>
       </div>
+
+      {/* Modal Solicitar a Crédito (Fase 9) */}
+      {requestingProduct && (
+        <div className="modal-backdrop" onClick={() => setRequestingProduct(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: 480 }}>
+            <h2>Solicitud de Crédito</h2>
+            <p style={{ fontSize: 13, color: '#555' }}>
+              Financia tu compra en cuotas mensuales fijas con evaluación crediticia y reserva atómica de inventario.
+            </p>
+            <form onSubmit={handleApplyLoan}>
+              <div style={{ background: '#f5f8f6', padding: 12, borderRadius: 6, margin: '12px 0', fontSize: 13 }}>
+                <div><strong>Producto:</strong> {requestingProduct.nombre}</div>
+                <div><strong>Precio unitario:</strong> {formatMoney(requestingProduct.precio_cop)}</div>
+                <div><strong>Monto total:</strong> {formatMoney(Number(requestingProduct.precio_cop) * loanQuantity)}</div>
+                <div style={{ color: '#163d30', fontWeight: 600, marginTop: 4 }}>
+                  <strong>Cuota mensual estimada:</strong> {formatMoney(calculateInstallment(Number(requestingProduct.precio_cop) * loanQuantity, loanTerm))}
+                  <span style={{ fontSize: 11, fontWeight: 'normal', color: '#666' }}> (tasa fija 1.8% M.V.)</span>
+                </div>
+              </div>
+
+              <label>
+                <span>Cantidad *</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={10}
+                  value={loanQuantity}
+                  onChange={e => setLoanQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                  required
+                />
+              </label>
+
+              <label>
+                <span>Plazo en meses *</span>
+                <select
+                  value={loanTerm}
+                  onChange={e => setLoanTerm(parseInt(e.target.value))}
+                >
+                  <option value={6}>6 meses</option>
+                  <option value={12}>12 meses</option>
+                  <option value={18}>18 meses</option>
+                  <option value={24}>24 meses</option>
+                  <option value={36}>36 meses</option>
+                </select>
+              </label>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
+                <button type="button" onClick={() => setRequestingProduct(null)} disabled={busy}>
+                  Cancelar
+                </button>
+                <button type="submit" disabled={busy} className="button-primary">
+                  {busy ? 'Evaluando…' : 'Confirmar Solicitud'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

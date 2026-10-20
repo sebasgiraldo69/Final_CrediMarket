@@ -182,6 +182,11 @@ services:
 
   prestamos:
     <<: *api
+    secrets:
+      - source: jwt_public
+        target: jwt_public.pem
+      - source: jwt_private
+        target: jwt_private.pem
     build:
       context: .
       dockerfile: infra/python/Dockerfile
