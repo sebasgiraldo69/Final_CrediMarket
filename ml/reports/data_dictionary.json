@@ -1,0 +1,192 @@
+{
+  "version": "1.0.0",
+  "total_columns_historical": 15,
+  "total_columns_new": 14,
+  "model_features_count": 11,
+  "model_features": [
+    "ingresos_mensuales_cop",
+    "obligaciones_mensuales_cop",
+    "tipo_empleo",
+    "antiguedad_laboral_meses",
+    "meses_historial_crediticio",
+    "creditos_previos",
+    "atrasos_previos_30d",
+    "porcentaje_pago_puntual",
+    "monto_solicitado_cop",
+    "plazo_meses",
+    "cuota_estimada_cop"
+  ],
+  "excluded_columns": [
+    "solicitud_id",
+    "cliente_id",
+    "tasa_mensual_simulada",
+    "incumplimiento_90d"
+  ],
+  "columns": [
+    {
+      "name": "solicitud_id",
+      "role": "identifier",
+      "included_in_model": false,
+      "type": "string",
+      "unit": "ID alfanumérico (SOL-XXXXXXX)",
+      "nullable": false,
+      "observed_historical": "SOL-0000001 .. SOL-0012000 (12000 únicos)",
+      "observed_new": "SOL-0012001 .. SOL-0012200 (200 únicos)",
+      "domain_rule": "Identificador único de solicitud; excluido estrictamente de los predictores para evitar memorización/fuga."
+    },
+    {
+      "name": "cliente_id",
+      "role": "identifier",
+      "included_in_model": false,
+      "type": "string",
+      "unit": "ID alfanumérico (CLI-XXXXXXX) / UUID en servicio",
+      "nullable": false,
+      "observed_historical": "12000 clientes distintos (1 por fila)",
+      "observed_new": "200 clientes distintos sin intersección con histórico",
+      "domain_rule": "Clave externa de cliente; excluida del estimador."
+    },
+    {
+      "name": "ingresos_mensuales_cop",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "number",
+      "unit": "COP / mes",
+      "nullable": false,
+      "observed_historical": "[1400000, 28000000]",
+      "observed_new": "[1400000, 28000000]",
+      "domain_rule": "Estrictamente positivo (> 0). En pipeline: imputación mediana de respaldo y escalado en modelos lineales."
+    },
+    {
+      "name": "obligaciones_mensuales_cop",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "number",
+      "unit": "COP / mes",
+      "nullable": false,
+      "observed_historical": "[11000, 16485000]",
+      "observed_new": "[59000, 9836000]",
+      "domain_rule": "No negativo (>= 0). Representa egresos financieros mensuales vigentes del solicitante."
+    },
+    {
+      "name": "tipo_empleo",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "categorical",
+      "unit": "Categoría laboral",
+      "nullable": true,
+      "observed_historical": "dependiente, independiente, temporal, null (93 faltantes)",
+      "observed_new": "dependiente, independiente, temporal, null (2 faltantes)",
+      "domain_rule": "Valores admitidos: {'dependiente', 'independiente', 'temporal', null}. En pipeline: imputación a categoría explícita 'faltante' + One-Hot Encoding."
+    },
+    {
+      "name": "antiguedad_laboral_meses",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "integer",
+      "unit": "meses",
+      "nullable": true,
+      "observed_historical": "[0, 240] (91 faltantes)",
+      "observed_new": "[0, 160] (1 faltante)",
+      "domain_rule": "Entero >= 0 o null. En pipeline: imputación por mediana de train + indicador binario de faltante."
+    },
+    {
+      "name": "meses_historial_crediticio",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "integer",
+      "unit": "meses",
+      "nullable": true,
+      "observed_historical": "[0, 300] (97 faltantes)",
+      "observed_new": "[3, 189] (1 faltante)",
+      "domain_rule": "Entero >= 0 o null. En pipeline: imputación por mediana de train + indicador binario de faltante."
+    },
+    {
+      "name": "creditos_previos",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "integer",
+      "unit": "conteo de créditos",
+      "nullable": false,
+      "observed_historical": "[0, 19]",
+      "observed_new": "[0, 11]",
+      "domain_rule": "Entero >= 0 sin nulos. Cuando vale 0, porcentaje_pago_puntual debe ser null."
+    },
+    {
+      "name": "atrasos_previos_30d",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "integer",
+      "unit": "conteo de moras >30 días",
+      "nullable": false,
+      "observed_historical": "[0, 12]",
+      "observed_new": "[0, 8]",
+      "domain_rule": "Entero >= 0 sin nulos."
+    },
+    {
+      "name": "porcentaje_pago_puntual",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "number",
+      "unit": "porcentaje [0, 100]",
+      "nullable": true,
+      "observed_historical": "[12.68, 99.97] (2473 nulos cuando creditos_previos=0)",
+      "observed_new": "[53.03, 99.83] (43 nulos cuando creditos_previos=0)",
+      "domain_rule": "Null si y solo si creditos_previos == 0; de lo contrario en [0, 100]. Nunca imputar como 0: se imputa con la mediana de train acompañada de bandera binaria add_indicator=True."
+    },
+    {
+      "name": "monto_solicitado_cop",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "number",
+      "unit": "COP",
+      "nullable": false,
+      "observed_historical": "[500000, 15000000]",
+      "observed_new": "[500000, 15000000]",
+      "domain_rule": "Política financiera v1: [500000, 15000000] COP."
+    },
+    {
+      "name": "plazo_meses",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "integer",
+      "unit": "meses",
+      "nullable": false,
+      "observed_historical": "Conjunto discreto {6, 12, 18, 24, 36}",
+      "observed_new": "Conjunto discreto {6, 12, 18, 24, 36}",
+      "domain_rule": "Plazo de amortización en {6, 12, 18, 24, 36}."
+    },
+    {
+      "name": "tasa_mensual_simulada",
+      "role": "constant_parameter",
+      "included_in_model": false,
+      "type": "number",
+      "unit": "proporción mensual (0.018 = 1.8% MV)",
+      "nullable": false,
+      "observed_historical": "Constante 0.0180 en las 12000 filas",
+      "observed_new": "Constante 0.0180 en las 200 filas",
+      "domain_rule": "Varianza cero; se excluye del estimador pero se conserva como parámetro financiero para el cálculo de cuota."
+    },
+    {
+      "name": "cuota_estimada_cop",
+      "role": "predictor",
+      "included_in_model": true,
+      "type": "number",
+      "unit": "COP / mes",
+      "nullable": false,
+      "observed_historical": "[18991.92, 2659841.03]",
+      "observed_new": "[36008.67, 2134788.41]",
+      "domain_rule": "Derivada por fórmula de anualidad sobre monto y plazo. Aunque es función no lineal de monto y plazo, se conserva porque aporta relación lineal directa frente al ingreso mensual en modelos lineales."
+    },
+    {
+      "name": "incumplimiento_90d",
+      "role": "target",
+      "included_in_model": false,
+      "type": "integer (binary)",
+      "unit": "0 = cumplido, 1 = incumplimiento >= 90 días",
+      "nullable": false,
+      "observed_historical": "1: 3667 (30.56%), 0: 8333 (69.44%)",
+      "observed_new": "Ausente (lote sin etiqueta para inferencia batch)",
+      "domain_rule": "Variable objetivo en entrenamiento/validación/prueba. Clase positiva = 1."
+    }
+  ]
+}

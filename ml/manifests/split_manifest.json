@@ -1,0 +1,54 @@
+{
+  "random_seed": 42,
+  "stratify_column": "incumplimiento_90d",
+  "proportions": {
+    "train": 0.6,
+    "val": 0.2,
+    "test": 0.2
+  },
+  "source_files": {
+    "prestamos_entrenamiento.csv": {
+      "sha256": "c6cdc437c3aecc9116bc8b978df421d5a7600634c1ad7d6f82e58222a2446ecd",
+      "rows": 12000,
+      "columns": 15
+    },
+    "solicitudes_nuevas.csv": {
+      "sha256": "1430d7b34e924d5e4170c4fb9d9a412c1000af17c062af513ef15e44a1a7f1f7",
+      "rows": 200,
+      "columns": 14,
+      "usage": "Reserved strictly for unlabeled batch inference and API parity checks in Phase 8"
+    }
+  },
+  "splits": {
+    "train": {
+      "file": "ml/data/splits/train.csv",
+      "sha256": "574c6bc9c623bfd6cad62de06324a4bbbf5aa8e0fa64b0d6d0b42f7290c57718",
+      "rows": 7200,
+      "positive_class_1": 2200,
+      "negative_class_0": 5000,
+      "positive_rate": 0.305556,
+      "first_solicitud_id": "SOL-0010285",
+      "last_solicitud_id": "SOL-0010609"
+    },
+    "val": {
+      "file": "ml/data/splits/val.csv",
+      "sha256": "b942d9cc9bf1c8cbf376e9c70e2500a2fad8022e686f5daabdc54072814e3b7a",
+      "rows": 2400,
+      "positive_class_1": 734,
+      "negative_class_0": 1666,
+      "positive_rate": 0.305833,
+      "first_solicitud_id": "SOL-0000326",
+      "last_solicitud_id": "SOL-0007079"
+    },
+    "test": {
+      "file": "ml/data/splits/test.csv",
+      "sha256": "1525f9ea40bb456796e495b09f6f4d772d3b18005447f3ee3d651cf3dbc954c4",
+      "rows": 2400,
+      "positive_class_1": 733,
+      "negative_class_0": 1667,
+      "positive_rate": 0.305417,
+      "first_solicitud_id": "SOL-0006418",
+      "last_solicitud_id": "SOL-0006152"
+    }
+  }
+}

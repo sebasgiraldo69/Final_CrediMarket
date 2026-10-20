@@ -132,6 +132,9 @@ services:
       - "127.0.0.1:${MLFLOW_PORT:-5000}:5000"
     volumes:
       - mlflow_artifacts:/mlartifacts
+      - ./ml:/workspace/ml
+      - ./prestamos_entrenamiento.csv:/workspace/prestamos_entrenamiento.csv:ro
+      - ./solicitudes_nuevas.csv:/workspace/solicitudes_nuevas.csv:ro
     depends_on:
       postgres: {condition: service_healthy}
     networks: [backend]

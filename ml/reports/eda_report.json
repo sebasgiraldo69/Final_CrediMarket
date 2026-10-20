@@ -1,0 +1,432 @@
+{
+  "source_hashes": {
+    "prestamos_entrenamiento.csv": "c6cdc437c3aecc9116bc8b978df421d5a7600634c1ad7d6f82e58222a2446ecd",
+    "solicitudes_nuevas.csv": "1430d7b34e924d5e4170c4fb9d9a412c1000af17c062af513ef15e44a1a7f1f7"
+  },
+  "validation_historical": {
+    "rows": 12000,
+    "columns": 15,
+    "distinct_solicitudes": 12000,
+    "distinct_clientes": 12000,
+    "duplicate_rows": 0,
+    "missing_counts": {
+      "tipo_empleo": 93,
+      "antiguedad_laboral_meses": 91,
+      "meses_historial_crediticio": 97,
+      "porcentaje_pago_puntual": 2473
+    },
+    "zero_creditos_matches_null_pct": true,
+    "tasa_constante": 0.018,
+    "max_cuota_formula_diff_cop": 0.005
+  },
+  "validation_new_requests": {
+    "rows": 200,
+    "columns": 14,
+    "distinct_solicitudes": 200,
+    "distinct_clientes": 200,
+    "duplicate_rows": 0,
+    "missing_counts": {
+      "tipo_empleo": 2,
+      "antiguedad_laboral_meses": 1,
+      "meses_historial_crediticio": 1,
+      "porcentaje_pago_puntual": 43
+    },
+    "zero_creditos_matches_null_pct": true,
+    "tasa_constante": 0.018,
+    "max_cuota_formula_diff_cop": 0.004961
+  },
+  "shared_clients_between_files": 0,
+  "class_distribution_historical": {
+    "total": 12000,
+    "positive_incumplimiento_1": 3667,
+    "negative_cumplimiento_0": 8333,
+    "positive_rate": 0.305583,
+    "majority_baseline_accuracy": 0.694417
+  },
+  "numeric_summary_historical": {
+    "ingresos_mensuales_cop": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 4828941.3333,
+      "std": 3385127.8985,
+      "min": 1400000.0,
+      "p05": 1400000.0,
+      "p25": 2522750.0,
+      "p50": 3905000.0,
+      "p75": 6090000.0,
+      "p95": 11273250.0,
+      "max": 28000000.0
+    },
+    "obligaciones_mensuales_cop": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 1368149.3333,
+      "std": 1313408.053,
+      "min": 11000.0,
+      "p05": 181000.0,
+      "p25": 524750.0,
+      "p50": 972000.0,
+      "p75": 1764250.0,
+      "p95": 3824000.0,
+      "max": 16485000.0
+    },
+    "antiguedad_laboral_meses": {
+      "count": 11909,
+      "missing": 91,
+      "missing_rate": 0.007583,
+      "mean": 37.3836,
+      "std": 28.3344,
+      "min": 0.0,
+      "p05": 5.0,
+      "p25": 17.0,
+      "p50": 31.0,
+      "p75": 51.0,
+      "p95": 92.0,
+      "max": 240.0
+    },
+    "meses_historial_crediticio": {
+      "count": 11903,
+      "missing": 97,
+      "missing_rate": 0.008083,
+      "mean": 56.3786,
+      "std": 38.8221,
+      "min": 0.0,
+      "p05": 10.0,
+      "p25": 28.0,
+      "p50": 48.0,
+      "p75": 76.0,
+      "p95": 131.0,
+      "max": 300.0
+    },
+    "creditos_previos": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 2.3746,
+      "std": 2.2268,
+      "min": 0.0,
+      "p05": 0.0,
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 4.0,
+      "p95": 7.0,
+      "max": 19.0
+    },
+    "atrasos_previos_30d": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 0.7773,
+      "std": 1.2195,
+      "min": 0.0,
+      "p05": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 1.0,
+      "p95": 3.0,
+      "max": 12.0
+    },
+    "porcentaje_pago_puntual": {
+      "count": 9527,
+      "missing": 2473,
+      "missing_rate": 0.206083,
+      "mean": 83.4741,
+      "std": 12.0192,
+      "min": 12.68,
+      "p05": 59.898,
+      "p25": 76.62,
+      "p50": 86.09,
+      "p75": 92.91,
+      "p95": 98.04,
+      "max": 99.97
+    },
+    "monto_solicitado_cop": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 4025144.1667,
+      "std": 2912489.4238,
+      "min": 500000.0,
+      "p05": 1015950.0,
+      "p25": 1985750.0,
+      "p50": 3200000.0,
+      "p75": 5136000.0,
+      "p95": 10165600.0,
+      "max": 15000000.0
+    },
+    "plazo_meses": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 19.8195,
+      "std": 9.1782,
+      "min": 6.0,
+      "p05": 6.0,
+      "p25": 12.0,
+      "p50": 18.0,
+      "p75": 24.0,
+      "p95": 36.0,
+      "max": 36.0
+    },
+    "cuota_estimada_cop": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 310719.3068,
+      "std": 307864.8841,
+      "min": 18991.92,
+      "p05": 56140.1,
+      "p25": 122632.925,
+      "p50": 214888.96,
+      "p75": 379619.6675,
+      "p95": 891311.808,
+      "max": 2659841.03
+    },
+    "tasa_mensual_simulada": {
+      "count": 12000,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 0.018,
+      "std": 0.0,
+      "min": 0.018,
+      "p05": 0.018,
+      "p25": 0.018,
+      "p50": 0.018,
+      "p75": 0.018,
+      "p95": 0.018,
+      "max": 0.018
+    }
+  },
+  "numeric_summary_new_requests": {
+    "ingresos_mensuales_cop": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 4735770.0,
+      "std": 3458082.2781,
+      "min": 1400000.0,
+      "p05": 1400000.0,
+      "p25": 2648500.0,
+      "p50": 3732000.0,
+      "p75": 5575000.0,
+      "p95": 10446950.0,
+      "max": 28000000.0
+    },
+    "obligaciones_mensuales_cop": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 1357315.0,
+      "std": 1276953.6479,
+      "min": 59000.0,
+      "p05": 170650.0,
+      "p25": 589000.0,
+      "p50": 1036000.0,
+      "p75": 1686500.0,
+      "p95": 3323550.0,
+      "max": 9836000.0
+    },
+    "antiguedad_laboral_meses": {
+      "count": 199,
+      "missing": 1,
+      "missing_rate": 0.005,
+      "mean": 39.3869,
+      "std": 26.2716,
+      "min": 0.0,
+      "p05": 5.9,
+      "p25": 18.5,
+      "p50": 36.0,
+      "p75": 56.5,
+      "p95": 79.2,
+      "max": 160.0
+    },
+    "meses_historial_crediticio": {
+      "count": 199,
+      "missing": 1,
+      "missing_rate": 0.005,
+      "mean": 56.3819,
+      "std": 36.1955,
+      "min": 3.0,
+      "p05": 10.0,
+      "p25": 28.0,
+      "p50": 54.0,
+      "p75": 73.0,
+      "p95": 123.1,
+      "max": 189.0
+    },
+    "creditos_previos": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 2.355,
+      "std": 2.1522,
+      "min": 0.0,
+      "p05": 0.0,
+      "p25": 1.0,
+      "p50": 2.0,
+      "p75": 3.25,
+      "p95": 6.0,
+      "max": 11.0
+    },
+    "atrasos_previos_30d": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 0.985,
+      "std": 1.5384,
+      "min": 0.0,
+      "p05": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 1.0,
+      "p95": 5.0,
+      "max": 8.0
+    },
+    "porcentaje_pago_puntual": {
+      "count": 157,
+      "missing": 43,
+      "missing_rate": 0.215,
+      "mean": 84.4506,
+      "std": 12.0645,
+      "min": 53.03,
+      "p05": 60.068,
+      "p25": 77.32,
+      "p50": 87.85,
+      "p75": 94.39,
+      "p95": 98.65,
+      "max": 99.83
+    },
+    "monto_solicitado_cop": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 3654185.0,
+      "std": 2569148.0982,
+      "min": 500000.0,
+      "p05": 1070000.0,
+      "p25": 1894000.0,
+      "p50": 2935500.0,
+      "p75": 4450500.0,
+      "p95": 8348800.0,
+      "max": 15000000.0
+    },
+    "plazo_meses": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 20.43,
+      "std": 10.3504,
+      "min": 6.0,
+      "p05": 6.0,
+      "p25": 12.0,
+      "p50": 18.0,
+      "p75": 24.0,
+      "p95": 36.0,
+      "max": 36.0
+    },
+    "cuota_estimada_cop": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 285812.6904,
+      "std": 278238.7553,
+      "min": 36008.67,
+      "p05": 56975.5355,
+      "p25": 109431.4175,
+      "p50": 194759.225,
+      "p75": 350397.5125,
+      "p95": 743345.775,
+      "max": 2134788.41
+    },
+    "tasa_mensual_simulada": {
+      "count": 200,
+      "missing": 0,
+      "missing_rate": 0.0,
+      "mean": 0.018,
+      "std": 0.0,
+      "min": 0.018,
+      "p05": 0.018,
+      "p25": 0.018,
+      "p50": 0.018,
+      "p75": 0.018,
+      "p95": 0.018,
+      "max": 0.018
+    }
+  },
+  "default_rate_by_tipo_empleo": {
+    "dependiente": {
+      "count": 6765,
+      "share": 0.56375,
+      "default_rate": 0.279231
+    },
+    "faltante": {
+      "count": 93,
+      "share": 0.00775,
+      "default_rate": 0.344086
+    },
+    "independiente": {
+      "count": 3461,
+      "share": 0.288417,
+      "default_rate": 0.323028
+    },
+    "temporal": {
+      "count": 1681,
+      "share": 0.140083,
+      "default_rate": 0.373587
+    }
+  },
+  "default_rate_by_plazo_meses": {
+    "6": {
+      "count": 1397,
+      "share": 0.116417,
+      "default_rate": 0.395848
+    },
+    "12": {
+      "count": 2910,
+      "share": 0.2425,
+      "default_rate": 0.318213
+    },
+    "18": {
+      "count": 2130,
+      "share": 0.1775,
+      "default_rate": 0.310798
+    },
+    "24": {
+      "count": 3673,
+      "share": 0.306083,
+      "default_rate": 0.275524
+    },
+    "36": {
+      "count": 1890,
+      "share": 0.1575,
+      "default_rate": 0.271958
+    }
+  },
+  "missing_porcentaje_pago_puntual_analysis": {
+    "historical_missing_count": 2473,
+    "new_requests_missing_count": 43,
+    "exact_equivalence_with_zero_prior_credits": true,
+    "default_rate_when_creditos_previos_eq_0": 0.275778,
+    "default_rate_when_creditos_previos_gt_0": 0.31332,
+    "decision": "Impute with training median and add missingness indicator (add_indicator=True); never replace with 0."
+  },
+  "target_correlations_historical": {
+    "ingresos_mensuales_cop": -0.093809,
+    "obligaciones_mensuales_cop": 0.035625,
+    "antiguedad_laboral_meses": -0.063089,
+    "meses_historial_crediticio": 0.025283,
+    "creditos_previos": 0.064621,
+    "atrasos_previos_30d": 0.217552,
+    "porcentaje_pago_puntual": -0.162676,
+    "monto_solicitado_cop": 0.078043,
+    "plazo_meses": -0.069778,
+    "cuota_estimada_cop": 0.115674
+  },
+  "cuota_redundancy_analysis": {
+    "corr_cuota_monto": 0.740667,
+    "corr_cuota_plazo": -0.471594,
+    "corr_cuota_target": 0.115674
+  }
+}
