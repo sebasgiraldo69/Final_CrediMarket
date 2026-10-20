@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './style.css';
 import { Clientes, type Session } from './Clientes';
 import { Catalogo } from './Catalogo';
+import { Inventario } from './Inventario';
 
 const sections = ['Inicio', 'Catálogo', 'Mis solicitudes', 'Clientes', 'Inventario', 'Modelo'];
 const services = ['productos', 'clientes', 'prestamos', 'inventario'];
@@ -36,7 +37,7 @@ function App() {
               Conectado como: <strong>{session.email}</strong> ({session.role})
             </span>
           )}
-          <span className="badge">Fase 4: Catálogo y Redis</span>
+          <span className="badge">Fase 5: Inventario y reservas atómicas</span>
         </div>
       </header>
 
@@ -55,11 +56,11 @@ function App() {
       <main>
         {active === 'Inicio' ? (
           <>
-            <p className="eyebrow">Proyecto académico · Fase 4</p>
-            <h1>Catálogo de tecnología<br />y caché Redis en marcha.</h1>
+            <p className="eyebrow">Proyecto académico · Fase 5</p>
+            <h1>Catálogo, inventario y<br />reservas atómicas en marcha.</h1>
             <p className="intro">
-              El servicio de Productos ya cuenta con catálogo tecnológico, cotización interna para Préstamos
-              y caché Redis con patrón Cache-Aside. Puedes registrarte en Clientes y explorar el Catálogo.
+              Los servicios de Clientes, Productos e Inventario están completamente operativos.
+              Inventario garantiza control atómico de stock físico, reservado y disponible con aislamiento transaccional PostgreSQL.
             </p>
             <section className="panel" aria-label="Conectividad de servicios">
               <h2>Conexión con los servicios</h2>
@@ -72,11 +73,11 @@ function App() {
                 ))}
               </div>
               <p className="note">
-                Clientes y Productos están completamente operativos. Los módulos de Préstamos, Inventario y Modelo se integrarán en las siguientes fases.
+                Clientes, Productos e Inventario están operativos. Los módulos de Préstamos y Modelo se integrarán en las siguientes fases.
               </p>
             </section>
           </>
-        ) : active === 'Clientes' || active === 'Catálogo' ? null : (
+        ) : active === 'Clientes' || active === 'Catálogo' || active === 'Inventario' ? null : (
           <section className="panel">
             <p className="eyebrow">Próxima etapa</p>
             <h1>{active}</h1>
@@ -91,6 +92,10 @@ function App() {
 
         <div hidden={active !== 'Clientes'}>
           <Clientes session={session} setSession={setSession} />
+        </div>
+
+        <div hidden={active !== 'Inventario'}>
+          <Inventario session={session} onNavigateToClients={() => setActive('Clientes')} />
         </div>
       </main>
 

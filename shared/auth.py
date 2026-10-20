@@ -44,4 +44,5 @@ def require_internal(required_scope: str):
 
 internal_claims = require_internal('clientes:read')
 cotizar_claims = require_internal('productos:cotizar')
+reservas_read_claims = require_internal('reservas:read')
 
