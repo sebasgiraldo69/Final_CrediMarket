@@ -29,6 +29,11 @@ def create_app(service):
         app.state.engine = create_engine(database_url(), pool_pre_ping=True, pool_size=3,
                                          max_overflow=2, connect_args={"connect_timeout": 2},
                                          hide_parameters=True)
+        if service == "prestamos":
+            from app.model_service import ModelRegistry
+            registry = ModelRegistry()
+            registry.load_safe()
+            app.state.model_registry = registry
         workers = None
         if service in ('prestamos', 'inventario'):
             from shared.messaging import Workers
@@ -109,8 +114,8 @@ def create_app(service):
             except Exception:
                 dependencies["kafka"] = "degraded"
         if service == "prestamos":
-            # Do not claim inference readiness until the real pipeline is integrated in phase 8.
-            dependencies["model"] = "unavailable"
+            registry = getattr(request.app.state, "model_registry", None)
+            dependencies["model"] = "ok" if (registry and registry.is_ready()) else "unavailable"
         status = "unavailable" if "unavailable" in dependencies.values() else (
             "degraded" if "degraded" in dependencies.values() else "ready")
         return JSONResponse(status_code=503 if status == "unavailable" else 200,

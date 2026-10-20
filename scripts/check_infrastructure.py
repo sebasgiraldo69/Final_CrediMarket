@@ -58,10 +58,10 @@ def verify():
         assert headers["X-Correlation-ID"] == "11111111-1111-4111-8111-111111111111"
         code, _, body = http(f"{base}/api/{service}/ready")
         ready = json.loads(body)
-        assert code == (503 if service == "prestamos" else 200), (service, ready)
+        assert code == 200, (service, ready)
         assert ready["dependencies"]["database"] == "ok", (service, ready)
         if service == "prestamos":
-            assert ready["dependencies"]["model"] == "unavailable"
+            assert ready["dependencies"]["model"] == "ok", (service, ready)
         if service in ["prestamos", "inventario"]:
             assert ready["dependencies"]["kafka"] == "ok", (service, ready)
         if service == "productos":

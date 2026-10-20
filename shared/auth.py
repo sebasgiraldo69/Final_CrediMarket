@@ -42,7 +42,26 @@ def require_internal(required_scope: str):
     return dependency
 
 
+def require_admin_or_service(required_scope: str):
+    def dependency(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
+        if not credentials:
+            raise HTTPException(401, 'Credencial requerida', headers={'WWW-Authenticate': 'Bearer'})
+        claims = decode_token(credentials.credentials, ['credimarket-api', 'credimarket-internal'])
+        aud = claims.get('aud')
+        if aud == 'credimarket-api':
+            if claims.get('role') != 'administrador':
+                raise HTTPException(403, 'Se requiere rol administrador')
+            return claims
+        if aud == 'credimarket-internal':
+            if required_scope not in claims.get('scopes', []):
+                raise HTTPException(403, 'Alcance de servicio no autorizado')
+            return claims
+        raise HTTPException(403, 'Audiencia no autorizada')
+    return dependency
+
+
 internal_claims = require_internal('clientes:read')
 cotizar_claims = require_internal('productos:cotizar')
 reservas_read_claims = require_internal('reservas:read')
-
+modelo_read_claims = require_admin_or_service('modelo:read')
+riesgo_predict_claims = require_admin_or_service('riesgo:predict')

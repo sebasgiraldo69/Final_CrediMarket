@@ -1,0 +1,26 @@
+{
+  "source_file": "solicitudes_nuevas.csv",
+  "source_sha256": "1430d7b34e924d5e4170c4fb9d9a412c1000af17c062af513ef15e44a1a7f1f7",
+  "predictions_file": "ml/reports/solicitudes_nuevas_predictions.csv",
+  "predictions_sha256": "cb13f5695942671871611b6396f09e4afc629bbbcb43f75ce2aba5aa9fd030b2",
+  "rows_evaluated": 200,
+  "has_ground_truth_labels": false,
+  "supervised_metrics_computed": null,
+  "note": "Las 200 solicitudes nuevas carecen de etiqueta incumplimiento_90d; se utilizan exclusivamente para inferencia batch y verificación de paridad offline/API (AC10), sin inventar métricas de clasificación.",
+  "model_version": "riesgo-v1",
+  "run_id": "67e5c9d9db914b4f92ce2aebb6d80a10",
+  "artifact_sha256": "92411d3d907be27d4cfc4be6c7a0bee635f303ab92ad38be7fb5be5d652bff5a",
+  "umbral": 0.26,
+  "summary": {
+    "favorable_count": 87,
+    "desfavorable_count": 113,
+    "favorable_rate": 0.435,
+    "prob_min": 0.022152,
+    "prob_p25": 0.195459,
+    "prob_median": 0.282499,
+    "prob_mean": 0.316667,
+    "prob_p75": 0.373136,
+    "prob_max": 0.955665
+  },
+  "generated_at": "2026-10-20T17:08:51Z"
+}

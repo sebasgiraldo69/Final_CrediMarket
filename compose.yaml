@@ -192,6 +192,9 @@ services:
       DB_USER: prestamos_app
       DB_PASSWORD: ${PRESTAMOS_DB_PASSWORD:?Missing password}
       KAFKA_PASSWORD: ${KAFKA_PRESTAMOS_PASSWORD:?Missing password}
+      MODELS_DIR: /app/models
+    volumes:
+      - ./models:/app/models:ro
     depends_on:
       postgres: {condition: service_healthy}
       kafka-init: {condition: service_completed_successfully}

@@ -1,0 +1,149 @@
+{
+  "model_version": "riesgo-v1",
+  "experiment_name": "credimarket-riesgo-v1",
+  "run_id": "67e5c9d9db914b4f92ce2aebb6d80a10",
+  "run_name": "02_logreg_c1",
+  "algorithm": "LogisticRegression",
+  "hyperparameters": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "solver": "lbfgs",
+    "random_state": 42
+  },
+  "variables": [
+    "ingresos_mensuales_cop",
+    "obligaciones_mensuales_cop",
+    "tipo_empleo",
+    "antiguedad_laboral_meses",
+    "meses_historial_crediticio",
+    "creditos_previos",
+    "atrasos_previos_30d",
+    "porcentaje_pago_puntual",
+    "monto_solicitado_cop",
+    "plazo_meses",
+    "cuota_estimada_cop"
+  ],
+  "clase_positiva": 1,
+  "umbral": 0.26,
+  "artifact_path": "models/riesgo-v1/pipeline.joblib",
+  "artifact_sha256": "92411d3d907be27d4cfc4be6c7a0bee635f303ab92ad38be7fb5be5d652bff5a",
+  "dataset_hashes": {
+    "prestamos_entrenamiento.csv": "c6cdc437c3aecc9116bc8b978df421d5a7600634c1ad7d6f82e58222a2446ecd",
+    "solicitudes_nuevas.csv": "1430d7b34e924d5e4170c4fb9d9a412c1000af17c062af513ef15e44a1a7f1f7",
+    "train.csv": "574c6bc9c623bfd6cad62de06324a4bbbf5aa8e0fa64b0d6d0b42f7290c57718",
+    "val.csv": "b942d9cc9bf1c8cbf376e9c70e2500a2fad8022e686f5daabdc54072814e3b7a",
+    "test.csv": "1525f9ea40bb456796e495b09f6f4d772d3b18005447f3ee3d651cf3dbc954c4"
+  },
+  "selection_rule": {
+    "primary_metric": "val_average_precision",
+    "tie_tolerance": 0.005,
+    "secondary_metric": "val_brier_score",
+    "tertiary_metric": "complexity_rank",
+    "max_val_ap_observed": 0.504484,
+    "finalists": [
+      "02_logreg_c1",
+      "01_logreg_c01"
+    ]
+  },
+  "cost_model": {
+    "cost_fn_aprobar_incumplidor": 5.0,
+    "cost_fp_rechazar_pagador": 1.0,
+    "min_operational_approval_rate": 0.45,
+    "optimal_threshold": 0.26
+  },
+  "metrics": {
+    "train_at_050": {
+      "threshold": 0.5,
+      "average_precision": 0.529667,
+      "roc_auc": 0.705956,
+      "brier_score": 0.186596,
+      "log_loss": 0.55642,
+      "precision_pos": 0.641577,
+      "recall_pos": 0.244091,
+      "f1_pos": 0.353638,
+      "accuracy": 0.727361,
+      "business_total_cost": 8615.0,
+      "business_cost_per_loan": 1.196528,
+      "approval_rate": 0.88375,
+      "approved_default_rate": 0.261355,
+      "confusion_matrix": {
+        "tn": 4700,
+        "fp": 300,
+        "fn": 1663,
+        "tp": 537
+      }
+    },
+    "val_at_050": {
+      "threshold": 0.5,
+      "average_precision": 0.504484,
+      "roc_auc": 0.693093,
+      "brier_score": 0.190691,
+      "log_loss": 0.566554,
+      "precision_pos": 0.611111,
+      "recall_pos": 0.224796,
+      "f1_pos": 0.328685,
+      "accuracy": 0.719167,
+      "business_total_cost": 2950.0,
+      "business_cost_per_loan": 1.229167,
+      "approval_rate": 0.8875,
+      "approved_default_rate": 0.267136,
+      "confusion_matrix": {
+        "tn": 1561,
+        "fp": 105,
+        "fn": 569,
+        "tp": 165
+      }
+    },
+    "val_at_optimal_threshold": {
+      "threshold": 0.26,
+      "average_precision": 0.504484,
+      "roc_auc": 0.693093,
+      "brier_score": 0.190691,
+      "log_loss": 0.566554,
+      "precision_pos": 0.409886,
+      "recall_pos": 0.734332,
+      "f1_pos": 0.52611,
+      "accuracy": 0.595417,
+      "business_total_cost": 1751.0,
+      "business_cost_per_loan": 0.729583,
+      "approval_rate": 0.452083,
+      "approved_default_rate": 0.179724,
+      "confusion_matrix": {
+        "tn": 890,
+        "fp": 776,
+        "fn": 195,
+        "tp": 539
+      }
+    },
+    "test_at_optimal_threshold": {
+      "threshold": 0.26,
+      "average_precision": 0.506501,
+      "roc_auc": 0.68525,
+      "brier_score": 0.19087,
+      "log_loss": 0.566156,
+      "precision_pos": 0.401521,
+      "recall_pos": 0.720327,
+      "f1_pos": 0.515625,
+      "accuracy": 0.586667,
+      "business_total_cost": 1812.0,
+      "business_cost_per_loan": 0.755,
+      "approval_rate": 0.452083,
+      "approved_default_rate": 0.18894,
+      "confusion_matrix": {
+        "tn": 880,
+        "fp": 787,
+        "fn": 205,
+        "tp": 528
+      }
+    }
+  },
+  "dependencies": {
+    "python": "3.12.12",
+    "scikit-learn": "1.9.1",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "joblib": "1.6.0",
+    "mlflow": "3.4.0"
+  },
+  "exported_at": "2026-10-20T17:08:51Z"
+}

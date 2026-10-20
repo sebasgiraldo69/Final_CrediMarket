@@ -11,3 +11,7 @@ argon2-cffi==25.1.0
 email-validator==2.2.0
 python-multipart==0.0.20
 jsonschema==4.25.1
+joblib==1.6.0
+numpy==2.5.4
+pandas==2.3.3
+scikit-learn==1.9.1
