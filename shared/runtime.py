@@ -29,7 +29,18 @@ def create_app(service):
         app.state.engine = create_engine(database_url(), pool_pre_ping=True, pool_size=3,
                                          max_overflow=2, connect_args={"connect_timeout": 2},
                                          hide_parameters=True)
-        yield
+        workers = None
+        if service in ('prestamos', 'inventario'):
+            from shared.messaging import Workers
+            from app import messaging
+            workers = Workers(app.state.engine, service, messaging.handle, getattr(messaging, 'sweep', None))
+            workers.start()
+            app.state.messaging_workers = workers
+        try:
+            yield
+        finally:
+            if workers:
+                workers.close()
         app.state.engine.dispose()
 
     app = FastAPI(title=f"CrediMarket - {service}", version="0.2.0", lifespan=lifespan,
@@ -84,6 +95,9 @@ def create_app(service):
             except Exception:
                 dependencies["redis"] = "degraded"
         if service in ["prestamos", "inventario"]:
+            workers = getattr(app.state, 'messaging_workers', None)
+            dependencies["messaging"] = "ok" if workers and all(
+                thread.is_alive() for thread in workers.threads) else "unavailable"
             try:
                 client = AdminClient({"bootstrap.servers": "kafka:9092", "security.protocol": "SASL_PLAINTEXT",
                     "sasl.mechanism": "PLAIN", "sasl.username": service,

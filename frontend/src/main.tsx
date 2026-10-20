@@ -37,7 +37,7 @@ function App() {
               Conectado como: <strong>{session.email}</strong> ({session.role})
             </span>
           )}
-          <span className="badge">Fase 5: Inventario y reservas atómicas</span>
+          <span className="badge">Fase 6: Integración con Kafka</span>
         </div>
       </header>
 
@@ -56,7 +56,7 @@ function App() {
       <main>
         {active === 'Inicio' ? (
           <>
-            <p className="eyebrow">Proyecto académico · Fase 5</p>
+            <p className="eyebrow">Proyecto académico · Fase 6</p>
             <h1>Catálogo, inventario y<br />reservas atómicas en marcha.</h1>
             <p className="intro">
               Los servicios de Clientes, Productos e Inventario están completamente operativos.
@@ -73,7 +73,7 @@ function App() {
                 ))}
               </div>
               <p className="note">
-                Clientes, Productos e Inventario están operativos. Los módulos de Préstamos y Modelo se integrarán en las siguientes fases.
+                Kafka ya conecta las reservas y sus resultados. La evaluación del crédito y el modelo se incorporarán en las siguientes fases.
               </p>
             </section>
           </>

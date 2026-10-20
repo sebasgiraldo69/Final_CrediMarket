@@ -2,6 +2,7 @@ name: credimarket
 
 x-api: &api
   restart: unless-stopped
+  stop_grace_period: 60s
   networks: [backend]
   secrets:
     - source: jwt_public

@@ -19,7 +19,7 @@ from .domain import (
 )
 
 app = create_app('inventario')
-app.version = '0.5.0'
+app.version = '0.6.0'
 app.description = 'Inventario, existencias, reservas atómicas, movimientos e idempotencia. Fase 5.'
 
 
@@ -199,7 +199,9 @@ def consultar_reserva_interna(
     conn=Depends(connection)
 ):
     # If active and expired, vencer will update and release stock atomically
-    reserva_actual = vencer(conn, prestamo_id)
+    from .messaging import expire
+    reserva_actual = expire(conn, prestamo_id)
     if not reserva_actual:
         raise HTTPException(404, 'Reserva no encontrada')
+    conn.commit()
     return reserva_actual

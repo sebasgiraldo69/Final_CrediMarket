@@ -5,6 +5,7 @@ COPY infra/python/requirements.lock /tmp/requirements.lock
 RUN pip install --no-cache-dir --require-hashes -r /tmp/requirements.lock \
     && useradd --create-home --uid 10001 appuser
 COPY shared /app/shared
+COPY contracts/events /app/contracts/events
 ARG SERVICE
 COPY services/${SERVICE}/ /app/
 USER appuser
