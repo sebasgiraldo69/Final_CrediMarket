@@ -1706,6 +1706,55 @@
           "artifact_sha256": {
             "type": "string",
             "pattern": "^[a-f0-9]{64}$"
+          },
+          "algoritmo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 250
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "experimento": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 250
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "exportado_en": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 250
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "metricas_prueba": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [

@@ -30,6 +30,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import time
 import urllib.error
 import urllib.request
 from uuid import uuid4
@@ -271,7 +272,13 @@ print(f"PASS AC10: Paridad offline vs API en las 200 solicitudes nuevas verifica
 backup_bytes = ACTIVE_MODEL_PATH.read_bytes()
 try:
     ACTIVE_MODEL_PATH.unlink()
-    status, ready_unavail, _ = req("prestamos", "/ready")
+    # Docker Desktop (macOS) cachea metadatos del bind mount ~0,5 s tras consultas recientes: esperar hasta 5 s.
+    deadline = time.monotonic() + 5
+    while True:
+        status, ready_unavail, _ = req("prestamos", "/ready")
+        if status == 503 or time.monotonic() > deadline:
+            break
+        time.sleep(0.2)
     assert status == 503 and ready_unavail["dependencies"]["model"] == "unavailable", (
         f"Se esperaba 503 cuando falta active_model.json, se obtuvo {status}: {ready_unavail}"
     )

@@ -1,528 +1,212 @@
-import { FormEvent, useEffect, useState } from 'react';
-import type { Session } from './Clientes';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { api, ApiError, errorText, IdempotencyKeys } from './api';
+import { estimateInstallment, loanStates, motiveText, POLICY } from './labels';
+import type { Session } from './session';
+import type { Loan } from './Solicitudes';
+import { Feedback, formatMoney, loadAllProducts, Modal, Pagination, type Product } from './ui';
 
-export type Product = {
-  id: string;
-  nombre: string;
-  categoria: string;
-  precio_cop: string;
-  activo: boolean;
-  version: number;
-  created_at: string;
-  updated_at: string;
-};
+const PAGE = 12;
 
-interface CatalogoProps {
-  session: Session | null;
-  onNavigateToClients?: () => void;
-  onNavigateToLoans?: () => void;
-}
-
-export function Catalogo({ session, onNavigateToClients, onNavigateToLoans }: CatalogoProps) {
+export function Catalogo({ session, navigate }: { session: Session | null; navigate: (to: string) => void }) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [total, setTotal] = useState(0);
-  const [offset, setOffset] = useState(0);
-  const [limit] = useState(12);
-  const [incluirInactivos, setIncluirInactivos] = useState(false);
-  const [categoryFilter, setCategoryFilter] = useState('');
+  const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
-
-  // Estados de administración
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [creating, setCreating] = useState(false);
-
-  // Estados de solicitud de crédito (Fase 9)
-  const [requestingProduct, setRequestingProduct] = useState<Product | null>(null);
-  const [loanTerm, setLoanTerm] = useState(12);
-  const [loanQuantity, setLoanQuantity] = useState(1);
-
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
+  const [offset, setOffset] = useState(0);
+  const [includeInactive, setIncludeInactive] = useState(false);
+  const [financesMissing, setFinancesMissing] = useState(false);
+  const [editing, setEditing] = useState<Product | 'nuevo' | null>(null);
+  const [deactivating, setDeactivating] = useState<Product | null>(null);
+  const [requesting, setRequesting] = useState<Product | null>(null);
   const isAdmin = session?.role === 'administrador';
-  const isClient = session?.role === 'cliente';
+  const token = session?.access_token;
 
-  function calculateInstallment(amount: number, months: number): number {
-    const r = 0.018;
-    const factor = 1 - Math.pow(1 + r, -months);
-    return (amount * r) / factor;
+  async function reload() {
+    if (!token) return;
+    setLoading(true); setError('');
+    try { setProducts(await loadAllProducts(token, isAdmin && includeInactive)); }
+    catch (err) { setError(errorText(err)); }
+    finally { setLoading(false); }
   }
-
-  async function api(path: string, options: RequestInit = {}) {
-    const headers = new Headers(options.headers);
-    if (session?.access_token) {
-      headers.set('Authorization', `Bearer ${session.access_token}`);
-    }
-    if (options.body && !(options.body instanceof FormData)) {
-      headers.set('Content-Type', 'application/json');
-    }
-    const response = await fetch(`/api/productos${path}`, { ...options, headers });
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error('El servicio de productos no está disponible.');
-    }
-    if (!response.ok) {
-      const details = data.details?.map((d: { field: string; message: string }) => `${d.field}: ${d.message}`).join(' · ');
-      throw new Error([data.message || 'Error en la solicitud', details].filter(Boolean).join(' · '));
-    }
-    return data;
-  }
-
-  async function loadProducts() {
-    if (!session) return;
-    setBusy(true);
-    setError('');
-    try {
-      const query = new URLSearchParams({
-        limit: String(limit),
-        offset: String(offset),
-        incluir_inactivos: String(isAdmin && incluirInactivos)
-      });
-      const data = await api(`/productos?${query.toString()}`);
-      setProducts(data.items);
-      setTotal(data.total);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error cargando catálogo');
-    } finally {
-      setBusy(false);
-    }
-  }
+  useEffect(() => { void reload(); }, [token, includeInactive]);
 
   useEffect(() => {
-    void loadProducts();
-  }, [session, offset, incluirInactivos]);
+    if (session?.role !== 'cliente' || !session.cliente_id) return;
+    api<{ finanzas: unknown }>('clientes', `/clientes/${session.cliente_id}`, { token })
+      .then(profile => setFinancesMissing(!profile.finanzas)).catch(() => undefined);
+  }, [token]);
 
-  async function handleCreate(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    const nombre = String(form.get('nombre') || '').trim();
-    const categoria = String(form.get('categoria') || '').trim();
-    const precioRaw = String(form.get('precio_cop') || '').trim();
-    const precio = Number(precioRaw).toFixed(2);
+  const categories = useMemo(() => Array.from(new Set(products.map(p => p.categoria))).sort(), [products]);
+  const filtered = products.filter(p => (!category || p.categoria === category)
+    && (!search || `${p.nombre} ${p.categoria}`.toLowerCase().includes(search.trim().toLowerCase())));
+  const visible = filtered.slice(offset, offset + PAGE);
 
-    setBusy(true);
-    setError('');
-    setNotice('');
-    try {
-      await api('/productos', {
-        method: 'POST',
-        body: JSON.stringify({ nombre, categoria, precio_cop: precio })
-      });
-      setCreating(false);
-      setNotice('Producto creado exitosamente en el catálogo.');
-      await loadProducts();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error creando producto');
-    } finally {
-      setBusy(false);
-    }
+  async function mutate(work: () => Promise<void>, success: string) {
+    setBusy(true); setError(''); setNotice('');
+    try { await work(); setNotice(success); await reload(); return true; }
+    catch (err) {
+      setError(errorText(err));
+      if (err instanceof ApiError && err.status === 409) await reload();
+      return false;
+    } finally { setBusy(false); }
   }
 
-  async function handleEdit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!editingProduct) return;
-    const form = new FormData(e.currentTarget);
-    const nombre = String(form.get('nombre') || '').trim();
-    const categoria = String(form.get('categoria') || '').trim();
-    const precioRaw = String(form.get('precio_cop') || '').trim();
-
-    const payload: Record<string, unknown> = {
-      version_esperada: editingProduct.version
+  async function saveProduct(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const values = {
+      nombre: String(form.get('nombre')).trim(),
+      categoria: String(form.get('categoria')).trim(),
+      precio_cop: Number(form.get('precio_cop')).toFixed(2),
     };
-    if (nombre && nombre !== editingProduct.nombre) payload.nombre = nombre;
-    if (categoria && categoria !== editingProduct.categoria) payload.categoria = categoria;
-    if (precioRaw) {
-      const precio = Number(precioRaw).toFixed(2);
-      if (precio !== editingProduct.precio_cop) payload.precio_cop = precio;
-    }
+    const current = editing;
+    const ok = current === 'nuevo'
+      ? await mutate(() => api('productos', '/productos', { method: 'POST', token, body: values }), `Producto «${values.nombre}» creado.`)
+      : await mutate(async () => {
+          const changes: Record<string, unknown> = { version_esperada: current!.version };
+          for (const [field, value] of Object.entries(values)) if (value !== current![field as keyof Product]) changes[field] = value;
+          await api('productos', `/productos/${current!.id}`, { method: 'PATCH', token, body: changes });
+        }, 'Producto actualizado. La cotización en caché se invalidó.');
+    if (ok) setEditing(null);
+  }
 
-    setBusy(true);
-    setError('');
-    setNotice('');
+  async function deactivate() {
+    const product = deactivating!;
+    const ok = await mutate(() => api('productos', `/productos/${product.id}/desactivar`, { method: 'POST', token, body: { version_esperada: product.version } }),
+      `«${product.nombre}» desactivado; los clientes ya no lo ven.`);
+    if (ok) setDeactivating(null);
+  }
+
+  if (!session) return <section className="panel narrow">
+    <p className="eyebrow">Catálogo</p>
+    <h1>Explora nuestra tecnología</h1>
+    <p className="intro">Inicia sesión para ver los precios vigentes y solicitar financiación.</p>
+    <button className="primary" onClick={() => navigate('/acceso')}>Ingresar o registrarse</button>
+  </section>;
+
+  return <section>
+    <div className="module-heading">
+      <div><p className="eyebrow">Catálogo</p><h1>{isAdmin ? 'Administrar productos' : 'Productos disponibles'}</h1></div>
+      {isAdmin && <button className="primary" disabled={busy} onClick={() => setEditing('nuevo')}>Nuevo producto</button>}
+    </div>
+    {financesMissing && <p className="warning" role="status">Tu perfil financiero aún no está completo. Las solicitudes se rechazarán por información incompleta hasta que un administrador lo complete.</p>}
+    <Feedback error={error} notice={notice} onClose={() => { setError(''); setNotice(''); }} />
+
+    <div className="toolbar">
+      <label>Buscar<input type="search" value={search} placeholder="Nombre o categoría" onChange={e => { setSearch(e.target.value); setOffset(0); }} /></label>
+      <label>Categoría<select value={category} onChange={e => { setCategory(e.target.value); setOffset(0); }}>
+        <option value="">Todas</option>{categories.map(c => <option key={c}>{c}</option>)}
+      </select></label>
+      {isAdmin && <label className="check"><input type="checkbox" checked={includeInactive} onChange={e => { setIncludeInactive(e.target.checked); setOffset(0); }} />Incluir inactivos</label>}
+      <button type="button" onClick={() => void reload()} disabled={loading}>{loading ? 'Cargando…' : 'Actualizar'}</button>
+    </div>
+
+    {loading && !products.length ? <p role="status" className="loading">Cargando catálogo…</p>
+      : !visible.length ? <p className="empty">{products.length ? 'Ningún producto coincide con la búsqueda.' : 'Todavía no hay productos en el catálogo.'}</p>
+      : <div className="product-grid">{visible.map(product => <article key={product.id} className={`product${product.activo ? '' : ' inactive'}`}>
+          <p className="eyebrow">{product.categoria}</p>
+          <h3>{product.nombre}</h3>
+          <p className="price">{formatMoney(product.precio_cop)}</p>
+          <p className="note">Desde {formatMoney(estimateInstallment(Number(product.precio_cop), 36))}/mes a 36 meses</p>
+          {isAdmin && <p className="meta">Versión {product.version} · {product.activo ? 'Activo' : 'Inactivo'}</p>}
+          <div className="actions">
+            {isAdmin ? <>
+              <button type="button" disabled={busy} onClick={() => setEditing(product)}>Editar</button>
+              {product.activo && <button type="button" className="danger" disabled={busy} onClick={() => setDeactivating(product)}>Desactivar</button>}
+            </> : <button type="button" className="primary" onClick={() => setRequesting(product)}>Solicitar a crédito</button>}
+          </div>
+        </article>)}</div>}
+    <Pagination offset={offset} limit={PAGE} total={filtered.length} onChange={setOffset} label="productos" />
+
+    {editing && <Modal title={editing === 'nuevo' ? 'Nuevo producto' : `Editar «${editing.nombre}»`} onClose={() => setEditing(null)}>
+      <form onSubmit={saveProduct} className="stack">
+        {editing !== 'nuevo' && <p className="note">Versión {editing.version}. Si otra persona lo modifica antes, verás un conflicto y los datos se recargarán.</p>}
+        <label>Nombre<input name="nombre" required minLength={1} maxLength={250} defaultValue={editing === 'nuevo' ? '' : editing.nombre} /></label>
+        <label>Categoría<input name="categoria" required minLength={1} maxLength={250} list="categorias" defaultValue={editing === 'nuevo' ? '' : editing.categoria} /></label>
+        <datalist id="categorias">{categories.map(c => <option key={c} value={c} />)}</datalist>
+        <label>Precio (COP)<input name="precio_cop" type="number" required min="0.01" step="0.01" defaultValue={editing === 'nuevo' ? '' : editing.precio_cop} /></label>
+        <div className="actions"><button className="primary" disabled={busy}>{busy ? 'Guardando…' : 'Guardar'}</button><button type="button" onClick={() => setEditing(null)}>Cancelar</button></div>
+      </form>
+    </Modal>}
+
+    {deactivating && <Modal title="Desactivar producto" onClose={() => setDeactivating(null)}>
+      <p>«{deactivating.nombre}» dejará de aparecer para los clientes y no podrá solicitarse. Las solicitudes existentes no cambian.</p>
+      <div className="actions"><button className="danger-solid" disabled={busy} onClick={() => void deactivate()}>{busy ? 'Desactivando…' : 'Desactivar'}</button><button onClick={() => setDeactivating(null)}>Cancelar</button></div>
+    </Modal>}
+
+    {requesting && session.role === 'cliente' && <SolicitudCredito product={requesting} session={session} onClose={() => setRequesting(null)} onTrack={() => navigate('/solicitudes')} />}
+  </section>;
+}
+
+const keys = new IdempotencyKeys();
+
+function SolicitudCredito({ product, session, onClose, onTrack }: { product: Product; session: Session; onClose: () => void; onTrack: () => void }) {
+  const [quantity, setQuantity] = useState(1);
+  const [term, setTerm] = useState(12);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<ApiError | Error | null>(null);
+  const [result, setResult] = useState<Loan | null>(null);
+  const submitting = useRef(false);
+  const amount = Number(product.precio_cop) * quantity;
+  const outOfPolicy = amount < POLICY.minAmount || amount > POLICY.maxAmount;
+  const scope = `solicitud:${product.id}`;
+
+  async function submit(event?: FormEvent) {
+    event?.preventDefault();
+    if (submitting.current || outOfPolicy) return;
+    submitting.current = true; setBusy(true); setError(null);
+    const body = { producto_id: product.id, cantidad: quantity, plazo_meses: term };
     try {
-      await api(`/productos/${editingProduct.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(payload)
-      });
-      setEditingProduct(null);
-      setNotice('Producto y precio actualizados. Caché Redis invalidada.');
-      await loadProducts();
+      const loan = await api<Loan>('prestamos', '/prestamos', { method: 'POST', token: session.access_token, body, idempotencyKey: keys.keyFor(scope, body) });
+      keys.settle(scope);
+      setResult(loan);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error actualizando producto');
-    } finally {
-      setBusy(false);
-    }
+      // 409 por la misma clave con otro cuerpo no se repite; los errores transitorios conservan la clave.
+      if (!(err instanceof ApiError) || !err.retryable) keys.settle(scope);
+      setError(err instanceof Error ? err : new Error(String(err)));
+    } finally { submitting.current = false; setBusy(false); }
   }
 
-  async function handleDeactivate(product: Product) {
-    if (!confirm(`¿Estás seguro de desactivar "${product.nombre}"?`)) return;
-    setBusy(true);
-    setError('');
-    setNotice('');
-    try {
-      await api(`/productos/${product.id}/desactivar`, {
-        method: 'POST',
-        body: JSON.stringify({ version_esperada: product.version })
-      });
-      setNotice('Producto desactivado. Ya no será visible para clientes.');
-      await loadProducts();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desactivando producto');
-    } finally {
-      setBusy(false);
-    }
+  if (result) {
+    const state = loanStates[result.estado];
+    return <Modal title="Resultado de la solicitud" onClose={onClose}>
+      <p className={`state-pill ${state.tone}`}>{state.label}</p>
+      <p>{result.estado === 'RECHAZADA' ? motiveText(result.motivo) : state.help}</p>
+      <dl className="facts">
+        <dt>Producto</dt><dd>{product.nombre} × {result.cantidad}</dd>
+        <dt>Precio cotizado</dt><dd>{formatMoney(result.precio_unitario_cop)} (versión {result.version_producto ?? '—'})</dd>
+        <dt>Monto</dt><dd>{formatMoney(result.monto_cop)}</dd>
+        <dt>Cuota mensual</dt><dd>{formatMoney(result.cuota_cop)} × {result.plazo_meses} meses</dd>
+        {result.riesgo && <><dt>Evaluación de riesgo</dt><dd>{result.riesgo.decision_riesgo === 'FAVORABLE' ? 'Favorable' : 'Desfavorable'} · probabilidad {(result.riesgo.probabilidad_incumplimiento * 100).toFixed(1)} % · modelo {result.riesgo.model_version}</dd></>}
+      </dl>
+      <div className="actions"><button className="primary" onClick={onTrack}>Ver mis solicitudes</button><button onClick={onClose}>Cerrar</button></div>
+    </Modal>;
   }
 
-  async function handleApplyLoan(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!requestingProduct || !session) return;
-    setBusy(true);
-    setError('');
-    setNotice('');
-    try {
-      const idemKey = `sol-${requestingProduct.id}-${Date.now()}`;
-      const headers = new Headers({
-        'Authorization': `Bearer ${session.access_token}`,
-        'Content-Type': 'application/json',
-        'Idempotency-Key': idemKey,
-      });
-      const resp = await fetch('/api/prestamos/prestamos', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          producto_id: requestingProduct.id,
-          cantidad: Number(loanQuantity),
-          plazo_meses: Number(loanTerm),
-        }),
-      });
-      const data = await resp.json();
-      if (!resp.ok) {
-        const details = data.details?.map((d: { field: string; message: string }) => `${d.field}: ${d.message}`).join(' · ');
-        throw new Error([data.message || 'Error en la solicitud', details].filter(Boolean).join(' · '));
-      }
-      if (data.estado === 'RECHAZADA') {
-        setError(`Solicitud de crédito rechazada: ${data.motivo || 'No cumple con las políticas de riesgo'}`);
-      } else {
-        setNotice(`¡Solicitud registrada exitosamente! Estado: ${data.estado}. Puedes consultar el avance en "Mis solicitudes".`);
-        if (onNavigateToLoans) {
-          setTimeout(() => onNavigateToLoans(), 1500);
-        }
-      }
-      setRequestingProduct(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al solicitar crédito');
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  function formatMoney(amount: string | number) {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      maximumFractionDigits: 0
-    }).format(Number(amount));
-  }
-
-  if (!session) {
-    return (
-      <section className="panel">
-        <p className="eyebrow">Catálogo de Productos</p>
-        <h1>Explora nuestra tecnología</h1>
-        <p className="intro">
-          Para consultar los precios vigentes, características de los productos o solicitar financiación a crédito,
-          inicia sesión con tu cuenta de cliente o administrador.
-        </p>
-        {onNavigateToClients && (
-          <button className="back" onClick={onNavigateToClients}>
-            Ir a Clientes e Iniciar Sesión
-          </button>
-        )}
-      </section>
-    );
-  }
-
-  const categories = Array.from(new Set(products.map(p => p.categoria)));
-  const filteredProducts = categoryFilter
-    ? products.filter(p => p.categoria === categoryFilter)
-    : products;
-
-  return (
-    <section className="client-module">
-      <div className="module-heading">
-        <div>
-          <p className="eyebrow">Catálogo y Precios · Cache Redis</p>
-          <h1>Productos Disponibles</h1>
-        </div>
-        {isAdmin && !creating && !editingProduct && (
-          <button onClick={() => setCreating(true)} disabled={busy} style={{ background: '#163d30', color: 'white' }}>
-            + Nuevo Producto
-          </button>
-        )}
+  const retryable = error instanceof ApiError && error.retryable;
+  return <Modal title={`Solicitar «${product.nombre}» a crédito`} onClose={() => { if (!busy) onClose(); }}>
+    <form onSubmit={submit} className="stack">
+      <div className="form-grid">
+        <label>Cantidad<input type="number" min={1} max={POLICY.maxQuantity} required value={quantity} disabled={busy}
+          onChange={e => setQuantity(Math.min(POLICY.maxQuantity, Math.max(1, Math.trunc(Number(e.target.value)) || 1)))} /></label>
+        <label>Plazo<select value={term} disabled={busy} onChange={e => setTerm(Number(e.target.value))}>
+          {POLICY.terms.map(t => <option key={t} value={t}>{t} meses</option>)}</select></label>
       </div>
-
-      {notice && <p className="success" role="status">{notice}</p>}
-      {error && <p className="error" role="alert">{error}</p>}
-
-      {creating && (
-        <form onSubmit={handleCreate} className="panel" style={{ marginTop: 20 }}>
-          <h2>Crear Nuevo Producto</h2>
-          <div className="form-grid">
-            <label>
-              Nombre del Producto
-              <input name="nombre" required minLength={2} maxLength={250} placeholder="Ej: Portátil Dell Core i7" />
-            </label>
-            <label>
-              Categoría
-              <input name="categoria" required minLength={2} maxLength={250} placeholder="Ej: Portátiles" />
-            </label>
-            <label>
-              Precio (COP)
-              <input name="precio_cop" type="number" step="0.01" min="1000" required placeholder="Ej: 3200000.00" />
-            </label>
-          </div>
-          <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" disabled={busy} style={{ background: '#163d30', color: 'white' }}>
-              {busy ? 'Guardando...' : 'Crear Producto'}
-            </button>
-            <button type="button" onClick={() => setCreating(false)} disabled={busy}>
-              Cancelar
-            </button>
-          </div>
-        </form>
-      )}
-
-      {editingProduct && (
-        <form onSubmit={handleEdit} className="panel" style={{ marginTop: 20 }}>
-          <h2>Editar Producto: {editingProduct.nombre}</h2>
-          <p className="note" style={{ marginBottom: 16 }}>
-            Versión actual: {editingProduct.version}. Al guardar, la versión aumentará y se invalidará la clave en Redis.
-          </p>
-          <div className="form-grid">
-            <label>
-              Nombre
-              <input name="nombre" defaultValue={editingProduct.nombre} required minLength={2} maxLength={250} />
-            </label>
-            <label>
-              Categoría
-              <input name="categoria" defaultValue={editingProduct.categoria} required minLength={2} maxLength={250} />
-            </label>
-            <label>
-              Precio (COP)
-              <input name="precio_cop" type="number" step="0.01" min="1000" defaultValue={editingProduct.precio_cop} required />
-            </label>
-          </div>
-          <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-            <button type="submit" disabled={busy} style={{ background: '#163d30', color: 'white' }}>
-              {busy ? 'Actualizando...' : 'Guardar Cambios'}
-            </button>
-            <button type="button" onClick={() => setEditingProduct(null)} disabled={busy}>
-              Cancelar
-            </button>
-          </div>
-        </form>
-      )}
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 20, flexWrap: 'wrap', gap: 12 }}>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <label style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
-            Filtrar por categoría:
-            <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} style={{ padding: '6px 12px' }}>
-              <option value="">Todas las categorías</option>
-              {categories.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        {isAdmin && (
-          <label className="check" style={{ margin: 0, fontSize: 13 }}>
-            <input
-              type="checkbox"
-              checked={incluirInactivos}
-              onChange={e => {
-                setIncluirInactivos(e.target.checked);
-                setOffset(0);
-              }}
-            />
-            Incluir productos inactivos
-          </label>
-        )}
+      <dl className="facts">
+        <dt>Precio unitario</dt><dd>{formatMoney(product.precio_cop)}</dd>
+        <dt>Monto total</dt><dd>{formatMoney(amount)}</dd>
+        <dt>Cuota estimada</dt><dd><strong>{formatMoney(estimateInstallment(amount, term))}</strong> /mes · tasa fija 1,8 % mensual</dd>
+      </dl>
+      {outOfPolicy && <p className="warning" role="alert">El monto debe estar entre {formatMoney(POLICY.minAmount)} y {formatMoney(POLICY.maxAmount)}. Ajusta la cantidad.</p>}
+      <p className="note">El precio se vuelve a cotizar al enviar; el resultado muestra el valor definitivo.</p>
+      {error && <div className="error" role="alert">{errorText(error)}{retryable && ' Al reintentar se reutiliza la misma solicitud, sin duplicarla.'}</div>}
+      <div className="actions">
+        <button className="primary" disabled={busy || outOfPolicy}>{busy ? 'Evaluando…' : retryable ? 'Reintentar envío' : 'Enviar solicitud'}</button>
+        <button type="button" onClick={onClose} disabled={busy}>Cancelar</button>
       </div>
-
-      <div className="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Categoría</th>
-              <th>Precio COP</th>
-              <th>Versión</th>
-              <th>Estado</th>
-              {(isAdmin || isClient) && <th>Acciones</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.length === 0 ? (
-              <tr>
-                <td colSpan={(isAdmin || isClient) ? 6 : 5} style={{ textAlign: 'center', padding: 24 }}>
-                  No se encontraron productos en este catálogo.
-                </td>
-              </tr>
-            ) : (
-              filteredProducts.map(product => (
-                <tr key={product.id} style={{ opacity: product.activo ? 1 : 0.6 }}>
-                  <td>
-                    <strong>{product.nombre}</strong>
-                    <div style={{ fontSize: 11, color: '#6a7d73' }}>ID: {product.id}</div>
-                  </td>
-                  <td>{product.categoria}</td>
-                  <td style={{ fontWeight: 600, color: '#163d30' }}>{formatMoney(product.precio_cop)}</td>
-                  <td>v{product.version}</td>
-                  <td>
-                    <span style={{
-                      padding: '4px 8px',
-                      borderRadius: 12,
-                      fontSize: 11,
-                      fontWeight: 600,
-                      background: product.activo ? '#e9f5e8' : '#f0f0f0',
-                      color: product.activo ? '#28502c' : '#777'
-                    }}>
-                      {product.activo ? 'Activo' : 'Inactivo'}
-                    </span>
-                  </td>
-                  {isAdmin && (
-                    <td>
-                      <div style={{ display: 'flex', gap: 8 }}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditingProduct(product);
-                            setCreating(false);
-                          }}
-                          disabled={busy}
-                          style={{ padding: '4px 10px', fontSize: 12 }}
-                        >
-                          Editar
-                        </button>
-                        {product.activo && (
-                          <button
-                            type="button"
-                            onClick={() => handleDeactivate(product)}
-                            disabled={busy}
-                            style={{ padding: '4px 10px', fontSize: 12, color: '#a33', borderColor: '#dcc' }}
-                          >
-                            Desactivar
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  )}
-                  {isClient && (
-                    <td>
-                      {product.activo ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setRequestingProduct(product);
-                            setLoanQuantity(1);
-                            setLoanTerm(12);
-                          }}
-                          disabled={busy}
-                          className="button-primary"
-                          style={{ padding: '4px 12px', fontSize: 12 }}
-                        >
-                          Solicitar a crédito
-                        </button>
-                      ) : (
-                        <span style={{ fontSize: 12, color: '#999' }}>No disponible</span>
-                      )}
-                    </td>
-                  )}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="pagination">
-        <span>Mostrando {filteredProducts.length} de {total} productos</span>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button
-            onClick={() => setOffset(Math.max(0, offset - limit))}
-            disabled={offset === 0 || busy}
-          >
-            Anterior
-          </button>
-          <button
-            onClick={() => setOffset(offset + limit)}
-            disabled={offset + limit >= total || busy}
-          >
-            Siguiente
-          </button>
-        </div>
-      </div>
-
-      {/* Modal Solicitar a Crédito (Fase 9) */}
-      {requestingProduct && (
-        <div className="modal-backdrop" onClick={() => setRequestingProduct(null)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: 480 }}>
-            <h2>Solicitud de Crédito</h2>
-            <p style={{ fontSize: 13, color: '#555' }}>
-              Financia tu compra en cuotas mensuales fijas con evaluación crediticia y reserva atómica de inventario.
-            </p>
-            <form onSubmit={handleApplyLoan}>
-              <div style={{ background: '#f5f8f6', padding: 12, borderRadius: 6, margin: '12px 0', fontSize: 13 }}>
-                <div><strong>Producto:</strong> {requestingProduct.nombre}</div>
-                <div><strong>Precio unitario:</strong> {formatMoney(requestingProduct.precio_cop)}</div>
-                <div><strong>Monto total:</strong> {formatMoney(Number(requestingProduct.precio_cop) * loanQuantity)}</div>
-                <div style={{ color: '#163d30', fontWeight: 600, marginTop: 4 }}>
-                  <strong>Cuota mensual estimada:</strong> {formatMoney(calculateInstallment(Number(requestingProduct.precio_cop) * loanQuantity, loanTerm))}
-                  <span style={{ fontSize: 11, fontWeight: 'normal', color: '#666' }}> (tasa fija 1.8% M.V.)</span>
-                </div>
-              </div>
-
-              <label>
-                <span>Cantidad *</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={10}
-                  value={loanQuantity}
-                  onChange={e => setLoanQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  required
-                />
-              </label>
-
-              <label>
-                <span>Plazo en meses *</span>
-                <select
-                  value={loanTerm}
-                  onChange={e => setLoanTerm(parseInt(e.target.value))}
-                >
-                  <option value={6}>6 meses</option>
-                  <option value={12}>12 meses</option>
-                  <option value={18}>18 meses</option>
-                  <option value={24}>24 meses</option>
-                  <option value={36}>36 meses</option>
-                </select>
-              </label>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
-                <button type="button" onClick={() => setRequestingProduct(null)} disabled={busy}>
-                  Cancelar
-                </button>
-                <button type="submit" disabled={busy} className="button-primary">
-                  {busy ? 'Evaluando…' : 'Confirmar Solicitud'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </section>
-  );
+    </form>
+  </Modal>;
 }

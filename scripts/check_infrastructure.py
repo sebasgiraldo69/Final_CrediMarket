@@ -112,7 +112,7 @@ else:
 print('PASS service Kafka ACL denies arbitrary topic creation')
 '''.replace("SERVICE", repr(service))
             print(docker("exec", "-T", service, "python", "-", stdin=script))
-    code, _, _ = http(f"http://localhost:{env.get('MLFLOW_PORT', '5000')}/health")
+    code, _, _ = http(f"http://127.0.0.1:{env.get('MLFLOW_PORT', '5000')}/health")
     assert code == 200
     topics = docker("exec", "-T", "kafka", "/opt/kafka/bin/kafka-topics.sh", "--bootstrap-server", "kafka:9092",
                     "--command-config", "/run/secrets/kafka_admin.properties", "--describe")

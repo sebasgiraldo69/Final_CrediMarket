@@ -29,6 +29,18 @@ EXPECTED_FEATURES: List[str] = [
 ]
 
 
+def _metricas_prueba(manifest: Dict[str, Any]) -> Dict[str, float] | None:
+    """Métricas numéricas finitas del conjunto de prueba al umbral operativo, si el manifiesto las trae."""
+    metrics = (manifest.get("metrics") or {}).get("test_at_optimal_threshold")
+    if not isinstance(metrics, dict):
+        return None
+    return {
+        key: float(value)
+        for key, value in metrics.items()
+        if isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(float(value))
+    }
+
+
 class ModelUnavailableError(RuntimeError):
     """Se lanza cuando el modelo activo no está cargado o no pasa la validación de integridad."""
 
@@ -217,6 +229,11 @@ class ModelRegistry:
             "clase_positiva": 1,
             "umbral": float(self._manifest["umbral"]),
             "artifact_sha256": str(self._manifest["artifact_sha256"]),
+            # Ficha del modelo (fase 10): campos opcionales del manifiesto, nunca inventados.
+            "algoritmo": self._manifest.get("algorithm"),
+            "experimento": self._manifest.get("experiment_name"),
+            "exportado_en": self._manifest.get("exported_at"),
+            "metricas_prueba": _metricas_prueba(self._manifest),
         }
 
     def predict_one(self, features: Dict[str, Any], correlation_id: str | None = None) -> Dict[str, Any]:

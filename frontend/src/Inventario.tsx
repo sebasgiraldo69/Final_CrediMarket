@@ -1,478 +1,135 @@
-import { FormEvent, useEffect, useState } from 'react';
-import type { Session } from './Clientes';
+import { FormEvent, useEffect, useRef, useState } from 'react';
+import { api, ApiError, errorText, IdempotencyKeys } from './api';
+import type { Session } from './session';
+import { Feedback, formatDate, loadAllProducts, Modal, Pagination, shortId, usePolling, type Page, type Product } from './ui';
 
-export type Existencia = {
-  producto_id: string;
-  fisico: number;
-  reservado: number;
-  disponible: number;
-};
+type Existencia = { producto_id: string; fisico: number; reservado: number; disponible: number };
+type Movimiento = { id: string; producto_id: string; prestamo_id: string | null; tipo: 'ENTRADA' | 'RESERVA' | 'LIBERACION' | 'SALIDA' | 'VENCIMIENTO'; cantidad: number; motivo: string; created_at: string };
+type Reserva = { reserva_id: string; prestamo_id: string; producto_id: string | null; cantidad: number | null; estado_reserva: 'ACTIVA' | 'SIN_STOCK' | 'CANCELADA' | 'VENCIDA' | 'ENTREGADA'; revision_reserva: number; vence_en: string | null };
+type Tab = 'existencias' | 'reservas' | 'movimientos';
 
-export type Movimiento = {
-  id: string;
-  producto_id: string;
-  prestamo_id: string | null;
-  tipo: 'ENTRADA' | 'RESERVA' | 'LIBERACION' | 'SALIDA' | 'VENCIMIENTO';
-  cantidad: number;
-  motivo: string;
-  created_at: string;
-};
+const PAGE = 20;
+const tabs: [Tab, string, string][] = [
+  ['existencias', 'Existencias', '/inventario'],
+  ['reservas', 'Reservas', '/inventario/reservas'],
+  ['movimientos', 'Movimientos', '/inventario/movimientos'],
+];
+const movementTone: Record<Movimiento['tipo'], string> = { ENTRADA: 'ok', RESERVA: 'pending', LIBERACION: 'neutral', SALIDA: 'done', VENCIMIENTO: 'bad' };
+const reserveTone: Record<Reserva['estado_reserva'], string> = { ACTIVA: 'ok', ENTREGADA: 'done', SIN_STOCK: 'pending', CANCELADA: 'bad', VENCIDA: 'bad' };
+const keys = new IdempotencyKeys();
 
-export type Reserva = {
-  reserva_id: string;
-  prestamo_id: string;
-  producto_id: string | null;
-  cantidad: number | null;
-  estado_reserva: 'ACTIVA' | 'SIN_STOCK' | 'CANCELADA' | 'VENCIDA' | 'ENTREGADA';
-  revision_reserva: number;
-  vence_en: string | null;
-};
-
-interface InventarioProps {
-  session: Session | null;
-  onNavigateToClients?: () => void;
-}
-
-export function Inventario({ session, onNavigateToClients }: InventarioProps) {
-  const [tab, setTab] = useState<'existencias' | 'movimientos' | 'reservas'>('existencias');
-  const [existencias, setExistencias] = useState<Existencia[]>([]);
-  const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
-  const [reservas, setReservas] = useState<Reserva[]>([]);
+export function Inventario({ session }: { session: Session }) {
+  const token = session.access_token;
+  const [tab, setTab] = useState<Tab>('existencias');
+  const [offset, setOffset] = useState(0);
+  const [page, setPage] = useState<Page<any> | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [entry, setEntry] = useState<string | null>(null);
+  const [entryError, setEntryError] = useState<ApiError | null>(null);
+  const name = (id: string | null) => (id && products.find(p => p.id === id)?.nombre) || shortId(id);
 
-  // Form registrar entrada
-  const [showEntradaForm, setShowEntradaForm] = useState(false);
-  const [entradaProductoId, setEntradaProductoId] = useState('');
-  const [entradaCantidad, setEntradaCantidad] = useState(5);
-  const [entradaMotivo, setEntradaMotivo] = useState('Reabastecimiento regular de inventario');
+  const view = useRef({ tab, offset });
+  view.current = { tab, offset };
 
-  const isAdmin = session?.role === 'administrador';
-
-  async function api(path: string, options: RequestInit = {}) {
-    const headers = new Headers(options.headers);
-    if (session?.access_token) {
-      headers.set('Authorization', `Bearer ${session.access_token}`);
-    }
-    if (options.body && !(options.body instanceof FormData)) {
-      headers.set('Content-Type', 'application/json');
-    }
-    const response = await fetch(`/api/inventario${path}`, { ...options, headers });
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error('El servicio de inventario no está disponible.');
-    }
-    if (!response.ok) {
-      const details = data.details?.map((d: { field: string; message: string }) => `${d.field}: ${d.message}`).join(' · ');
-      throw new Error([data.message || 'Error en la solicitud', details].filter(Boolean).join(' · '));
-    }
-    return data;
+  async function fetchTab() {
+    const requested = { tab, offset };
+    const path = tabs.find(([key]) => key === tab)![2];
+    const data = await api<Page<any>>('inventario', `${path}?limit=${PAGE}&offset=${offset}`, { token });
+    // Una respuesta tardía de otra pestaña o página no debe reemplazar la vista actual.
+    if (view.current.tab === requested.tab && view.current.offset === requested.offset) setPage(data);
   }
 
-  async function loadData() {
-    if (!isAdmin) return;
-    setBusy(true);
-    setError('');
+  async function reload() {
+    setLoading(true); setError('');
+    try { await fetchTab(); } catch (err) { setError(errorText(err)); } finally { setLoading(false); }
+  }
+  useEffect(() => { void reload(); }, [tab, offset]);
+  useEffect(() => { loadAllProducts(token, true).then(setProducts).catch(err => setError(errorText(err))); }, [token]);
+  // Las reservas cambian por eventos de Kafka: refresco silencioso cada 5 s.
+  const failures = usePolling(fetchTab, !loading, 5000);
+
+  async function register(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const body = { producto_id: String(form.get('producto_id')), cantidad: Number(form.get('cantidad')), motivo: String(form.get('motivo')).trim() };
+    const scope = 'entrada';
+    setBusy(true); setEntryError(null); setNotice('');
     try {
-      if (tab === 'existencias') {
-        const data = await api('/inventario?limit=50&offset=0');
-        setExistencias(data.items);
-      } else if (tab === 'movimientos') {
-        const data = await api('/inventario/movimientos?limit=50&offset=0');
-        setMovimientos(data.items);
-      } else if (tab === 'reservas') {
-        const data = await api('/inventario/reservas?limit=50&offset=0');
-        setReservas(data.items);
-      }
+      const movement = await api<Movimiento>('inventario', '/inventario/entradas', { method: 'POST', token, body, idempotencyKey: keys.keyFor(scope, body) });
+      keys.settle(scope);
+      setEntry(null);
+      setNotice(`Entrada registrada: +${movement.cantidad} de ${name(movement.producto_id)}.`);
+      if (tab !== 'existencias') { setTab('existencias'); setOffset(0); } else await reload();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar datos de inventario.');
-    } finally {
-      setBusy(false);
-    }
+      if (!(err instanceof ApiError) || !err.retryable) keys.settle(scope);
+      setEntryError(err instanceof ApiError ? err : new ApiError(errorText(err), 0));
+    } finally { setBusy(false); }
   }
 
-  useEffect(() => {
-    loadData();
-  }, [tab, session]);
-
-  async function handleRegistrarEntrada(e: FormEvent) {
-    e.preventDefault();
-    if (!entradaProductoId.trim()) {
-      setError('Debes ingresar un UUID de producto válido.');
-      return;
-    }
-    setBusy(true);
-    setError('');
-    setNotice('');
-    try {
-      const idempotencyKey = `entrada-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-      const result = await api('/inventario/entradas', {
-        method: 'POST',
-        headers: {
-          'Idempotency-Key': idempotencyKey
-        },
-        body: JSON.stringify({
-          producto_id: entradaProductoId.trim(),
-          cantidad: Number(entradaCantidad),
-          motivo: entradaMotivo.trim()
-        })
-      });
-      setNotice(`Entrada registrada exitosamente: Movimiento ID ${result.id} (+${result.cantidad} unidades).`);
-      setShowEntradaForm(false);
-      setEntradaProductoId('');
-      if (tab === 'existencias') {
-        loadData();
-      } else {
-        setTab('existencias');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al registrar entrada.');
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  if (!session) {
-    return (
-      <section className="panel" aria-label="Inventario protegido">
-        <p className="eyebrow">Acceso restringido</p>
-        <h1>Control de inventario</h1>
-        <p className="intro">
-          Debes iniciar sesión con una cuenta de <strong>Administrador</strong> para consultar el stock físico, reservado y disponible,
-          así como para registrar entradas de productos y auditar movimientos.
-        </p>
-        <button type="button" onClick={onNavigateToClients}>
-          Ir a Iniciar Sesión
-        </button>
-      </section>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <section className="panel" aria-label="Permiso insuficiente">
-        <p className="eyebrow">Permiso insuficiente</p>
-        <h1>Módulo de Inventario</h1>
-        <p className="intro">
-          Tu cuenta actual (<strong>{session.email}</strong>) tiene rol de <strong>{session.role}</strong>.
-          Las consultas de existencias, movimientos y registro de entradas están reservadas exclusivamente para administradores.
-        </p>
-      </section>
-    );
-  }
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <section className="panel" aria-label="Gestión de inventario">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <div>
-            <p className="eyebrow">Fase 5 · Control de Stock y Reservas Atómicas</p>
-            <h1 style={{ margin: '4px 0 8px 0' }}>Gestión de Inventario</h1>
-            <p style={{ margin: 0, color: '#4a7663' }}>
-              Protección de existencias con aislamiento transaccional PostgreSQL (físico, reservado y disponible).
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowEntradaForm(!showEntradaForm)}
-            style={{ padding: '8px 16px', fontWeight: 600 }}
-          >
-            {showEntradaForm ? 'Cerrar Formulario' : '+ Registrar Entrada de Stock'}
-          </button>
-        </div>
-
-        {error && (
-          <div role="alert" style={{ background: '#fdf2f2', border: '1px solid #f8b4b4', padding: '10px 14px', borderRadius: 6, color: '#9b1c1c', marginTop: 16 }}>
-            {error}
-          </div>
-        )}
-
-        {notice && (
-          <div role="status" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: 6, color: '#166534', marginTop: 16 }}>
-            {notice}
-          </div>
-        )}
-
-        {showEntradaForm && (
-          <form onSubmit={handleRegistrarEntrada} style={{ marginTop: 20, padding: 16, background: '#f8faf9', borderRadius: 8, border: '1px solid #e2e8e5' }}>
-            <h3 style={{ marginTop: 0, marginBottom: 12 }}>Nueva Entrada de Existencias</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
-              <div>
-                <label style={{ display: 'block', fontSize: 13, marginBottom: 4, fontWeight: 500 }}>
-                  ID Producto (UUID):
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="10000000-0000-4000-8000-000000000001"
-                  value={entradaProductoId}
-                  onChange={e => setEntradaProductoId(e.target.value)}
-                  style={{ width: '100%', padding: '8px 10px', boxSizing: 'border-box' }}
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontSize: 13, marginBottom: 4, fontWeight: 500 }}>
-                  Cantidad a ingresar:
-                </label>
-                <input
-                  type="number"
-                  required
-                  min={1}
-                  max={1000}
-                  value={entradaCantidad}
-                  onChange={e => setEntradaCantidad(Number(e.target.value))}
-                  style={{ width: '100%', padding: '8px 10px', boxSizing: 'border-box' }}
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontSize: 13, marginBottom: 4, fontWeight: 500 }}>
-                  Motivo de entrada:
-                </label>
-                <input
-                  type="text"
-                  required
-                  maxLength={250}
-                  value={entradaMotivo}
-                  onChange={e => setEntradaMotivo(e.target.value)}
-                  style={{ width: '100%', padding: '8px 10px', boxSizing: 'border-box' }}
-                />
-              </div>
-            </div>
-            <div style={{ marginTop: 14, display: 'flex', gap: 10 }}>
-              <button type="submit" disabled={busy} style={{ padding: '8px 18px', fontWeight: 600 }}>
-                {busy ? 'Registrando...' : 'Confirmar Entrada'}
-              </button>
-              <button type="button" onClick={() => setShowEntradaForm(false)} style={{ background: 'transparent', border: '1px solid #bbb', padding: '8px 14px' }}>
-                Cancelar
-              </button>
-            </div>
-          </form>
-        )}
-      </section>
-
-      {/* Tabs navigation */}
-      <div style={{ display: 'flex', gap: 8, borderBottom: '2px solid #e5e7eb' }}>
-        <button
-          type="button"
-          onClick={() => setTab('existencias')}
-          style={{
-            padding: '10px 20px',
-            background: tab === 'existencias' ? '#fff' : '#f3f4f6',
-            border: 'none',
-            borderBottom: tab === 'existencias' ? '3px solid #2d6a4f' : 'none',
-            fontWeight: tab === 'existencias' ? 700 : 500,
-            cursor: 'pointer'
-          }}
-        >
-          Existencias ({existencias.length})
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab('movimientos')}
-          style={{
-            padding: '10px 20px',
-            background: tab === 'movimientos' ? '#fff' : '#f3f4f6',
-            border: 'none',
-            borderBottom: tab === 'movimientos' ? '3px solid #2d6a4f' : 'none',
-            fontWeight: tab === 'movimientos' ? 700 : 500,
-            cursor: 'pointer'
-          }}
-        >
-          Movimientos ({movimientos.length})
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab('reservas')}
-          style={{
-            padding: '10px 20px',
-            background: tab === 'reservas' ? '#fff' : '#f3f4f6',
-            border: 'none',
-            borderBottom: tab === 'reservas' ? '3px solid #2d6a4f' : 'none',
-            fontWeight: tab === 'reservas' ? 700 : 500,
-            cursor: 'pointer'
-          }}
-        >
-          Reservas ({reservas.length})
-        </button>
-      </div>
-
-      {busy && <p style={{ color: '#6b7280' }}>Cargando datos de {tab}...</p>}
-
-      {tab === 'existencias' && !busy && (
-        <section className="panel" aria-label="Tabla de existencias">
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #d1d5db', background: '#f9fafb' }}>
-                <th style={{ padding: '10px 12px' }}>Producto ID</th>
-                <th style={{ padding: '10px 12px' }}>Stock Físico</th>
-                <th style={{ padding: '10px 12px' }}>Reservado</th>
-                <th style={{ padding: '10px 12px' }}>Disponible</th>
-                <th style={{ padding: '10px 12px' }}>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {existencias.map(ex => (
-                <tr key={ex.producto_id} style={{ borderBottom: '1px solid #e5e7eb' }}>
-                  <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: 13 }}>
-                    {ex.producto_id}
-                  </td>
-                  <td style={{ padding: '10px 12px', fontWeight: 600 }}>{ex.fisico}</td>
-                  <td style={{ padding: '10px 12px', color: '#b45309' }}>{ex.reservado}</td>
-                  <td style={{ padding: '10px 12px', color: ex.disponible > 0 ? '#15803d' : '#b91c1c', fontWeight: 700 }}>
-                    {ex.disponible}
-                  </td>
-                  <td style={{ padding: '10px 12px' }}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEntradaProductoId(ex.producto_id);
-                        setShowEntradaForm(true);
-                      }}
-                      style={{ fontSize: 12, padding: '4px 8px' }}
-                    >
-                      + Stock
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {existencias.length === 0 && (
-                <tr>
-                  <td colSpan={5} style={{ padding: 24, textAlign: 'center', color: '#6b7280' }}>
-                    No hay existencias registradas en la base de datos.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </section>
-      )}
-
-      {tab === 'movimientos' && !busy && (
-        <section className="panel" aria-label="Tabla de movimientos">
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #d1d5db', background: '#f9fafb' }}>
-                <th style={{ padding: '10px 12px' }}>Fecha</th>
-                <th style={{ padding: '10px 12px' }}>Tipo</th>
-                <th style={{ padding: '10px 12px' }}>Producto ID</th>
-                <th style={{ padding: '10px 12px' }}>Préstamo ID</th>
-                <th style={{ padding: '10px 12px' }}>Cantidad</th>
-                <th style={{ padding: '10px 12px' }}>Motivo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {movimientos.map(mov => (
-                <tr key={mov.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
-                  <td style={{ padding: '10px 12px', fontSize: 12 }}>
-                    {new Date(mov.created_at).toLocaleString()}
-                  </td>
-                  <td style={{ padding: '10px 12px' }}>
-                    <span
-                      style={{
-                        padding: '2px 8px',
-                        borderRadius: 4,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        background:
-                          mov.tipo === 'ENTRADA' ? '#dcfce7' :
-                          mov.tipo === 'RESERVA' ? '#fef3c7' :
-                          mov.tipo === 'LIBERACION' ? '#e0e7ff' :
-                          mov.tipo === 'SALIDA' ? '#dbeafe' : '#fee2e2',
-                        color:
-                          mov.tipo === 'ENTRADA' ? '#166534' :
-                          mov.tipo === 'RESERVA' ? '#92400e' :
-                          mov.tipo === 'LIBERACION' ? '#3730a3' :
-                          mov.tipo === 'SALIDA' ? '#1e40af' : '#991b1b'
-                      }}
-                    >
-                      {mov.tipo}
-                    </span>
-                  </td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: 12 }}>
-                    {mov.producto_id}
-                  </td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: 12 }}>
-                    {mov.prestamo_id || '—'}
-                  </td>
-                  <td style={{ padding: '10px 12px', fontWeight: 600 }}>{mov.cantidad}</td>
-                  <td style={{ padding: '10px 12px', fontSize: 13 }}>{mov.motivo}</td>
-                </tr>
-              ))}
-              {movimientos.length === 0 && (
-                <tr>
-                  <td colSpan={6} style={{ padding: 24, textAlign: 'center', color: '#6b7280' }}>
-                    No hay movimientos registrados.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </section>
-      )}
-
-      {tab === 'reservas' && !busy && (
-        <section className="panel" aria-label="Tabla de reservas">
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #d1d5db', background: '#f9fafb' }}>
-                <th style={{ padding: '10px 12px' }}>Reserva ID</th>
-                <th style={{ padding: '10px 12px' }}>Préstamo ID</th>
-                <th style={{ padding: '10px 12px' }}>Estado</th>
-                <th style={{ padding: '10px 12px' }}>Revisión</th>
-                <th style={{ padding: '10px 12px' }}>Cantidad</th>
-                <th style={{ padding: '10px 12px' }}>Vencimiento</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reservas.map(res => (
-                <tr key={res.reserva_id} style={{ borderBottom: '1px solid #e5e7eb' }}>
-                  <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: 12 }}>
-                    {res.reserva_id}
-                  </td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: 12 }}>
-                    {res.prestamo_id}
-                  </td>
-                  <td style={{ padding: '10px 12px' }}>
-                    <span
-                      style={{
-                        padding: '2px 8px',
-                        borderRadius: 4,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        background:
-                          res.estado_reserva === 'ACTIVA' ? '#dcfce7' :
-                          res.estado_reserva === 'ENTREGADA' ? '#dbeafe' :
-                          res.estado_reserva === 'SIN_STOCK' ? '#fef3c7' : '#fee2e2',
-                        color:
-                          res.estado_reserva === 'ACTIVA' ? '#166534' :
-                          res.estado_reserva === 'ENTREGADA' ? '#1e40af' :
-                          res.estado_reserva === 'SIN_STOCK' ? '#92400e' : '#991b1b'
-                      }}
-                    >
-                      {res.estado_reserva}
-                    </span>
-                  </td>
-                  <td style={{ padding: '10px 12px', fontWeight: 600 }}>v{res.revision_reserva}</td>
-                  <td style={{ padding: '10px 12px' }}>{res.cantidad ?? '—'}</td>
-                  <td style={{ padding: '10px 12px', fontSize: 12 }}>
-                    {res.vence_en ? new Date(res.vence_en).toLocaleString() : '—'}
-                  </td>
-                </tr>
-              ))}
-              {reservas.length === 0 && (
-                <tr>
-                  <td colSpan={6} style={{ padding: 24, textAlign: 'center', color: '#6b7280' }}>
-                    No hay reservas registradas.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </section>
-      )}
+  const activeProducts = products.filter(p => p.activo);
+  return <section>
+    <div className="module-heading">
+      <div><p className="eyebrow">Administración</p><h1>Inventario</h1></div>
+      <button className="primary" onClick={() => { setEntryError(null); setEntry(''); }}>Registrar entrada</button>
     </div>
-  );
+    <Feedback error={error} notice={notice} onClose={() => { setError(''); setNotice(''); }} />
+    <div className="tabs" role="tablist">
+      {tabs.map(([key, label]) => <button key={key} role="tab" aria-selected={tab === key} onClick={() => { setTab(key); setOffset(0); setPage(null); }}>{label}</button>)}
+    </div>
+    <p className="live" aria-live="polite">{failures > 0 ? <span className="bad-text">Sin conexión con Inventario; reintentando…</span> : 'Se actualiza automáticamente cada 5 s.'}</p>
+
+    {!page ? <p className="loading" role="status">Cargando…</p> : !page.items.length ? <p className="empty">Sin registros todavía.</p>
+      : <div className="table-scroll"><table className="responsive">
+        {tab === 'existencias' && <>
+          <thead><tr><th>Producto</th><th>Físico</th><th>Reservado</th><th>Disponible</th><th>Acción</th></tr></thead>
+          <tbody>{(page.items as Existencia[]).map(row => <tr key={row.producto_id}>
+            <td data-label="Producto">{name(row.producto_id)}</td>
+            <td data-label="Físico">{row.fisico}</td>
+            <td data-label="Reservado">{row.reservado}</td>
+            <td data-label="Disponible" className={row.disponible > 0 ? 'ok-text' : 'bad-text'}><strong>{row.disponible}</strong></td>
+            <td data-label="Acción"><button onClick={() => { setEntryError(null); setEntry(row.producto_id); }}>Agregar stock</button></td>
+          </tr>)}</tbody>
+        </>}
+        {tab === 'reservas' && <>
+          <thead><tr><th>Reserva</th><th>Préstamo</th><th>Producto</th><th>Cantidad</th><th>Estado</th><th>Vence</th></tr></thead>
+          <tbody>{(page.items as Reserva[]).map(row => <tr key={row.reserva_id}>
+            <td data-label="Reserva"><code>{shortId(row.reserva_id)}</code><small>revisión {row.revision_reserva}</small></td>
+            <td data-label="Préstamo"><code>{shortId(row.prestamo_id)}</code></td>
+            <td data-label="Producto">{name(row.producto_id)}</td>
+            <td data-label="Cantidad">{row.cantidad ?? '—'}</td>
+            <td data-label="Estado"><span className={`state-pill ${reserveTone[row.estado_reserva]}`}>{row.estado_reserva}</span></td>
+            <td data-label="Vence">{formatDate(row.vence_en)}</td>
+          </tr>)}</tbody>
+        </>}
+        {tab === 'movimientos' && <>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Cantidad</th><th>Préstamo</th><th>Motivo</th></tr></thead>
+          <tbody>{(page.items as Movimiento[]).map(row => <tr key={row.id}>
+            <td data-label="Fecha">{formatDate(row.created_at)}</td>
+            <td data-label="Tipo"><span className={`state-pill ${movementTone[row.tipo]}`}>{row.tipo}</span></td>
+            <td data-label="Producto">{name(row.producto_id)}</td>
+            <td data-label="Cantidad">{row.cantidad}</td>
+            <td data-label="Préstamo">{row.prestamo_id ? <code>{shortId(row.prestamo_id)}</code> : '—'}</td>
+            <td data-label="Motivo">{row.motivo}</td>
+          </tr>)}</tbody>
+        </>}
+      </table></div>}
+    {page && <Pagination offset={offset} limit={PAGE} total={page.total} busy={loading} onChange={setOffset} label="registros" />}
+
+    {entry !== null && <Modal title="Registrar entrada de stock" onClose={() => { if (!busy) setEntry(null); }}>
+      <form onSubmit={register} className="stack">
+        <label>Producto<select name="producto_id" required defaultValue={entry}>
+          <option value="" disabled>Selecciona un producto</option>
+          {activeProducts.map(p => <option key={p.id} value={p.id}>{p.nombre} · {p.categoria}</option>)}
+        </select></label>
+        <label>Cantidad<input name="cantidad" type="number" min={1} step={1} required defaultValue={5} /></label>
+        <label>Motivo<input name="motivo" required maxLength={250} defaultValue="Reabastecimiento" /></label>
+        {entryError && <div className="error" role="alert">{errorText(entryError)}{entryError.retryable && ' Al reintentar se reutiliza la misma entrada, sin duplicarla.'}</div>}
+        <div className="actions"><button className="primary" disabled={busy}>{busy ? 'Registrando…' : entryError?.retryable ? 'Reintentar' : 'Registrar'}</button><button type="button" disabled={busy} onClick={() => setEntry(null)}>Cancelar</button></div>
+      </form>
+    </Modal>}
+  </section>;
 }

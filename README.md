@@ -4,7 +4,7 @@ Proyecto académico de cuatro microservicios: Productos, Clientes, Préstamos e 
 
 ## Estado
 
-Fases 1–8 implementadas: arquitectura, infraestructura, Clientes, Productos/Redis, Inventario, mensajería Kafka con outbox/inbox, reintentos y DLQ, preparación de datos + entrenamiento en MLflow, y exportación/promoción explícita del modelo (`riesgo-v1`) servido desde Préstamos (`/modelo/info`, `/riesgo/predict` y `/ready = 200`). Ver [fase 6](docs/FASE_6.md), [pruebas de fase 6](docs/validacion-fase-6.md), [fase 7](docs/FASE_7.md) y [fase 8](docs/FASE_8.md). La siguiente fase (Fase 9) es completar el flujo extremo a extremo de solicitud, cotización, evaluación, reserva Kafka, aprobación, cancelación y entrega de préstamos.
+Fases 1–10 implementadas: arquitectura, infraestructura, Clientes, Productos/Redis, Inventario, mensajería Kafka con outbox/inbox, reintentos y DLQ, entrenamiento en MLflow, modelo `riesgo-v1` servido desde Préstamos, flujo completo de préstamos ([fase 9](docs/FASE_9.md)) y frontend integrado por rol ([fase 10](docs/FASE_10.md)). La siguiente fase (Fase 11) completa MLOps: monitoreo, versión 2 del modelo y rollback.
 
 ## Ejecutar localmente
 
@@ -19,11 +19,12 @@ python scripts/check_phase4.py
 python scripts/check_phase5.py
 python scripts/check_phase7.py
 python scripts/check_phase8.py
+python scripts/check_phase9.py
 ```
 
 Para comprobar Kafka: `python scripts/check_phase6.py`. La variante `python scripts/check_phase6.py --faults` interrumpe temporalmente el broker y reinicia consumidores para verificar recuperación. Las pruebas crean datos sintéticos que se conservan; no son necesarias para abrir la aplicación. Para re-ejecutar el entrenamiento del modelo en MLflow: `python scripts/run_phase7_training.py`. Para promover el modelo activo e inferencia batch: `python scripts/promote_model.py --version riesgo-v1`.
 
-Frontend: http://localhost:8080; abrir **Clientes** para registrarse, **Catálogo** para explorar productos o **Inventario** para administrar existencias y reservas. MLflow: http://localhost:5000 (experimento `credimarket-riesgo-v1`). Todos los microservicios (incluyendo Préstamos con su modelo activo cargado) responden `200` en `/health` y `/ready`.
+Frontend: http://localhost:8080 (rutas `/catalogo`, `/solicitudes`, `/clientes`, `/inventario`, `/modelo`). Registrarse como cliente en **Ingresar**; crear un administrador con `python scripts/gestionar_admin.py crear <correo> <contraseña>`. Pruebas de navegador: `python -m pip install -r requirements-e2e.txt`, `python -m playwright install chromium` y `python scripts/check_phase10.py`. MLflow: http://127.0.0.1:5000 (experimento `credimarket-riesgo-v1`; en macOS `localhost:5000` puede abrir AirPlay en su lugar), enlazado desde la ficha del modelo. Todos los microservicios (incluido Préstamos con su modelo activo cargado) responden `200` en `/health` y `/ready`.
 
 Consultar [la guía de fase 2](docs/FASE_2.md) para secretos locales, puertos, volúmenes, reinicios y comprobación de persistencia.
 
@@ -45,6 +46,10 @@ Consultar [la guía de fase 2](docs/FASE_2.md) para secretos locales, puertos, v
 - [Código de fase 7 para estudiar](docs/CODIGO_FASE_7.md)
 - [Exportación, promoción y servicio del modelo en Préstamos: fase 8](docs/FASE_8.md)
 - [Código de fase 8 para estudiar](docs/CODIGO_FASE_8.md)
+- [Flujo de préstamos: fase 9](docs/FASE_9.md)
+- [Código de fase 9 para estudiar](docs/CODIGO_FASE_9.md)
+- [Frontend integrado: fase 10](docs/FASE_10.md)
+- [Código de fase 10 para estudiar](docs/CODIGO_FASE_10.md)
 - [Diccionario de datos de riesgo](docs/diccionario_datos.md)
 - [Arquitectura y datos](docs/arquitectura.md)
 - [Estados y consistencia](docs/estados.md)

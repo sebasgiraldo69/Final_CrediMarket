@@ -159,6 +159,10 @@ class ModeloInfo(BaseModel):
     clase_positiva: Literal[1]
     umbral: float = Field(..., ge=0.0, le=1.0)
     artifact_sha256: str = Field(..., pattern=r"^[a-f0-9]{64}$")
+    algoritmo: str | None = Field(default=None, max_length=250)
+    experimento: str | None = Field(default=None, max_length=250)
+    exportado_en: str | None = Field(default=None, max_length=250)
+    metricas_prueba: dict[str, float] | None = None
 
 
 class PrestamoCrear(BaseModel):

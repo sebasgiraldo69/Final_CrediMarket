@@ -109,7 +109,11 @@ SCHEMAS["Riesgo"] = obj({"probabilidad_incumplimiento": PROB,
     "model_version": TEXT, "run_id": TEXT})
 SCHEMAS["ModeloInfo"] = obj({"model_version": TEXT, "run_id": TEXT, "variables": arr(TEXT),
     "clase_positiva": {"const": 1}, "umbral": PROB,
-    "artifact_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}})
+    "artifact_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    # Ficha del modelo (fase 10): opcionales para no exigirlos a manifiestos anteriores.
+    "algoritmo": nullable(TEXT), "experimento": nullable(TEXT), "exportado_en": nullable(TEXT),
+    "metricas_prueba": nullable({"type": "object", "additionalProperties": {"type": "number"}})},
+    required=["model_version", "run_id", "variables", "clase_positiva", "umbral", "artifact_sha256"])
 snapshot = {"reserva_id": UUID, "prestamo_id": UUID,
             "producto_id": nullable(UUID), "cantidad": nullable(QUANTITY),
             "estado_reserva": {"enum": RESERVE_STATES}, "revision_reserva": POS,
