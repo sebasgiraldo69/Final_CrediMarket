@@ -1,0 +1,4 @@
+PASS register, password login, duplicate rollback, owner/role, expired/forged token and service scope
+PASS concurrent version check and validated admin financial update
+PASS 12,000-row import twice, durable report, duplicate/invalid rows and upload limits
+PASS response contracts. Phase 3 API checks completed; synthetic test accounts retained.

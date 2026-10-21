@@ -1,0 +1,8 @@
+--- Iniciando comprobación de Fase 7: Preparar datos y entrenar el modelo ---
+PASS Integridad e inmutabilidad SHA-256 de los CSV originales
+PASS Diccionario, EDA, particiones estratificadas 60/20/20 (7200/2400/2400) y manifiestos verificados
+PASS MLflow ('credimarket-riesgo-v1'): 7 ejecuciones verificadas, artefactos persistidos
+PASS Candidato ganador (02_logreg_c1, run_id=67e5c9d9db914b4f92ce2aebb6d80a10, umbral=0.26) evaluó las 200 solicitudes nuevas: 87 FAVORABLES / 113 DESFAVORABLES
+=================================================================
+  ¡FASE 7 COMPLETADA CON ÉXITO: DATOS, EDA, MLFLOW Y MODELO v1!  
+=================================================================

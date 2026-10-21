@@ -1,0 +1,24 @@
+{
+  "publisher": {
+    "checkpoint": "broker_ack_before_sent_commit",
+    "event_id": "d935ff36-c00a-444d-89c1-2262a37d7b36",
+    "pending_after_crash": true
+  },
+  "consumer": {
+    "checkpoint": "db_commit_before_offset_commit",
+    "event_id": "cdc4e413-e6c2-4c49-879d-086797a9abdd",
+    "topic": "credimarket.inventario.comandos.v1",
+    "partition": 1,
+    "offset": 16,
+    "inbox_durable_before_offset_ack": true
+  },
+  "new_event_same_operation": {
+    "event_id": "d6cde072-75ae-40e7-b489-be339426b028",
+    "single_reservation": true
+  },
+  "delivery_expiry_race": {
+    "terminal": "VENCIDA",
+    "physical_outputs": 0,
+    "expiration_movements": 1
+  }
+}

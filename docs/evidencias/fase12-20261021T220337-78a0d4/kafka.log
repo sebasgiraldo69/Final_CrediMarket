@@ -1,0 +1,10 @@
+PASS real Kafka round trip and duplicate command / stock effects
+PASS pre-cancellation, delivery and terminal operation idempotency
+PASS DLQ, continued partition processing, event collision and expiry event
+PASS mismatched reservation, insufficient stock and malformed JSON recovery
+PASS atomic rollback, persisted retry delays and retry exhaustion
+PASS diagnostic replay without effects and operator DLQ requeue
+Testing consumer restart and broker outage; services restored in finally.
+PASS real transient failure and restart during retry backoff
+PASS stopped/restarted consumer, broker outage and persistent publisher outbox
+Phase 6 checks completed. Synthetic fixtures retained; no credit approvals created.

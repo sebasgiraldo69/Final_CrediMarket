@@ -1,0 +1,10 @@
+--- Iniciando comprobación de Fase 8: Exportar y servir el modelo desde Préstamos ---
+PASS Artefacto versionado, active_model.json e inferencia batch verificados
+PASS /api/prestamos/health (200) y /api/prestamos/ready (200, model='ok')
+PASS GET /api/prestamos/modelo/info (autorización admin/servicio y conformidad OpenAPI)
+PASS POST /api/prestamos/riesgo/predict (permisos y validaciones 422 de anualidad, semántica y rangos)
+PASS AC10: Paridad offline vs API en las 200 solicitudes nuevas verificada (max_abs_diff=4.95e-11 <= 1e-8)
+PASS Señal de no disponibilidad (503) ante ausencia del modelo y recuperación automática verificadas
+=================================================================
+  ¡FASE 8 COMPLETADA CON ÉXITO: MODELO PROMOVIDO Y API ACTIVA!   
+=================================================================

@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\measure_phase12.py", line 136, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\measure_phase12.py", line 103, in main
+    report['fallback'] = bench('offline')
+                         ~~~~~^^^^^^^^^^^
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\measure_phase12.py", line 56, in bench
+    return json.loads(inside('productos', source.replace('MODE', repr(mode))))
+                      ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\phase12_support.py", line 46, in inside
+    return docker(*args, stdin=PREFIX + source)
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\phase12_support.py", line 27, in docker
+    result = subprocess.run(['docker', 'compose', *args], cwd=ROOT, input=stdin,
+        text=True, encoding='utf-8', errors='replace', capture_output=True, timeout=timeout)
+  File "C:\Users\EIA2024\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 556, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EIA2024\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 1222, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EIA2024\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 1665, in _communicate
+    raise TimeoutExpired(self.args, orig_timeout)
+subprocess.TimeoutExpired: Command '['docker', 'compose', 'exec', '-T', 'productos', 'python', '-']' timed out after 120 seconds

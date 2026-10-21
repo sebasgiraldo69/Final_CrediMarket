@@ -1,0 +1,48 @@
+C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\check_phase9.py:47: DeprecationWarning: jsonschema.RefResolver is deprecated as of v4.18.0, in favor of the https://github.com/python-jsonschema/referencing library, which provides more compliant referencing behavior as well as more flexible APIs for customization. A future release will remove RefResolver. Please file a feature request (on referencing) if you are missing an API for the kind of customization you need.
+  schema_resolver = jsonschema.RefResolver.from_schema(openapi_spec)
+==========================================================================
+  INICIANDO VERIFICACIÓN DE FASE 9: FLUJO COMPLETO DE PRÉSTAMOS           
+==========================================================================
+
+--- 1. Preparando usuarios, clientes y productos de prueba ---
+PASS Fixtures de clientes, productos y existencias creados exitosamente
+
+--- 2. Verificando Health y Ready de Préstamos ---
+PASS /health y /ready (database='ok', model='ok', kafka='ok')
+
+--- 3. AC13: Autorización, roles y aislamiento de datos ---
+PASS Restricciones de roles en creación (solo cliente) y entrega (solo admin)
+
+--- 4. AC05: Validación de Idempotency-Key (longitud, replay idéntico y 409) ---
+PASS Idempotencia en creación (422 formato, 202 replay y 409 ante cambio de cuerpo)
+
+--- 5. Reglas de rechazo de negocio (201 RECHAZADA) ---
+PASS Reglas de rechazo (política, inactivo, perfil incompleto) y AC02 (riesgo desfavorable sin comando Kafka)
+
+--- 6. AC01: Flujo completo favorable con stock (PENDIENTE_INVENTARIO -> APROBADA -> COMPLETADA) ---
+PASS Solicitud ed489df6-3a56-4fad-ab45-b078ef6a6ec3 aprobada via Kafka con reserva activa (4a7f4da4-1d5e-4f45-938b-46c56773b4a5)
+PASS AC01: Préstamo creado -> APROBADA -> entrega admin -> COMPLETADA con salida registrada en inventario
+
+--- 7. AC03: Cliente favorable con stock cero (CANCELADA_SIN_STOCK) ---
+PASS AC03: Falta de stock detectada por Inventario -> CANCELADA_SIN_STOCK sin stock negativo
+
+--- 8. AC04: Concurrencia por la última unidad en inventario ---
+PASS AC04: Dos préstamos simultáneos -> exactamente 1 APROBADA y 1 CANCELADA_SIN_STOCK (disponible=0)
+
+--- 9. AC07: Cancelación y eventos tardíos en estados terminales ---
+PASS Préstamo 455123db-91dc-45e7-a0f0-709427eebfe5 cancelado y reserva liberada en Inventario
+Simulando llegada de evento tardío InventarioReservado para préstamo en estado CANCELADA...
+PASS Invariante garantizado: ningún evento tardío reactivó el préstamo CANCELADA
+
+--- 10. AC09: Edición de precio con invalidación de caché y nueva cotización ---
+PASS AC09: Caché invalidada y nuevo préstamo almacena precio actualizado ($3,800,000.00) y nueva cuota ($354,927.52)
+
+--- 11. AC13: Consultas de préstamos y privacidad entre clientes ---
+PASS AC13: Aislamiento completo de préstamos entre clientes y visibilidad global para administrador
+
+--- 12. Auditoría inmutable e historial de transiciones ---
+PASS Auditoría inmutable de transiciones verificada en prestamos_historial: [[None, 'PENDIENTE_INVENTARIO', None], ['PENDIENTE_INVENTARIO', 'APROBADA', None], ['APROBADA', 'ENTREGA_PENDIENTE', None], ['ENTREGA_PENDIENTE', 'COMPLETADA', None]]
+
+==========================================================================
+  ¡TODOS LOS CHECKS DE LA FASE 9 HAN SIDO SUPERADOS EXITOSAMENTE!       
+==========================================================================

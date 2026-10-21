@@ -6,6 +6,7 @@ import math
 import os
 from pathlib import Path
 import time
+from datetime import datetime, timezone
 from typing import Any, Dict, List
 import joblib
 import numpy as np
@@ -213,6 +214,13 @@ class ModelRegistry:
         active_file = self.models_root / "active_model.json"
         if not active_file.exists() or not self._artifact_path.exists():
             return False
+        try:
+            active = json.loads(active_file.read_text(encoding='utf-8'))
+            for field in ('model_version', 'artifact_sha256', 'run_id', 'umbral'):
+                if active.get(field) != self._active_config.get(field):
+                    return False  # Explicit restart is required to activate another version.
+        except (ValueError, OSError):
+            return False
         return True
 
     def ensure_ready(self) -> None:
@@ -241,8 +249,18 @@ class ModelRegistry:
         assert self._pipeline is not None and self._manifest is not None
 
         t0 = time.perf_counter()
-        X = _normalize_single_or_batch([features], EXPECTED_FEATURES)
-        prob = float(self._pipeline.predict_proba(X)[0, 1])
+        try:
+            X = _normalize_single_or_batch([features], EXPECTED_FEATURES)
+            prob = float(self._pipeline.predict_proba(X)[0, 1])
+            if not math.isfinite(prob) or not 0 <= prob <= 1:
+                raise ValueError('Invalid model score')
+        except Exception as exc:
+            logger.error(json.dumps({'service': 'prestamos', 'event': 'risk_prediction_failed',
+                'timestamp': datetime.now(timezone.utc).isoformat(),
+                'correlation_id': correlation_id, 'model_version': self._manifest['model_version'],
+                'error_type': type(exc).__name__,
+                'latency_ms': round((time.perf_counter() - t0) * 1000, 3)}))
+            raise
         latency_ms = round((time.perf_counter() - t0) * 1000.0, 3)
 
         umbral = float(self._manifest["umbral"])
@@ -262,6 +280,7 @@ class ModelRegistry:
                 {
                     "service": "prestamos",
                     "event": "risk_prediction",
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                     "correlation_id": correlation_id,
                     "model_version": model_version,
                     "run_id": run_id,

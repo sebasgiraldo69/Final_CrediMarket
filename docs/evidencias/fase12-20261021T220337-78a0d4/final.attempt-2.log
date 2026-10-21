@@ -1,0 +1,9 @@
+PASS frontend and proxy
+PASS productos: health, readiness, migration, identity and isolation
+PASS clientes: health, readiness, migration, identity and isolation
+PASS prestamos: health, readiness, migration, identity and isolation
+PASS service Kafka ACL denies arbitrary topic creation
+PASS inventario: health, readiness, migration, identity and isolation
+PASS service Kafka ACL denies arbitrary topic creation
+PASS MLflow and Kafka topics
+Phase 2 infrastructure checks passed. Business acceptance tests remain pending.

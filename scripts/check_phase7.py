@@ -159,14 +159,25 @@ assert algorithms.count("RandomForestClassifier") >= 2
 
 # Verificar la corrida seleccionada
 cand = json.loads(Path("ml/manifests/candidate_v1.json").read_text(encoding="utf-8"))
-winner_run = client.get_run(cand["run_id"])
+tracking_id = cand['run_id']
+reproduction_path = Path('ml/manifests/mlflow_reproduction.json')
+if reproduction_path.exists():
+    from ml.src.contract import sha256_file
+    mapping = json.loads(reproduction_path.read_text())
+    assert mapping['source_report_sha256'] == sha256_file(Path('ml/reports/model_selection_report.json'))
+    assert mapping['frozen_artifact_sha256'] == cand['artifact_sha256']
+    tracking_id = mapping['runs'].get(cand['run_id'], tracking_id)
+winner_run = client.get_run(tracking_id)
+if tracking_id != cand['run_id']:
+    assert winner_run.data.tags.get('source_run_id') == cand['run_id']
+    assert winner_run.data.tags.get('test_metrics_origin') == 'original_frozen_report'
 assert winner_run.data.tags.get("selected_candidate") == "true"
-assert "test_average_precision" in winner_run.data.metrics
+assert ('test_average_precision' if tracking_id == cand['run_id'] else 'imported_test_average_precision') in winner_run.data.metrics
 assert "val_average_precision" in winner_run.data.metrics
 assert "val_brier_score" in winner_run.data.metrics
 
 # Descargar artefactos desde MLflow para comprobar persistencia real
-art_names = [a.path for a in client.list_artifacts(cand["run_id"])]
+art_names = [a.path for a in client.list_artifacts(tracking_id)]
 for expected_art in ("pipeline.joblib", "confusion_matrix_val.json", "calibration_curve_val.json", "threshold_cost_curve.json", "test_evaluation.json"):
     assert expected_art in art_names, f"Artefacto {{expected_art}} ausente en MLflow run {{cand['run_id']}}"
 

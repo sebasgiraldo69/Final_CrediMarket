@@ -1,0 +1,80 @@
+{
+  "model_version": "riesgo-v2",
+  "experiment_name": "credimarket-riesgo-v2",
+  "run_id": "54683d2c2f444d1ab0fd438a77cf502f",
+  "run_name": "logreg_C05_phase11",
+  "algorithm": "LogisticRegression",
+  "hyperparameters": {
+    "C": 0.5,
+    "max_iter": 1000,
+    "solver": "lbfgs",
+    "random_state": 42
+  },
+  "variables": [
+    "ingresos_mensuales_cop",
+    "obligaciones_mensuales_cop",
+    "tipo_empleo",
+    "antiguedad_laboral_meses",
+    "meses_historial_crediticio",
+    "creditos_previos",
+    "atrasos_previos_30d",
+    "porcentaje_pago_puntual",
+    "monto_solicitado_cop",
+    "plazo_meses",
+    "cuota_estimada_cop"
+  ],
+  "clase_positiva": 1,
+  "umbral": 0.26,
+  "artifact_path": "ml/artifacts/candidate_v2/pipeline.joblib",
+  "artifact_sha256": "dcad3e6b7a033bd636b47fc7cd1bc5c978abf4231a30b870059656b16bf18846",
+  "dataset_hashes": {
+    "prestamos_entrenamiento.csv": "c6cdc437c3aecc9116bc8b978df421d5a7600634c1ad7d6f82e58222a2446ecd",
+    "solicitudes_nuevas.csv": "1430d7b34e924d5e4170c4fb9d9a412c1000af17c062af513ef15e44a1a7f1f7",
+    "train.csv": "574c6bc9c623bfd6cad62de06324a4bbbf5aa8e0fa64b0d6d0b42f7290c57718",
+    "val.csv": "b942d9cc9bf1c8cbf376e9c70e2500a2fad8022e686f5daabdc54072814e3b7a",
+    "test.csv": "1525f9ea40bb456796e495b09f6f4d772d3b18005447f3ee3d651cf3dbc954c4"
+  },
+  "selection_rule": {
+    "data": "validation only",
+    "variation": "C=0.5 fixed before evaluation",
+    "parent_version": "riesgo-v1"
+  },
+  "cost_model": {
+    "cost_fn_aprobar_incumplidor": 5.0,
+    "cost_fp_rechazar_pagador": 1.0,
+    "min_operational_approval_rate": 0.45,
+    "optimal_threshold": 0.26
+  },
+  "metrics": {
+    "val_at_optimal_threshold": {
+      "threshold": 0.26,
+      "average_precision": 0.504425,
+      "roc_auc": 0.693082,
+      "brier_score": 0.190694,
+      "log_loss": 0.566542,
+      "precision_pos": 0.409574,
+      "recall_pos": 0.734332,
+      "f1_pos": 0.525854,
+      "accuracy": 0.595,
+      "business_total_cost": 1752.0,
+      "business_cost_per_loan": 0.73,
+      "approval_rate": 0.451667,
+      "approved_default_rate": 0.179889,
+      "confusion_matrix": {
+        "tn": 889,
+        "fp": 777,
+        "fn": 195,
+        "tp": 539
+      }
+    }
+  },
+  "dependencies": {
+    "python": "3.12.12",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.4",
+    "pandas": "2.3.3",
+    "joblib": "1.6.0",
+    "mlflow": "3.4.0"
+  },
+  "exported_at": "2026-10-20T17:08:51Z"
+}

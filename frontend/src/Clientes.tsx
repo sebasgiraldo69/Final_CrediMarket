@@ -131,6 +131,9 @@ export function Clientes({ session }: { session: Session }) {
           <ul>{report.errores.slice(0, 50).map((e, i) => <li key={i}>Fila {e.fila}: {e.mensaje}</li>)}</ul></>}
       </div>}
 
+      <div className="module-heading"><p className="muted">Los clientes más recientes aparecen primero.</p><button disabled={busy} onClick={() => {
+        if (offset === 0) void run(loadList); else setOffset(0);
+      }}>Actualizar lista</button></div>
       <div className="table-scroll"><table className="responsive">
         <thead><tr><th>Cliente</th><th>Referencia</th><th>Perfil financiero</th><th>Estado</th><th>Acción</th></tr></thead>
         <tbody>{clients.map(client => <tr key={client.id}>

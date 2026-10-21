@@ -145,11 +145,12 @@ def create_product(
 @app.get('/productos/{id}')
 def get_product(
     id: UUID,
+    response: Response,
     claims=Depends(user_claims),
     conn=Depends(connection)
 ):
     # Patrón Cache-Aside con Redis
-    cached = get_cached_product(id)
+    cached = get_cached_product(id, response=response)
     if cached:
         if not cached.get('activo', True) and claims.get('role') != 'administrador':
             raise HTTPException(404, 'Producto no encontrado')

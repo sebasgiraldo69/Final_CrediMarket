@@ -1,0 +1,2468 @@
+{
+  "docker_vm": {
+    "cpus": 12,
+    "memory_bytes": 16579244032,
+    "server_version": "29.2.1"
+  },
+  "sample_count": 24,
+  "sampled_peaks": {
+    "credimarket-productos-1": {
+      "max_observed_cpu_percent": 90.7,
+      "max_observed_memory_percent": 0.72
+    },
+    "credimarket-prestamos-1": {
+      "max_observed_cpu_percent": 23.38,
+      "max_observed_memory_percent": 0.97
+    },
+    "credimarket-inventario-1": {
+      "max_observed_cpu_percent": 25.33,
+      "max_observed_memory_percent": 0.41
+    },
+    "credimarket-frontend-1": {
+      "max_observed_cpu_percent": 2.96,
+      "max_observed_memory_percent": 0.07
+    },
+    "credimarket-mlflow-1": {
+      "max_observed_cpu_percent": 40.15,
+      "max_observed_memory_percent": 4.47
+    },
+    "credimarket-clientes-1": {
+      "max_observed_cpu_percent": 48.73,
+      "max_observed_memory_percent": 0.61
+    },
+    "credimarket-kafka-1": {
+      "max_observed_cpu_percent": 179.5,
+      "max_observed_memory_percent": 3.07
+    },
+    "credimarket-postgres-1": {
+      "max_observed_cpu_percent": 3.74,
+      "max_observed_memory_percent": 0.52
+    },
+    "credimarket-redis-1": {
+      "max_observed_cpu_percent": 4.38,
+      "max_observed_memory_percent": 0.03
+    }
+  },
+  "samples": [
+    {
+      "at": "2026-10-21T22:32:38.251073+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "90.70%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.72%",
+          "MemUsage": "113.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "78.2kB / 73.6kB",
+          "PIDs": "4"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.08%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.03MB / 2.04MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.71%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.02MB / 1.02MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "40.15%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.23%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 10.6MB",
+          "CPUPerc": "19.82%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.68%",
+          "MemUsage": "423.7MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "863kB / 952kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.54%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.11MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.4MB / 29.7MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.63%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.387MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "1.79kB / 702B",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:32:42.469565+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "80.11%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.06MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "237kB / 280kB",
+          "PIDs": "4"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.27%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.04MB / 2.05MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.98%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.17MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.04MB / 1.03MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.19%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.17%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.69MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 10.7MB",
+          "CPUPerc": "2.33%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.64%",
+          "MemUsage": "418MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "867kB / 957kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "1.50%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.5MB / 29.8MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.58%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.422MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "130kB / 64.1kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:32:46.649313+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.52%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.3MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "238kB / 285kB",
+          "PIDs": "4"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "23.38%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.6MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.05MB / 2.06MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.09%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.17MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.05MB / 1.04MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.09%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.21%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.69MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 10.7MB",
+          "CPUPerc": "2.61%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.64%",
+          "MemUsage": "418MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "872kB / 962kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.59%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.5MB / 29.8MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.87%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.691MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "184kB / 112kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:32:50.691438+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "4.28%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.3MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "240kB / 289kB",
+          "PIDs": "4"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.35%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.07MB / 2.07MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.12%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.06MB / 1.05MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.56%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.26%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 10.8MB",
+          "CPUPerc": "3.88%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.4MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "876kB / 967kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "3.74%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.31MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.5MB / 29.8MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.78%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.699MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "189kB / 114kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:32:54.692441+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.47%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.3MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "241kB / 293kB",
+          "PIDs": "4"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.04%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.08MB / 2.08MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.80%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.07MB / 1.06MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "0.95%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.5MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.19%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 10.8MB",
+          "CPUPerc": "2.47%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.3MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "880kB / 972kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.45%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.5MB / 29.9MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.59%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.531MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "194kB / 115kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:32:58.222578+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.41%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.3MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "243kB / 296kB",
+          "PIDs": "4"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.03%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.08MB / 2.09MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.90%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.08MB / 1.07MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.10%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.5MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.24%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 10.9MB",
+          "CPUPerc": "2.52%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.64%",
+          "MemUsage": "418.1MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "884kB / 976kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.89%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.13MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.5MB / 29.9MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.72%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.449MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "197kB / 116kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:02.392609+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.49%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.3MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "244kB / 299kB",
+          "PIDs": "4"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "21.38%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.1MB / 2.1MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "23.60%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.25MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.09MB / 1.08MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.02%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.22%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 10.9MB",
+          "CPUPerc": "2.86%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.66%",
+          "MemUsage": "420.4MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "888kB / 981kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.51%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.6MB / 29.9MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.96%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.449MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "200kB / 118kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:06.573734+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "27.04%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "245kB / 304kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.00%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.11MB / 2.11MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.75%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.1MB / 1.09MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "0.83%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.17%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11MB",
+          "CPUPerc": "109.98%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.5MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "893kB / 986kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.37%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.6MB / 29.9MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.44%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.449MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "205kB / 119kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:10.666676+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.36%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "247kB / 309kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.94%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.12MB / 2.12MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.87%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.11MB / 1.1MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "2.96%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.00%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.22%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11MB",
+          "CPUPerc": "3.15%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.7MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "897kB / 991kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "2.83%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.18MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.6MB / 29.9MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.73%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.695MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "210kB / 121kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:14.703944+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.52%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "248kB / 313kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.49%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.13MB / 2.13MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.33%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.12MB / 1.11MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.71%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.31%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.1MB",
+          "CPUPerc": "4.54%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.4MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "902kB / 995kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.66%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.6MB / 29.9MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.97%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.03%",
+          "MemUsage": "4.105MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "214kB / 122kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:18.150789+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.53%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "250kB / 316kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.32%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.14MB / 2.14MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "25.33%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.13MB / 1.12MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.21%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.32%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.1MB",
+          "CPUPerc": "3.41%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.8MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "905kB / 1e+03kB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.54%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.6MB / 30MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.89%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.449MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "217kB / 123kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:22.295636+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.33%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "251kB / 320kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.88%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.15MB / 2.15MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.79%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.14MB / 1.13MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.22%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.5MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.17%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.1MB",
+          "CPUPerc": "179.50%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "3.07%",
+          "MemUsage": "485.6MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "910kB / 1MB",
+          "PIDs": "147"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.38%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.13MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.6MB / 30MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.83%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.695MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "220kB / 125kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:26.417070+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.32%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "252kB / 325kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.87%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.16MB / 2.16MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.72%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.15MB / 1.14MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.59MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "0.94%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "4.63%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.61%",
+          "MemUsage": "96.39MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "24.6kB / 11.2MB",
+          "CPUPerc": "1.81%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.3MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "914kB / 1.01MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "2.73%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.6MB / 30MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "3.35%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.449MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "224kB / 126kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:30.459435+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.46%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "254kB / 329kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.01%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.17MB / 2.17MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.76%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.16MB / 1.15MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.18%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.19%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.3MB",
+          "CPUPerc": "4.51%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.66%",
+          "MemUsage": "420.4MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "919kB / 1.01MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.33%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.37MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.7MB / 30MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "4.38%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.457MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "229kB / 128kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:34.642581+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.72%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "255kB / 333kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.64%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.18MB / 2.18MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.41%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.17MB / 1.16MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.78%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.37%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.3MB",
+          "CPUPerc": "3.94%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "419.1MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "923kB / 1.02MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.76%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.7MB / 30MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "3.54%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.684MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "234kB / 129kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:38.200627+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.54%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.68%",
+          "MemUsage": "108.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "257kB / 336kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.39%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.19MB / 2.19MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.04%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.18MB / 1.17MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.36%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.31%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.4MB",
+          "CPUPerc": "3.07%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.9MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "927kB / 1.02MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 26.9MB",
+          "CPUPerc": "0.60%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.12MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.7MB / 30MB",
+          "PIDs": "18"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.86%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.453MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "237kB / 130kB",
+          "PIDs": "6"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:42.355422+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.04%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.38%",
+          "MemUsage": "59.67MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "271kB / 351kB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.23%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.2MB / 2.2MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.00%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.19MB / 1.18MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.01%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.8MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.23%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.5MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "48.73%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.7MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.4MB",
+          "CPUPerc": "2.57%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.3MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "932kB / 1.03MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "0.97%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "80.16MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.7MB / 30.1MB",
+          "PIDs": "18"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:46.496405+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.36%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.72%",
+          "MemUsage": "113.2MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "277kB / 356kB",
+          "PIDs": "5"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.01%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.21MB / 2.21MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.84%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.2MB / 1.19MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.9MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "0.99%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.15%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.5MB",
+          "CPUPerc": "1.98%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.3MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "937kB / 1.03MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "0.62%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.51%",
+          "MemUsage": "81.16MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.7MB / 30.1MB",
+          "PIDs": "18"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:50.511339+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "21.04%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.72%",
+          "MemUsage": "113.3MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "287kB / 366kB",
+          "PIDs": "5"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.24%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.22MB / 2.22MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.00%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.22MB / 1.2MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.9MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.20%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.5MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.21%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.5MB",
+          "CPUPerc": "2.41%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.8MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "942kB / 1.04MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "0.86%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.52%",
+          "MemUsage": "81.83MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.8MB / 30.1MB",
+          "PIDs": "19"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:54.600638+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.76%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.72%",
+          "MemUsage": "113.1MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "296kB / 374kB",
+          "PIDs": "5"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.20%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.23MB / 2.24MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.89%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.23MB / 1.21MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.9MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.13%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.3MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.20%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.6MB",
+          "CPUPerc": "2.82%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.69%",
+          "MemUsage": "424.7MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "948kB / 1.04MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "0.73%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.52%",
+          "MemUsage": "82.33MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.8MB / 30.1MB",
+          "PIDs": "19"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:33:58.231574+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.58%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.72%",
+          "MemUsage": "113.1MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "304kB / 381kB",
+          "PIDs": "5"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.28%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.25MB / 2.24MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.98%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.19MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.24MB / 1.22MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.9MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.29%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "15.79%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.6MB",
+          "CPUPerc": "3.20%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.66%",
+          "MemUsage": "420.4MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "954kB / 1.05MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "1.07%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.52%",
+          "MemUsage": "82.09MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.8MB / 30.1MB",
+          "PIDs": "19"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:34:02.418768+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.61%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.72%",
+          "MemUsage": "113.3MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "312kB / 388kB",
+          "PIDs": "5"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "20.77%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.26MB / 2.26MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.74%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.25MB / 1.23MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.9MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "0.84%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.21%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.7MB",
+          "CPUPerc": "3.15%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "419.7MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "959kB / 1.05MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "0.55%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.52%",
+          "MemUsage": "81.84MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.8MB / 30.2MB",
+          "PIDs": "19"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:34:06.587876+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "2.16%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.72%",
+          "MemUsage": "113.1MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "322kB / 396kB",
+          "PIDs": "5"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.23%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.27MB / 2.27MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.07%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.19MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.26MB / 1.24MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "0.00%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.9MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.12%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.19%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.4MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.7MB",
+          "CPUPerc": "2.25%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "418.4MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "965kB / 1.06MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "3.16%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.52%",
+          "MemUsage": "82.35MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.9MB / 30.2MB",
+          "PIDs": "19"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-21T22:34:11.721453+00:00",
+      "containers": [
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.31%",
+          "Container": "b9489b51c53d06f18eb699c3805896d689bce0fb8678625d8d6c4ecc28bf2120",
+          "ID": "b9489b51c53d",
+          "MemPerc": "0.38%",
+          "MemUsage": "59.95MiB / 15.44GiB",
+          "Name": "credimarket-productos-1",
+          "NetIO": "333kB / 408kB",
+          "PIDs": "3"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.18%",
+          "Container": "5ef6afe4506ecac2b84fdb4a55bd5fd85d9f5aa246c20b2c2bb0b4f9c5fb7f99",
+          "ID": "5ef6afe4506e",
+          "MemPerc": "0.97%",
+          "MemUsage": "153.3MiB / 15.44GiB",
+          "Name": "credimarket-prestamos-1",
+          "NetIO": "2.28MB / 2.28MB",
+          "PIDs": "34"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "1.31%",
+          "Container": "878da312bffb71a807555c3627ab23b1994ec26b3ab14dc3a2878f01a07f2190",
+          "ID": "878da312bffb",
+          "MemPerc": "0.41%",
+          "MemUsage": "64.18MiB / 15.44GiB",
+          "Name": "credimarket-inventario-1",
+          "NetIO": "1.28MB / 1.25MB",
+          "PIDs": "12"
+        },
+        {
+          "BlockIO": "0B / 8.19kB",
+          "CPUPerc": "1.87%",
+          "Container": "522f3ce4077ac206523b63a2215cb4d55470a0f636578a36652bf5907930cde9",
+          "ID": "522f3ce4077a",
+          "MemPerc": "0.07%",
+          "MemUsage": "10.58MiB / 15.44GiB",
+          "Name": "credimarket-frontend-1",
+          "NetIO": "14.9MB / 16.4MB",
+          "PIDs": "13"
+        },
+        {
+          "BlockIO": "3.59MB / 23.4MB",
+          "CPUPerc": "1.33%",
+          "Container": "cb731c0ffc19e2ada95b7df2c78d1f67ea1821a81bffabe10fba06bebf67f30e",
+          "ID": "cb731c0ffc19",
+          "MemPerc": "4.47%",
+          "MemUsage": "706.2MiB / 15.44GiB",
+          "Name": "credimarket-mlflow-1",
+          "NetIO": "23.9MB / 4.14MB",
+          "PIDs": "75"
+        },
+        {
+          "BlockIO": "8.19kB / 0B",
+          "CPUPerc": "0.17%",
+          "Container": "55b288118922e0b25de8d544afd3ec1dc6e61081ce0ea652c9a1652be1ba9f1c",
+          "ID": "55b288118922",
+          "MemPerc": "0.55%",
+          "MemUsage": "86.68MiB / 15.44GiB",
+          "Name": "credimarket-clientes-1",
+          "NetIO": "20.5MB / 1.25MB",
+          "PIDs": "2"
+        },
+        {
+          "BlockIO": "24.6kB / 11.8MB",
+          "CPUPerc": "2.79%",
+          "Container": "32633f012eb9cd0df427f62b28c0e8a8bfc29b9613836a7949dc6647e795a61a",
+          "ID": "32633f012eb9",
+          "MemPerc": "2.65%",
+          "MemUsage": "419.3MiB / 15.44GiB",
+          "Name": "credimarket-kafka-1",
+          "NetIO": "971kB / 1.06MB",
+          "PIDs": "121"
+        },
+        {
+          "BlockIO": "50.4MB / 27MB",
+          "CPUPerc": "0.71%",
+          "Container": "cda5917eb65e87a6c1a5adf50194884f1cedb81dfb72fbe69a4070632fc70cd0",
+          "ID": "cda5917eb65e",
+          "MemPerc": "0.52%",
+          "MemUsage": "81.84MiB / 15.44GiB",
+          "Name": "credimarket-postgres-1",
+          "NetIO": "23.9MB / 30.2MB",
+          "PIDs": "19"
+        },
+        {
+          "BlockIO": "0B / 0B",
+          "CPUPerc": "0.60%",
+          "Container": "c455c8f3479f14f052b01f5ee06e9860375336b83fa5f61e6ffe5cc2fe61db50",
+          "ID": "c455c8f3479f",
+          "MemPerc": "0.02%",
+          "MemUsage": "3.391MiB / 15.44GiB",
+          "Name": "credimarket-redis-1",
+          "NetIO": "3.26kB / 1.6kB",
+          "PIDs": "6"
+        }
+      ]
+    }
+  ],
+  "scope": "Docker VM allocation and samples during this microbenchmark; not physical host totals"
+}

@@ -1,0 +1,14 @@
+C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\check_phase5.py:30: DeprecationWarning: jsonschema.RefResolver is deprecated as of v4.18.0, in favor of the https://github.com/python-jsonschema/referencing library, which provides more compliant referencing behavior as well as more flexible APIs for customization. A future release will remove RefResolver. Please file a feature request (on referencing) if you are missing an API for the kind of customization you need.
+  schema_resolver = jsonschema.RefResolver.from_schema(openapi_spec)
+--- Iniciando comprobación de Fase 5: Inventario y reservas atómicas ---
+PASS Autenticación, roles y tokens de servicio
+PASS Health y Ready (/health, /ready)
+PASS Autorización de roles y esquemas en existencias, movimientos y reservas
+PASS Idempotencia HTTP en POST /inventario/entradas (201 replay y 409 en conflicto)
+PASS Autorización estricta en GET /interno/reservas/por-prestamo (ServiceBearer y scope)
+Ejecutando suite de concurrencia y máquina de estados dentro del contenedor...
+PASS Pruebas de concurrencia, doble liberación/entrega, marca de cancelación y expiración
+PASS Consulta autorizada de snapshot en GET /interno/reservas/por-prestamo/{prestamo_id}
+=========================================================
+  ¡FASE 5 COMPLETADA CON ÉXITO: INVENTARIO Y RESERVAS!  
+=========================================================

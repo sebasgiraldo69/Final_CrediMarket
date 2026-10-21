@@ -1,0 +1,354 @@
+{
+  "directory": "docs/evidencias/fase12-20261021T220337-78a0d4",
+  "run_id": "20261021T220337-78a0d4",
+  "started_at": "2026-10-21T22:03:37.716592+00:00",
+  "commit": "cd0f87b2144eb3e5a4ad57f1d8ab84e0c756e9ee",
+  "fixtures_retained": true,
+  "results": {
+    "contracts": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 5.85,
+      "cases": [],
+      "source_sha256": "5130450275dab589a9fdf0f8611833dec754b4ccfd1a0febe7ac6f525b8c51f2",
+      "log": "contracts.log"
+    },
+    "infrastructure": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 41.73,
+      "cases": [],
+      "source_sha256": "cc3d2b0454ca0597d0c07f4069e39dbb048514dc2c36a3f79400ac6f08fafd71",
+      "log": "infrastructure.log"
+    },
+    "clientes": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 12.49,
+      "cases": [
+        "AC12",
+        "AC13",
+        "AC16"
+      ],
+      "source_sha256": "0e898361e8beb78e16846148920f794422d15fd2edacc7bd20d270109ba83154",
+      "log": "clientes.log"
+    },
+    "productos": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 15.1,
+      "cases": [
+        "AC08",
+        "AC09"
+      ],
+      "source_sha256": "2d77616aa46b15b4327ab36954ed3e1e9091f9f87a7fb56ecbabc9fb1651f284",
+      "attempt": 3,
+      "log": "productos.log"
+    },
+    "inventario": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 14.8,
+      "cases": [
+        "AC04",
+        "AC05",
+        "AC07"
+      ],
+      "source_sha256": "0d6484d35a9badc1d1aa280f97f0a92ca5e45fda3943759e3c82cfe6cb740234",
+      "log": "inventario.log"
+    },
+    "datos": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 5.12,
+      "cases": [],
+      "source_sha256": "c9d854262ddbeaaa077ccd08faddaac25de5a5694c90669fe85cb2190c1b52b1",
+      "log": "datos.log"
+    },
+    "modelo": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 463.99,
+      "cases": [
+        "AC10",
+        "AC16"
+      ],
+      "source_sha256": "366eed3d92dda96f414115c0d93bcb20ade60b27bee2714b5f1017ef3479a080",
+      "log": "modelo.log"
+    },
+    "prestamos": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 40.41,
+      "cases": [
+        "AC01",
+        "AC02",
+        "AC03",
+        "AC04",
+        "AC05",
+        "AC07",
+        "AC09",
+        "AC13"
+      ],
+      "source_sha256": "9e0f7441e40f506b4e79129b497ca69086f37bebf6573e2db66f30c5d4da31dd",
+      "log": "prestamos.log"
+    },
+    "frontend": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 34.12,
+      "cases": [
+        "AC14",
+        "AC16"
+      ],
+      "source_sha256": "a7d7fc9f860be2065b3aa83d2a4c87a771fa4a0aa20448992e5ef800d68e52f7",
+      "log": "frontend.log"
+    },
+    "mlops": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 60.33,
+      "cases": [
+        "AC11"
+      ],
+      "source_sha256": "9e84fe88f76c45a07ad06cae6234fb3bc341cc76f828948c1daf25cb97300a03",
+      "log": "mlops.log"
+    },
+    "kafka": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 190.88,
+      "cases": [
+        "AC05",
+        "AC06"
+      ],
+      "source_sha256": "a6704b2ada4333740e84a9bbbb7b8f7b2947e2a716ab304bc9df3a2113022118",
+      "log": "kafka.log"
+    },
+    "faults": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 73.71,
+      "cases": [
+        "AC05",
+        "AC06",
+        "AC07"
+      ],
+      "source_sha256": "ba38223c58d0bb30186f09f867a1d451788a1075456484bdfca9d0de52339349",
+      "log": "faults.log"
+    },
+    "redis": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 98.54,
+      "cases": [
+        "AC08"
+      ],
+      "source_sha256": "8caaabd9d30f9a809663ab316ee8aaae4db00ff578dd87e0ca98cd96ca698b45",
+      "attempt": 3,
+      "log": "redis.log"
+    },
+    "pending_ui": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 32.81,
+      "cases": [
+        "AC15",
+        "AC16"
+      ],
+      "source_sha256": "e0e85aa8ee88a8b358acce045f4f95fb12a40e7b474d47285ccba218114ca783",
+      "log": "pending_ui.log"
+    },
+    "final": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 36.89,
+      "cases": [],
+      "source_sha256": "cc3d2b0454ca0597d0c07f4069e39dbb048514dc2c36a3f79400ac6f08fafd71",
+      "attempt": 3,
+      "log": "final.log"
+    }
+  },
+  "acceptance": {
+    "AC01": {
+      "status": "PASS",
+      "required_suites": [
+        "prestamos"
+      ]
+    },
+    "AC02": {
+      "status": "PASS",
+      "required_suites": [
+        "prestamos"
+      ]
+    },
+    "AC03": {
+      "status": "PASS",
+      "required_suites": [
+        "prestamos"
+      ]
+    },
+    "AC04": {
+      "status": "PASS",
+      "required_suites": [
+        "inventario",
+        "prestamos"
+      ]
+    },
+    "AC05": {
+      "status": "PASS",
+      "required_suites": [
+        "inventario",
+        "prestamos",
+        "kafka",
+        "faults"
+      ]
+    },
+    "AC06": {
+      "status": "PASS",
+      "required_suites": [
+        "kafka",
+        "faults"
+      ]
+    },
+    "AC07": {
+      "status": "PASS",
+      "required_suites": [
+        "inventario",
+        "prestamos",
+        "faults"
+      ]
+    },
+    "AC08": {
+      "status": "PASS",
+      "required_suites": [
+        "productos",
+        "redis"
+      ]
+    },
+    "AC09": {
+      "status": "PASS",
+      "required_suites": [
+        "productos",
+        "prestamos"
+      ]
+    },
+    "AC10": {
+      "status": "PASS",
+      "required_suites": [
+        "modelo"
+      ]
+    },
+    "AC11": {
+      "status": "PASS",
+      "required_suites": [
+        "mlops"
+      ]
+    },
+    "AC12": {
+      "status": "PASS",
+      "required_suites": [
+        "clientes"
+      ]
+    },
+    "AC13": {
+      "status": "PASS",
+      "required_suites": [
+        "clientes",
+        "prestamos"
+      ]
+    },
+    "AC14": {
+      "status": "PASS",
+      "required_suites": [
+        "frontend"
+      ]
+    },
+    "AC15": {
+      "status": "PASS",
+      "required_suites": [
+        "pending_ui"
+      ]
+    },
+    "AC16": {
+      "status": "PASS",
+      "required_suites": [
+        "clientes",
+        "modelo",
+        "frontend",
+        "pending_ui"
+      ]
+    }
+  },
+  "finished_at": "2026-10-21T22:34:48.959945+00:00",
+  "all_suites_passed": true,
+  "previous_attempts": [
+    {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 31.17,
+      "cases": [
+        "AC08",
+        "AC09"
+      ],
+      "source_sha256": "2d77616aa46b15b4327ab36954ed3e1e9091f9f87a7fb56ecbabc9fb1651f284",
+      "log": "productos.attempt-1.log",
+      "suite": "productos"
+    },
+    {
+      "status": "FAIL",
+      "exit_code": 1,
+      "duration_seconds": 288.68,
+      "cases": [
+        "AC08"
+      ],
+      "source_sha256": "2820d1bd48fc4cf89286d8a41dedd8c4194296ca0de385bc47d59662ad834ce8",
+      "log": "redis.attempt-1.log",
+      "suite": "redis"
+    },
+    {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 37.75,
+      "cases": [],
+      "source_sha256": "cc3d2b0454ca0597d0c07f4069e39dbb048514dc2c36a3f79400ac6f08fafd71",
+      "log": "final.attempt-1.log",
+      "suite": "final"
+    },
+    {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 35.58,
+      "cases": [
+        "AC08",
+        "AC09"
+      ],
+      "source_sha256": "2d77616aa46b15b4327ab36954ed3e1e9091f9f87a7fb56ecbabc9fb1651f284",
+      "attempt": 2,
+      "log": "productos.attempt-2.log",
+      "suite": "productos"
+    },
+    {
+      "status": "FAIL",
+      "exit_code": 1,
+      "duration_seconds": 146.59,
+      "cases": [
+        "AC08"
+      ],
+      "source_sha256": "f052f276a4409f7fd386d7c988ff863357c463275db512d469db1fe77ca51824",
+      "attempt": 2,
+      "log": "redis.attempt-2.log",
+      "suite": "redis"
+    },
+    {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 36.31,
+      "cases": [],
+      "source_sha256": "cc3d2b0454ca0597d0c07f4069e39dbb048514dc2c36a3f79400ac6f08fafd71",
+      "attempt": 2,
+      "log": "final.attempt-2.log",
+      "suite": "final"
+    }
+  ]
+}

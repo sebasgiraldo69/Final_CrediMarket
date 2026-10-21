@@ -1,0 +1,7 @@
+PASS API prediction and persisted loan: riesgo-v1
+PASS API prediction and persisted loan: riesgo-v2
+PASS API prediction and persisted loan: riesgo-v1
+PASS historical model metadata preserved across promotion and rollback
+PASS corrupt artifact rejected; active pointer unchanged
+PASS monitoring, explicit simulated drift and immutable v1 artifact
+Phase 11 verified. Original active version restored.

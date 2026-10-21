@@ -1,0 +1,2 @@
+PASS: 4 OpenAPI documents, 34 operations, 10 event examples + DLQ, 6 REST examples, negative cases, 12200 source rows, 16 acceptance references, 74344 static checks.
+Runtime acceptance tests remain pending. OpenAPI checks are structural, not full specification certification.

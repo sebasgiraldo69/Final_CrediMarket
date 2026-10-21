@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "real_consumer_interruption": true,
+  "pending_observed": true,
+  "approved_by_polling_after_restart": true,
+  "invalid_form_did_not_submit": true,
+  "genuinely_expired_jwt": true,
+  "real_productos_api_outage_recovered": true,
+  "product_id": "67e2f818-72ff-4572-b776-50e836675edc"
+}

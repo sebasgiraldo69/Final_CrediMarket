@@ -5,6 +5,7 @@ import logging
 import os
 import time
 from uuid import UUID, uuid4
+from datetime import datetime, timezone
 
 from confluent_kafka.admin import AdminClient
 from fastapi import FastAPI, Request
@@ -72,7 +73,11 @@ def create_app(service):
             response = JSONResponse(status_code=500, content={"code": "INTERNAL_ERROR",
                 "message": "Error interno", "correlation_id": request_id, "details": []})
         response.headers["X-Correlation-ID"] = request_id
+        registry = getattr(request.app.state, 'model_registry', None)
+        manifest = getattr(registry, '_manifest', None) or {}
         logger.info(json.dumps({"service": service, "method": request.method,
+                                "timestamp": datetime.now(timezone.utc).isoformat(),
+                                "model_version": manifest.get('model_version'),
                                 "path": request.url.path, "status": response.status_code,
                                 "correlation_id": request_id,
                                 "duration_ms": round((time.monotonic() - started) * 1000, 2)}))
@@ -93,8 +98,8 @@ def create_app(service):
             dependencies["database"] = "unavailable"
         if service == "productos":
             try:
-                with Redis(host="redis", password=os.environ["REDIS_PASSWORD"],
-                           socket_connect_timeout=0.1, socket_timeout=0.1) as cache:
+                from app.cache import get_redis_client
+                with get_redis_client() as cache:
                     cache.ping()
                 dependencies["redis"] = "ok"
             except Exception:

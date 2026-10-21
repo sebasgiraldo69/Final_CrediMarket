@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "verified_at": "2026-10-21T22:17:09.790323+00:00",
+  "observed_sequence": [
+    {
+      "model_version": "riesgo-v1",
+      "run_id": "67e5c9d9db914b4f92ce2aebb6d80a10",
+      "artifact_sha256": "92411d3d907be27d4cfc4be6c7a0bee635f303ab92ad38be7fb5be5d652bff5a",
+      "prediction": {
+        "probabilidad_incumplimiento": 0.03578637880123197,
+        "decision_riesgo": "FAVORABLE",
+        "umbral": 0.26,
+        "model_version": "riesgo-v1",
+        "run_id": "67e5c9d9db914b4f92ce2aebb6d80a10"
+      },
+      "loan_id": "8de4405f-d489-408b-b8cf-679c07793697",
+      "api_verified_at": "2026-10-21T22:16:31.196429+00:00"
+    },
+    {
+      "model_version": "riesgo-v2",
+      "run_id": "54683d2c2f444d1ab0fd438a77cf502f",
+      "artifact_sha256": "dcad3e6b7a033bd636b47fc7cd1bc5c978abf4231a30b870059656b16bf18846",
+      "prediction": {
+        "probabilidad_incumplimiento": 0.03606963709013416,
+        "decision_riesgo": "FAVORABLE",
+        "umbral": 0.26,
+        "model_version": "riesgo-v2",
+        "run_id": "54683d2c2f444d1ab0fd438a77cf502f"
+      },
+      "loan_id": "ddcd5b8b-98c9-4120-995f-f798cd25bb05",
+      "api_verified_at": "2026-10-21T22:16:44.519555+00:00"
+    },
+    {
+      "model_version": "riesgo-v1",
+      "run_id": "67e5c9d9db914b4f92ce2aebb6d80a10",
+      "artifact_sha256": "92411d3d907be27d4cfc4be6c7a0bee635f303ab92ad38be7fb5be5d652bff5a",
+      "prediction": {
+        "probabilidad_incumplimiento": 0.03578637880123197,
+        "decision_riesgo": "FAVORABLE",
+        "umbral": 0.26,
+        "model_version": "riesgo-v1",
+        "run_id": "67e5c9d9db914b4f92ce2aebb6d80a10"
+      },
+      "loan_id": "ec5dee04-9d58-4490-9bd0-d2bcde7e1a94",
+      "api_verified_at": "2026-10-21T22:16:59.073256+00:00"
+    }
+  ],
+  "historical_loans_checked": 18,
+  "historical_metadata_unchanged": true,
+  "v1_artifact_unchanged": true,
+  "v2_run_id": "54683d2c2f444d1ab0fd438a77cf502f",
+  "monitoring_versions": [
+    "riesgo-v1",
+    "riesgo-v2"
+  ],
+  "drift_is_simulated": true,
+  "fixtures_retained": true
+}

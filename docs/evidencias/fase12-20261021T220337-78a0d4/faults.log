@@ -1,0 +1,3 @@
+PASS actual worker crash after broker ACK; outbox recovered; one stock effect
+PASS actual consumer crash after DB commit; reassignment and inbox recovery
+PASS business duplicate with new event ID and delivery/expiry race

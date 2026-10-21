@@ -1,0 +1,10 @@
+{
+  "record_type": "validated_activation_request",
+  "action": "promote",
+  "reason": "Prueba reproducible de fase 11",
+  "previous_version": "riesgo-v1",
+  "requested_version": "riesgo-v2",
+  "run_id": "54683d2c2f444d1ab0fd438a77cf502f",
+  "artifact_sha256": "dcad3e6b7a033bd636b47fc7cd1bc5c978abf4231a30b870059656b16bf18846",
+  "requested_at": "2026-10-21T22:16:34Z"
+}

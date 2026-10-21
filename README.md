@@ -4,7 +4,7 @@ Proyecto académico de cuatro microservicios: Productos, Clientes, Préstamos e 
 
 ## Estado
 
-Fases 1–10 implementadas: arquitectura, infraestructura, Clientes, Productos/Redis, Inventario, mensajería Kafka con outbox/inbox, reintentos y DLQ, entrenamiento en MLflow, modelo `riesgo-v1` servido desde Préstamos, flujo completo de préstamos ([fase 9](docs/FASE_9.md)) y frontend integrado por rol ([fase 10](docs/FASE_10.md)). La siguiente fase (Fase 11) completa MLOps: monitoreo, versión 2 del modelo y rollback.
+Fases 1–12 implementadas: arquitectura, infraestructura, Clientes, Productos/Redis, Inventario, Kafka, modelo, préstamos, frontend y MLOps. La [fase 12](docs/FASE_12.md) ejecutó los 16 casos de aceptación, navegador, fallos y mediciones; ver [resultados y límites](docs/validacion-fase-12.md). La versión activa es `riesgo-v1`. Siguiente fase: entrega y sustentación (fase 13).
 
 ## Ejecutar localmente
 
@@ -50,6 +50,11 @@ Consultar [la guía de fase 2](docs/FASE_2.md) para secretos locales, puertos, v
 - [Código de fase 9 para estudiar](docs/CODIGO_FASE_9.md)
 - [Frontend integrado: fase 10](docs/FASE_10.md)
 - [Código de fase 10 para estudiar](docs/CODIGO_FASE_10.md)
+- [MLOps, monitoreo, v2 y rollback: fase 11](docs/FASE_11.md)
+- [Código de fase 11 para estudiar](docs/CODIGO_FASE_11.md)
+- [Resultados de fase 11](docs/validacion-fase-11.md)
+- [Aceptación, fallos y mediciones: fase 12](docs/FASE_12.md)
+- [Matriz ejecutada y resultados: fase 12](docs/validacion-fase-12.md)
 - [Diccionario de datos de riesgo](docs/diccionario_datos.md)
 - [Arquitectura y datos](docs/arquitectura.md)
 - [Estados y consistencia](docs/estados.md)

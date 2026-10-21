@@ -1,0 +1,183 @@
+{
+  "created_at": "2026-10-21T21:50:34.149872+00:00",
+  "model_version": "riesgo-v1",
+  "reference": "training split; decile bins fixed on reference",
+  "reference_rows": 7200,
+  "current_source": "solicitudes_nuevas.csv (academic dataset, not a production stream)",
+  "source_hashes": {
+    "reference": "574c6bc9c623bfd6cad62de06324a4bbbf5aa8e0fa64b0d6d0b42f7290c57718",
+    "current": "1430d7b34e924d5e4170c4fb9d9a412c1000af17c062af513ef15e44a1a7f1f7"
+  },
+  "reference_score_histogram": [
+    354,
+    1490,
+    2257,
+    1504,
+    758,
+    449,
+    201,
+    107,
+    59,
+    21
+  ],
+  "reference_mean_score": 0.3056042872507804,
+  "psi_formula": "sum((current-reference)*log(current/reference)); smoothing=0.5 counts; missing bin",
+  "simulation": {
+    "income_multiplier": 0.45,
+    "obligations_multiplier": 1.5,
+    "employment_missing": "every third current row"
+  },
+  "batches": {
+    "unlabeled_current": {
+      "rows": 200,
+      "simulated": false,
+      "features": {
+        "ingresos_mensuales_cop": {
+          "psi": 0.06411479534097114,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "obligaciones_mensuales_cop": {
+          "psi": 0.04417491894560001,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "tipo_empleo": {
+          "psi": 0.021708826186101156,
+          "reference_missing_rate": 0.007916666666666667,
+          "current_missing_rate": 0.01
+        },
+        "antiguedad_laboral_meses": {
+          "psi": 0.10462541371530062,
+          "reference_missing_rate": 0.007916666666666667,
+          "current_missing_rate": 0.005
+        },
+        "meses_historial_crediticio": {
+          "psi": 0.04667589079780416,
+          "reference_missing_rate": 0.007916666666666667,
+          "current_missing_rate": 0.005
+        },
+        "creditos_previos": {
+          "psi": 0.025678372177229836,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "atrasos_previos_30d": {
+          "psi": 0.02679464234019783,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "porcentaje_pago_puntual": {
+          "psi": 0.04373072277748323,
+          "reference_missing_rate": 0.20430555555555555,
+          "current_missing_rate": 0.215
+        },
+        "monto_solicitado_cop": {
+          "psi": 0.07220182742619376,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "plazo_meses": {
+          "psi": 0.07219621082271394,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "cuota_estimada_cop": {
+          "psi": 0.028693953678658873,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        }
+      },
+      "score_psi": 0.06536354550411684,
+      "score_histogram": [
+        8,
+        46,
+        57,
+        46,
+        14,
+        14,
+        6,
+        3,
+        5,
+        1
+      ],
+      "mean_score": 0.3166672795811276
+    },
+    "explicitly_simulated": {
+      "rows": 200,
+      "simulated": true,
+      "features": {
+        "ingresos_mensuales_cop": {
+          "psi": 1.4930413261216404,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "obligaciones_mensuales_cop": {
+          "psi": 0.23460757470538207,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "tipo_empleo": {
+          "psi": 1.4110745882616562,
+          "reference_missing_rate": 0.007916666666666667,
+          "current_missing_rate": 0.345
+        },
+        "antiguedad_laboral_meses": {
+          "psi": 0.10462541371530062,
+          "reference_missing_rate": 0.007916666666666667,
+          "current_missing_rate": 0.005
+        },
+        "meses_historial_crediticio": {
+          "psi": 0.04667589079780416,
+          "reference_missing_rate": 0.007916666666666667,
+          "current_missing_rate": 0.005
+        },
+        "creditos_previos": {
+          "psi": 0.025678372177229836,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "atrasos_previos_30d": {
+          "psi": 0.02679464234019783,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "porcentaje_pago_puntual": {
+          "psi": 0.04373072277748323,
+          "reference_missing_rate": 0.20430555555555555,
+          "current_missing_rate": 0.215
+        },
+        "monto_solicitado_cop": {
+          "psi": 0.07220182742619376,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "plazo_meses": {
+          "psi": 0.07219621082271394,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        },
+        "cuota_estimada_cop": {
+          "psi": 0.028693953678658873,
+          "reference_missing_rate": 0.0,
+          "current_missing_rate": 0.0
+        }
+      },
+      "score_psi": 1.3151707255284713,
+      "score_histogram": [
+        0,
+        2,
+        28,
+        42,
+        47,
+        31,
+        18,
+        15,
+        10,
+        7
+      ],
+      "mean_score": 0.4938340613187262
+    }
+  },
+  "interpretation": "Distribution change only. No new labels: no claim of precision degradation."
+}

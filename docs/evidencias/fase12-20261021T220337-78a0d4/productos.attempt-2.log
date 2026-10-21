@@ -1,0 +1,17 @@
+--- Iniciando comprobación de Fase 4: Productos y Redis ---
+PASS autenticación y tokens para pruebas de Productos
+PASS permisos de cliente y listado de catálogo activo
+PASS creación de producto por administrador y encabezado Location
+PASS Redis Cache-Aside: Miss inicial, Hit subsiguiente y TTL documentado (60s)
+PASS control de versiones optimista (409) e invalidación de caché en actualización de precio
+PASS desactivación de producto, ocultamiento a clientes (404) e invalidación
+PASS cotización interna segura para Préstamos con scope productos:cotizar
+Simulando caída temporal de Redis...
+ Container credimarket-redis-1 Stopping 
+ Container credimarket-redis-1 Stopped 
+Restaurando contenedor Redis...
+ Container credimarket-redis-1 Starting 
+ Container credimarket-redis-1 Started 
+PASS resiliencia ante caída de Redis y recuperación automática
+PASS conformidad estructural con contrato OpenAPI de Productos
+=== FASE 4 COMPLETADA Y VALIDADA CON ÉXITO ===

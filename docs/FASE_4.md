@@ -39,7 +39,7 @@ El [cuaderno de código](CODIGO_FASE_4.md) contiene los archivos fuente completo
   - Inmediatamente se elimina la clave de Redis. La siguiente consulta obtendrá el valor fresco de PostgreSQL y volverá a calentar la caché.
   - Si Redis falla durante la invalidación, la falla se registra de forma durable en `invalidaciones_cache` en PostgreSQL para reintentos.
 * **Tolerancia a caídas (Resiliencia):**
-  - Si Redis está caído o detenido, el microservicio no interrumpe su operación: continúa respondiendo las consultas de catálogo desde PostgreSQL con un tiempo de espera acotado (0.2s).
+  - Si Redis está caído o detenido, el microservicio continúa respondiendo desde PostgreSQL. Conexión y lectura de Redis tienen timeout de 0.2 s por operación; eso no equivale al tiempo total de la petición. La fase 12 acotó también DNS y eliminó reintentos internos, y midió el fallback completo.
   - El endpoint `/ready` reporta estado `degraded` con `dependencies.redis = "degraded"` y responde HTTP 200, conforme a la arquitectura donde Redis es una mejora de rendimiento y no un punto único de falla.
 * **Cotización interna para Préstamos:**
   - El endpoint `/interno/productos/{id}/cotizacion` exige un JWT interno emitido para la audiencia `credimarket-internal`, sujeto `prestamos` y alcance `productos:cotizar`.

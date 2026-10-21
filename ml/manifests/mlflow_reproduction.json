@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-10-21T22:08:21.690336+00:00",
+  "source_report_sha256": "9d94681ceafc21416773763a210b221311b590a909e25bcd2cffdfb50260f618",
+  "frozen_artifact_sha256": "92411d3d907be27d4cfc4be6c7a0bee635f303ab92ad38be7fb5be5d652bff5a",
+  "runs": {
+    "6e84bbd55f994cfbb06aa0138a7419a1": "5c3b5cb577d44e8cb9593c02e8d17b56",
+    "3b76c97d67274660a6b4d1456dc10cb0": "60534aa361bf4685bf8af8900230a312",
+    "67e5c9d9db914b4f92ce2aebb6d80a10": "75a1450dfe2242e7b968bb9ac5a77dd5",
+    "8d9a8f88d7ab4cf4b6369fc867cab240": "8e396e85eba44f6ba48fe2754589c0ff",
+    "6004806365034ebb9a7fd62aa2743c48": "26d4cee87df74fbfa86f6a59ce3e30a1",
+    "e652294af464413285ac12d2b8f6de67": "7cea81c139484e8d9a9be393b0a74ba1",
+    "a31be2a17c7c439d85330301e5be3f58": "d5a95fc37718415b81aa85ffde0cf6d3"
+  },
+  "scope": "Actual train/validation reproduction; test metrics imported from original report, not recomputed"
+}

@@ -1,6 +1,6 @@
 # Aceptación y backlog
 
-Todas las pruebas funcionales están pendientes. A/B/C/D son frentes sugeridos (README), no nombres ni asignaciones personales confirmadas. Cada caso requiere script o pasos repetibles, resultado y evidencia en `docs/evidencias/` al implementarse.
+Los 16 casos se ejecutaron en fase 12 y terminaron aprobados en el entorno local. Consultar la [matriz ejecutada, logs, mediciones y límites](validacion-fase-12.md) y `docs/evidencias/phase12_latest.json`. La tabla siguiente conserva la definición y preparación de los casos. A/B/C/D son frentes sugeridos (README), no nombres ni asignaciones personales confirmadas.
 
 | ID | Caso y preparación | Acción / resultado observable | Responsable | Backlog |
 |---|---|---|---|---|

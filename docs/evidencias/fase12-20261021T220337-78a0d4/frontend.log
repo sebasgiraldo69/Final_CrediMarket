@@ -1,0 +1,12 @@
+Fase 10: pruebas de navegador
+  OK administrador: producto, entrada de stock, ficha del modelo y clientes
+  OK cliente: solicitud aprobada y visible sin recargar
+  OK idempotencia: reintento con la misma clave, una sola solicitud
+  OK cancelación confirmada por Inventario
+  OK entrega completada y visible para el cliente
+  OK persistencia tras recargar y bloqueo por rol
+  OK API caída muestra error y se recupera
+  OK sesión vencida lleva al acceso
+  OK rechazo por riesgo con motivo legible
+  OK móvil 375 px sin desplazamiento horizontal
+PASS: fase 10, recorrido completo desde el navegador.

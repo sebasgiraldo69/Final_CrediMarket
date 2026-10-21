@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\measure_phase12.py", line 152, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\measure_phase12.py", line 119, in main
+    report['fallback'] = bench('offline')
+                         ~~~~~^^^^^^^^^^^
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\measure_phase12.py", line 56, in bench
+    return json.loads(inside('productos', source.replace('MODE', repr(mode))))
+                      ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\phase12_support.py", line 46, in inside
+    return docker(*args, stdin=PREFIX + source)
+  File "C:\Users\EIA2024\Desktop\Universidad EIA\Sexto Semestre\Implementación e Integración de Software\Final_Parte2\scripts\phase12_support.py", line 30, in docker
+    raise RuntimeError('Docker operation failed: ' + ' '.join(args[:4]) + '\n' + result.stderr[-1200:])
+RuntimeError: Docker operation failed: exec -T productos python
+onRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<stdin>", line 20, in <module>
+  File "/usr/local/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 1373, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 1347, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+

@@ -177,8 +177,12 @@ class Workers:
             pending.clear()
             owned.clear()
             owned.update((p.topic, p.partition) for p in partitions)
+            log.info(json.dumps({'service': self.service, 'action': 'partitions_assigned',
+                'group': self.service+'-v1', 'partitions': [p.partition for p in partitions]}))
 
         def revoked(c, partitions):
+            log.info(json.dumps({'service': self.service, 'action': 'partitions_revoked',
+                'group': self.service+'-v1', 'partitions': [p.partition for p in partitions]}))
             pending.clear()
             owned.clear()
 

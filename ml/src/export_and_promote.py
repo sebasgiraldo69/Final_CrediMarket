@@ -2,6 +2,9 @@
 import argparse
 from datetime import datetime, timezone
 import json
+import os
+import re
+import tempfile
 import shutil
 from pathlib import Path
 from typing import Any, Dict
@@ -9,12 +12,34 @@ import joblib
 import numpy as np
 import pandas as pd
 import sklearn
+from uuid import uuid4
 
 from .contract import FEATURES, POSITIVE_CLASS, normalize_features_df, sha256_file
 
 ROOT = Path(__file__).resolve().parents[2]
 ML_DIR = ROOT / "ml"
 MODELS_DIR = ROOT / "models"
+
+
+def checked_version(version: str) -> str:
+    if not re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9_-]{0,79}', version):
+        raise ValueError('Identificador de versión inválido')
+    return version
+
+
+def atomic_json(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix='.' + path.name, dir=path.parent)
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as stream:
+            json.dump(value, stream, indent=2, ensure_ascii=False)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.chmod(temporary, 0o644)  # Model metadata must be readable by the non-root API user.
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
 
 
 def validate_model_package(manifest: Dict[str, Any], artifact_path: Path) -> None:
@@ -89,12 +114,22 @@ def export_candidate_to_models(
         raise FileNotFoundError(f"No existe manifiesto candidato: {manifest_src}")
 
     cand = json.loads(manifest_src.read_text(encoding="utf-8"))
-    model_version = version_override or cand["model_version"]
+    model_version = checked_version(version_override or cand["model_version"])
     artifact_src = ROOT / cand["artifact_path"]
 
     validate_model_package(cand, artifact_src)
 
     version_dir = MODELS_DIR / model_version
+    if version_dir.exists():
+        existing_path = version_dir / 'manifest.json'
+        if not existing_path.exists():
+            raise ValueError('Paquete de versión incompleto; revisar antes de exportar')
+        existing = json.loads(existing_path.read_text(encoding='utf-8'))
+        validate_model_package(existing, version_dir / 'pipeline.joblib')
+        if (existing['artifact_sha256'] != cand['artifact_sha256'] or
+                existing['run_id'] != cand['run_id'] or existing['umbral'] != cand['umbral']):
+            raise ValueError('Una versión publicada es inmutable; usa otro identificador')
+        return existing
     version_dir.mkdir(parents=True, exist_ok=True)
 
     dest_artifact = version_dir / "pipeline.joblib"
@@ -127,8 +162,11 @@ def export_candidate_to_models(
     return exported_manifest
 
 
-def promote_model_version(model_version: str) -> Dict[str, Any]:
+def promote_model_version(model_version: str, action: str = 'promote', reason: str = 'Activación explícita') -> Dict[str, Any]:
     """Promueve explícitamente una versión exportada en models/<model_version>/ a models/active_model.json."""
+    checked_version(model_version)
+    if action not in ('promote', 'rollback'):
+        raise ValueError('Operación de promoción inválida')
     version_dir = MODELS_DIR / model_version
     manifest_path = version_dir / "manifest.json"
     artifact_path = version_dir / "pipeline.joblib"
@@ -140,6 +178,8 @@ def promote_model_version(model_version: str) -> Dict[str, Any]:
         )
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest['model_version'] != model_version:
+        raise ValueError('La versión del manifiesto no coincide con la solicitada')
     validate_model_package(manifest, artifact_path)
 
     active_config = {
@@ -159,7 +199,14 @@ def promote_model_version(model_version: str) -> Dict[str, Any]:
     }
 
     active_file = MODELS_DIR / "active_model.json"
-    active_file.write_text(json.dumps(active_config, indent=2, ensure_ascii=False), encoding="utf-8")
+    previous = json.loads(active_file.read_text(encoding='utf-8')) if active_file.exists() else None
+    # The audit entry is a validated request; API observation proves activation after restart.
+    atomic_json(MODELS_DIR / 'promotions' / f'{uuid4()}.json', {
+        'record_type': 'validated_activation_request', 'action': action, 'reason': reason,
+        'previous_version': previous.get('model_version') if previous else None,
+        'requested_version': model_version, 'run_id': manifest['run_id'],
+        'artifact_sha256': manifest['artifact_sha256'], 'requested_at': active_config['promoted_at']})
+    atomic_json(active_file, active_config)
     return active_config
 
 

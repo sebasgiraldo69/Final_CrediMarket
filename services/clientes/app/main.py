@@ -109,7 +109,7 @@ def login(body: Login, conn=Depends(connection)):
 @app.get('/clientes')
 def list_clients(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0),
                  user=Depends(admin), conn=Depends(connection)):
-    items = conn.execute(select(clientes).order_by(clientes.c.created_at, clientes.c.id)
+    items = conn.execute(select(clientes).order_by(clientes.c.created_at.desc(), clientes.c.id.desc())
                          .limit(limit).offset(offset)).mappings().all()
     total = conn.execute(select(func.count()).select_from(clientes)).scalar_one()
     return {'items': [dict(row) for row in items], 'total': total, 'limit': limit, 'offset': offset}

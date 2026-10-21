@@ -1,6 +1,6 @@
 # CrediMarket: desarrollo por etapas con Kafka
 
-Este documento define el orden de trabajo con Codex. Complementa el análisis de `PLAN_IMPLEMENTACION_CREDIMARKET.md` y reemplaza su cronograma inicial. Kafka es el broker elegido. Las etapas 1–9 están implementadas; ver [fase 8](docs/FASE_8.md) y [fase 9](docs/FASE_9.md). Las etapas 10–13 continúan a continuación.
+Este documento define el orden de trabajo con Codex. Complementa el análisis de `PLAN_IMPLEMENTACION_CREDIMARKET.md` y reemplaza su cronograma inicial. Kafka es el broker elegido. Las etapas 1–12 están implementadas; ver [fase 12](docs/FASE_12.md) y [resultados](docs/validacion-fase-12.md). Sigue pendiente la etapa 13: entrega y sustentación.
 
 Stack base: cuatro microservicios FastAPI, PostgreSQL con bases y credenciales separadas, Kafka, Redis, React con TypeScript, scikit-learn, MLflow y Docker Compose. El entrenamiento es offline; el modelo se sirve dentro de Préstamos.
 
@@ -230,4 +230,4 @@ La estimación inicial sigue siendo de 15–20 jornadas de equipo, sujeta a dedi
 
 Para trabajar con Codex, pedir una etapa o una parte verificable de ella por vez. En cada ciclo se revisa el repositorio, se implementa, se ejecutan las pruebas pertinentes y se informa qué quedó listo y qué falta. No dar una etapa por cerrada solo porque se generaron archivos.
 
-Siguiente encargo: «Implementa la etapa 7 de PLAN_DESARROLLO_POR_ETAPAS.md: preparar datos y entrenar el modelo».
+Siguiente encargo: «Implementa la etapa 13 de PLAN_DESARROLLO_POR_ETAPAS.md: preparar entrega y sustentación».
