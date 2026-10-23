@@ -158,7 +158,7 @@ El orden por partición no sustituye la reserva atómica: dos préstamos del mis
 - Resolver eventos tardíos, duplicados, operaciones incompatibles y solicitudes detenidas por caídas.
 - Exponer consulta/listado con control de propietario y conectar la primera compra completa al navegador.
 
-**Entregables:** flujo completo, máquina de estados implementada e historial auditable. Ver informe en [docs/FASE_9.md](docs/FASE_9.md) y cuaderno en [docs/CODIGO_FASE_9.md](docs/CODIGO_FASE_9.md).
+**Entregables:** flujo completo, máquina de estados implementada e historial auditable. Ver informe en [docs/FASE_9.md](docs/FASE_9.md).
 
 **Se termina cuando:** funcionan aprobación, rechazo, falta de stock, entrega y cancelación; ningún evento tardío reactiva un préstamo cancelado y ningún fallo técnico se registra como rechazo crediticio. (Verificado mediante [scripts/check_phase9.py](scripts/check_phase9.py)). Estado: **COMPLETADO**.
 
@@ -218,9 +218,9 @@ El orden por partición no sustituye la reserva atómica: dos préstamos del mis
 - Preparar guion de demo: aprobación, rechazo, falta de stock, cancelación, entrega, cambio de precio, importación, Kafka y versión/rollback.
 - Ensayar preguntas cruzadas para que todos expliquen arquitectura, consistencia y ML.
 
-**Entregables:** repositorio reproducible, documentación y demostración preparada.
+**Entregables:** repositorio reproducible, documentación y demostración preparada. Ver guía en [docs/FASE_13.md](docs/FASE_13.md), guion de demo en [docs/guion_demo.md](docs/guion_demo.md) y preguntas técnicas en [docs/preguntas_sustentacion.md](docs/preguntas_sustentacion.md).
 
-**Se termina cuando:** un integrante distinto al autor de cada componente puede ejecutar y explicar el sistema con lo entregado.
+**Se termina cuando:** un integrante distinto al autor de cada componente puede ejecutar y explicar el sistema con lo entregado. (Verificado mediante [scripts/check_phase13.py](scripts/check_phase13.py)). Estado: **COMPLETADO**.
 
 ## Dependencias y forma de trabajo
 
@@ -230,4 +230,4 @@ La estimación inicial sigue siendo de 15–20 jornadas de equipo, sujeta a dedi
 
 Para trabajar con Codex, pedir una etapa o una parte verificable de ella por vez. En cada ciclo se revisa el repositorio, se implementa, se ejecutan las pruebas pertinentes y se informa qué quedó listo y qué falta. No dar una etapa por cerrada solo porque se generaron archivos.
 
-Siguiente encargo: «Implementa la etapa 13 de PLAN_DESARROLLO_POR_ETAPAS.md: preparar entrega y sustentación».
+Proyecto completado: las 13 etapas del plan de desarrollo han sido implementadas, verificadas y documentadas para su entrega final.

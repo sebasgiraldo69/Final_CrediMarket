@@ -34,7 +34,6 @@ También se puede inspeccionar la documentación interactiva OpenAPI del servici
 - [`shared/runtime.py`](../shared/runtime.py): integración de `ModelRegistry` en el ciclo de vida de `prestamos` y reporte real de `dependencies.model` (`"ok"` o `"unavailable"`) en `GET /ready`.
 - [`scripts/check_phase8.py`](../scripts/check_phase8.py): verificación automatizada de extremo a extremo.
 
-El [cuaderno de código de la fase 8](CODIGO_FASE_8.md) contiene los archivos fuente completos para estudio.
 
 ---
 

@@ -26,7 +26,6 @@ Implementación del microservicio Productos, catálogo tecnológico, integració
 - `frontend/src/main.tsx`: integración de navegación y estado de sesión compartido entre módulos.
 - `scripts/check_phase4.py`: suite completa de integración que valida catálogo, roles, concurrencia, cotización interna, Redis miss/hit/expiración/invalidación y resiliencia ante caída de Redis.
 
-El [cuaderno de código](CODIGO_FASE_4.md) contiene los archivos fuente completos de esta fase.
 
 ## Comportamiento y decisiones de diseño
 

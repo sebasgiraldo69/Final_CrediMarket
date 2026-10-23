@@ -4,7 +4,7 @@ Proyecto académico de cuatro microservicios: Productos, Clientes, Préstamos e 
 
 ## Estado
 
-Fases 1–12 implementadas: arquitectura, infraestructura, Clientes, Productos/Redis, Inventario, Kafka, modelo, préstamos, frontend y MLOps. La [fase 12](docs/FASE_12.md) ejecutó los 16 casos de aceptación, navegador, fallos y mediciones; ver [resultados y límites](docs/validacion-fase-12.md). La versión activa es `riesgo-v1`. Siguiente fase: entrega y sustentación (fase 13).
+Fases 1–13 implementadas: arquitectura, infraestructura, Clientes, Productos/Redis, Inventario, Kafka, modelo, préstamos, frontend, MLOps, aceptación y preparación de sustentación. La [fase 12](docs/FASE_12.md) ejecutó los 16 casos de aceptación, navegador, fallos y mediciones (ver [resultados](docs/validacion-fase-12.md)). La [fase 13](docs/FASE_13.md) formaliza la entrega reproducible, cuentas demo, [guion de demostración](docs/guion_demo.md) y [preguntas de sustentación](docs/preguntas_sustentacion.md). La versión activa es `riesgo-v1`.
 
 ## Ejecutar localmente
 
@@ -35,26 +35,20 @@ Consultar [la guía de fase 2](docs/FASE_2.md) para secretos locales, puertos, v
 - [Índice y decisiones de la fase 1](docs/FASE_1.md)
 - [Infraestructura de fase 2](docs/FASE_2.md)
 - [Clientes, acceso e importación: fase 3](docs/FASE_3.md)
-- [Código de fase 3 para estudiar](docs/CODIGO_FASE_3.md)
 - [Productos y Redis: fase 4](docs/FASE_4.md)
-- [Código de fase 4 para estudiar](docs/CODIGO_FASE_4.md)
 - [Inventario y reservas atómicas: fase 5](docs/FASE_5.md)
-- [Código de fase 5 para estudiar](docs/CODIGO_FASE_5.md)
 - [Kafka, reintentos y DLQ: fase 6](docs/FASE_6.md)
-- [Código de fase 6 para estudiar](docs/CODIGO_FASE_6.md)
 - [Datos, EDA, MLflow y entrenamiento del modelo: fase 7](docs/FASE_7.md)
-- [Código de fase 7 para estudiar](docs/CODIGO_FASE_7.md)
 - [Exportación, promoción y servicio del modelo en Préstamos: fase 8](docs/FASE_8.md)
-- [Código de fase 8 para estudiar](docs/CODIGO_FASE_8.md)
 - [Flujo de préstamos: fase 9](docs/FASE_9.md)
-- [Código de fase 9 para estudiar](docs/CODIGO_FASE_9.md)
 - [Frontend integrado: fase 10](docs/FASE_10.md)
-- [Código de fase 10 para estudiar](docs/CODIGO_FASE_10.md)
 - [MLOps, monitoreo, v2 y rollback: fase 11](docs/FASE_11.md)
-- [Código de fase 11 para estudiar](docs/CODIGO_FASE_11.md)
 - [Resultados de fase 11](docs/validacion-fase-11.md)
 - [Aceptación, fallos y mediciones: fase 12](docs/FASE_12.md)
 - [Matriz ejecutada y resultados: fase 12](docs/validacion-fase-12.md)
+- [Entrega y sustentación: fase 13](docs/FASE_13.md)
+- [Guion de demostración técnica](docs/guion_demo.md)
+- [Preguntas técnicas para sustentación](docs/preguntas_sustentacion.md)
 - [Diccionario de datos de riesgo](docs/diccionario_datos.md)
 - [Arquitectura y datos](docs/arquitectura.md)
 - [Estados y consistencia](docs/estados.md)

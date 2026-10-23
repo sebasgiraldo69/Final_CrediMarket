@@ -33,7 +33,6 @@ docker compose exec clientes python -m app.cli create-user --email cliente@examp
 - `cli.py`: provisión local de cuentas y credenciales internas.
 - `frontend/src/Clientes.tsx`: formularios conectados a las APIs reales.
 
-El [cuaderno de código](CODIGO_FASE_3.md) contiene los archivos fuente completos de esta fase, sin secretos ni dependencias generadas.
 
 ## Comportamiento
 

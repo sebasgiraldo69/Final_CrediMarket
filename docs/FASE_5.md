@@ -36,7 +36,6 @@ Implementación del microservicio Inventario, control de existencias con aislami
 - `frontend/src/main.tsx`: integración de navegación de Inventario y estado de sesión.
 - `scripts/check_phase5.py`: suite completa de pruebas de concurrencia (carrera por la última unidad), doble liberación/entrega, idempotencia HTTP, marca de cancelación previa, expiración y conformidad OpenAPI.
 
-El [cuaderno de código](CODIGO_FASE_5.md) contiene los archivos fuente completos de esta fase.
 
 ## Comportamiento y decisiones de diseño
 

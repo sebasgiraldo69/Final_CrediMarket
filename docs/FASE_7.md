@@ -28,7 +28,6 @@ También se pueden inspeccionar las 7 ejecuciones, métricas comparativas y arte
 - [`ml/reports/model_selection_report.json`](../ml/reports/model_selection_report.json): reporte comparativo de las 7 corridas, curva de costos por umbral y evaluación en `test`.
 - [`scripts/check_phase7.py`](../scripts/check_phase7.py): prueba automatizada de extremo a extremo.
 
-El [cuaderno de código de la fase 7](CODIGO_FASE_7.md) reúne el código fuente completo comentado para estudio.
 
 ---
 

@@ -75,7 +75,7 @@ engine = create_engine(database_url())
 with engine.begin() as conn:
     user = conn.execute(select(usuarios).where(usuarios.c.email == {repr(email)})).mappings().first()
     if user:
-        print(f"El usuario '{email}' ya existe (rol actual: {user['rol']}). Usa 'promover' para asignarle permisos de administrador.")
+        print(f"El usuario '{email}' ya existe (rol actual: {{user['rol']}}). Usa 'promover' para asignarle permisos de administrador.")
     else:
         conn.execute(usuarios.insert().values(
             id=uuid4(),

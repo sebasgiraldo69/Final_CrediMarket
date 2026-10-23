@@ -183,7 +183,8 @@ for n in range(1, 17):
 for document in [ROOT / "README.md", *sorted((ROOT / "docs").rglob("*.md"))]:
     text = document.read_text(encoding="utf-8")
     check(text.count("```") % 2 == 0, f"Unbalanced code fences in {document}")
-    for target in re.findall(r"\]\(([^)]+)\)", text):
+    prose = re.sub(r"```[\s\S]*?```", "", text)
+    for target in re.findall(r"\]\(([^)]+)\)", prose):
         if "://" not in target and not target.startswith("#"):
             check((document.parent / target.split("#")[0]).exists(), f"Broken link {target}")
 for name, digest in {
