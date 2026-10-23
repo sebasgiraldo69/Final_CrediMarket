@@ -111,7 +111,7 @@ export function Catalogo({ session, navigate }: { session: Session | null; navig
           <h3>{product.nombre}</h3>
           <p className="price">{formatMoney(product.precio_cop)}</p>
           <p className="note">Desde {formatMoney(estimateInstallment(Number(product.precio_cop), 36))}/mes a 36 meses</p>
-          {isAdmin && <p className="meta">Versión {product.version} · {product.activo ? 'Activo' : 'Inactivo'}</p>}
+          {isAdmin && <p className="meta"><code>{product.id}</code> · Versión {product.version} · {product.activo ? 'Activo' : 'Inactivo'}</p>}
           <div className="actions">
             {isAdmin ? <>
               <button type="button" disabled={busy} onClick={() => setEditing(product)}>Editar</button>

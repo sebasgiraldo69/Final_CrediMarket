@@ -87,7 +87,7 @@ export function Inventario({ session }: { session: Session }) {
         {tab === 'existencias' && <>
           <thead><tr><th>Producto</th><th>Físico</th><th>Reservado</th><th>Disponible</th><th>Acción</th></tr></thead>
           <tbody>{(page.items as Existencia[]).map(row => <tr key={row.producto_id}>
-            <td data-label="Producto">{name(row.producto_id)}</td>
+            <td data-label="Producto"><strong>{name(row.producto_id)}</strong><small><code>{row.producto_id}</code></small></td>
             <td data-label="Físico">{row.fisico}</td>
             <td data-label="Reservado">{row.reservado}</td>
             <td data-label="Disponible" className={row.disponible > 0 ? 'ok-text' : 'bad-text'}><strong>{row.disponible}</strong></td>

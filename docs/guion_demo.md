@@ -30,15 +30,15 @@ Este documento establece el orden secuencial de casos de prueba y demostración 
 
 - **Objetivo**: Demostrar el flujo favorable de extremo a extremo: creación de solicitud, evaluación de riesgo positiva, reserva atómica en Inventario vía Kafka y aprobación automática.
 - **Acción**:
-  1. Iniciar sesión en `http://localhost:8080/catalogo` con la cuenta de cliente:
+  1. Abrir `http://localhost:8080`, presionar el botón **"Ingresar"** en la esquina superior derecha e iniciar sesión con la cuenta de cliente:
      - Correo: `cliente@credimarket.com`
      - Contraseña: `Cliente12345678!`
-  2. Seleccionar un producto con stock (por ejemplo, *Apple MacBook Air 13 M2* o *Samsung Galaxy S24*) y presionar **"Solicitar a crédito"**.
+  2. Ir a la pestaña **"Catálogo"** (`http://localhost:8080/catalogo`), seleccionar un producto con stock (por ejemplo, *Apple MacBook Air 13 M2* o *Samsung Galaxy S24*) y presionar **"Solicitar a crédito"**.
   3. En el modal, seleccionar el plazo a 12 meses. Observar el cálculo de la cuota mensual en tiempo real según la fórmula de anualidad con tasa fija del 1.8%.
-  4. Confirmar la solicitud.
-  5. La interfaz redirige a `http://localhost:8080/solicitudes`.
+  4. Confirmar la solicitud presionando **"Enviar solicitud"**.
+  5. Se abre el modal con el resultado de la evaluación de riesgo. Presionar el botón **"Ver mis solicitudes"** (o hacer clic en la pestaña **"Mis solicitudes"** de la barra de navegación superior). Al ser una Single Page Application (SPA), la vista cambia a la sección de solicitudes mediante enrutamiento del lado del cliente.
 - **Resultado observable**:
-  - La solicitud aparece inicialmente en estado `PENDIENTE_INVENTARIO`.
+  - En la sección **"Mis solicitudes"**, la nueva solicitud aparece inicialmente en estado `PENDIENTE_INVENTARIO`.
   - En un intervalo inferior a 3 segundos (sondeo automático cada 2.5s), el estado transiciona a `APROBADA` tras recibir el evento `InventarioReservado` desde Kafka.
   - Se visualiza el identificador de la reserva y el contador regresivo de vencimiento (10 minutos).
 
@@ -50,7 +50,7 @@ Este documento establece el orden secuencial de casos de prueba y demostración 
 - **Acción**:
   1. Cerrar sesión de cliente e iniciar sesión como administrador (`admin@credimarket.com` / `Admin12345678!`).
   2. Navegar a **"Mis Solicitudes"** / listado global de solicitudes (`http://localhost:8080/solicitudes`).
-  3. En la solicitud previamente aprobada en el Escenario 2, presionar el botón **"Confirmar entrega"**.
+  3. En la solicitud previamente aprobada en el Escenario 2, presionar el botón **"Entregar"**, luego desplazarse hasta abajo y presionar el botón **Confirmar Entrega**.
 - **Resultado observable**:
   - El estado cambia a `ENTREGA_PENDIENTE` y se emite el comando `EntregaSolicitada` a Kafka.
   - Inventario descuenta el stock físico, registra un movimiento de tipo `SALIDA` y emite `EntregaConfirmada`.
