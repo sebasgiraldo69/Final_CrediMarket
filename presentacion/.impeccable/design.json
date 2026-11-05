@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T00:00:00Z",
+  "title": "Design System: CrediMarket · Presentación académica",
+  "extensions": {
+    "shadows": [],
+    "motion": [
+      {
+        "name": "confirmación",
+        "value": "confirm .6s cubic-bezier(.16,1,.3,1)",
+        "purpose": "Revelar el bloque de resultado de portada mediante clip-path."
+      },
+      {
+        "name": "progreso",
+        "value": "transform .2s ease-out",
+        "purpose": "Actualizar el avance manual de diapositivas."
+      },
+      {
+        "name": "movimiento-reducido",
+        "value": "animation:none!important; transition:none!important; scroll-behavior:auto!important",
+        "purpose": "Respetar prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "móvil",
+        "value": "650px"
+      },
+      {
+        "name": "intermedio",
+        "value": "1000px"
+      },
+      {
+        "name": "amplio",
+        "value": "1600px"
+      }
+    ],
+    "focus": {
+      "value": "3px solid var(--gold)",
+      "offset": "4px",
+      "purpose": "Foco visible de botones, enlaces y resumen."
+    }
+  },
+  "components": [
+    {
+      "name": "Control",
+      "kind": "button",
+      "refersTo": "control",
+      "description": "Navegación manual de la presentación.",
+      "html": "<button class=\"ds-control\">Siguiente</button>",
+      "css": ".ds-control{font-family:Plex,system-ui,sans-serif;background:var(--paper,#f5f3ec);color:var(--ink,#163d30);border:1px solid #a6b8ab;border-radius:6px;padding:11px 16px;min-height:44px;font-size:14px;cursor:pointer}.ds-control:hover:not(:disabled){background:var(--ink,#163d30);color:var(--paper,#f5f3ec)}.ds-control:focus-visible{outline:3px solid var(--gold,#e0ab45);outline-offset:4px}.ds-control:disabled{opacity:.45;cursor:default}"
+    },
+    {
+      "name": "Índice",
+      "kind": "nav",
+      "description": "Entrada de índice con estado actual.",
+      "html": "<nav class=\"ds-outline\"><button aria-current=\"true\">01 CrediMarket</button><button>02 Una compra necesita dos confirmaciones</button></nav>",
+      "css": ".ds-outline{display:grid;gap:10px}.ds-outline button{font-family:Plex,system-ui,sans-serif;background:var(--paper,#f5f3ec);color:var(--ink,#163d30);border:1px solid var(--line,#ccd4c9);padding:16px;text-align:left;font-size:16px;cursor:pointer}.ds-outline button[aria-current=true]{background:var(--ink,#163d30);color:var(--paper,#f5f3ec)}.ds-outline button:focus-visible{outline:3px solid var(--gold,#e0ab45);outline-offset:4px}"
+    },
+    {
+      "name": "Notas",
+      "kind": "custom",
+      "refersTo": "notes",
+      "description": "Notas desplegables para quien expone.",
+      "html": "<details class=\"ds-notes\"><summary>Notas para exponer</summary><p>Explicar la decisión y su evidencia.</p></details>",
+      "css": ".ds-notes{font-family:Plex,system-ui,sans-serif;background:var(--paper,#f5f3ec);color:var(--ink,#163d30);padding:18px 24px}.ds-notes summary{cursor:pointer;font-size:15px;font-weight:600}.ds-notes summary:focus-visible{outline:3px solid var(--gold,#e0ab45);outline-offset:4px}.ds-notes p{font-size:17px;line-height:1.48;margin-top:15px;color:var(--muted,#53675b)}"
+    },
+    {
+      "name": "Panel de énfasis",
+      "kind": "custom",
+      "refersTo": "focus-panel",
+      "description": "Idea destacada en un bloque verde plano.",
+      "html": "<section class=\"ds-panel\"><h3>Préstamos coordina la decisión</h3><p>Evaluación, reserva y trazabilidad.</p></section>",
+      "css": ".ds-panel{font-family:Plex,system-ui,sans-serif;background:var(--ink,#163d30);color:var(--paper,#f5f3ec);padding:36px}.ds-panel h3{font-size:24px;font-weight:600;line-height:1.2;margin:0 0 14px}.ds-panel p{font-size:21px;line-height:1.48;color:#d3dfd3;margin:0}"
+    },
+    {
+      "name": "Fila de métrica",
+      "kind": "custom",
+      "description": "Resultado cuantitativo separado por una línea.",
+      "html": "<div class=\"ds-metric\"><span>Recall</span><strong>72 %</strong></div>",
+      "css": ".ds-metric{font-family:Plex,system-ui,sans-serif;display:flex;justify-content:space-between;gap:22px;padding:20px 0;border-top:1px solid var(--line,#ccd4c9);font-size:21px;color:var(--ink,#163d30)}.ds-metric strong{font-size:35px;font-weight:600;font-variant-numeric:tabular-nums}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Editorial académico de CrediMarket",
+    "overview": "Esta documentación describe únicamente la superficie implementada en `presentacion/index.html`: una presentación de lectura para una sustentación académica de 10–15 minutos. No define ni modifica el sistema del frontend de la aplicación.\n\nLa dirección conserva la consulta de UI UX Pro Max `fintech technical presentation editorial`, Minimalism & Swiss Style: jerarquía tipográfica, retícula, contraste y espacio. La paleta toma la identidad verde y dorada existente en `frontend/src/style.css`, en lugar de adoptar el morado de la recomendación genérica. El hilo va de la compra a la decisión, luego arquitectura, ML y evidencia. El verde abre y cierra; el marfil sostiene la explicación. Diagramas propios y una captura histórica auténtica dan soporte visual.",
+    "keyCharacteristics": [
+      "Lectura editorial con composiciones variadas según la explicación.",
+      "Un solo tipo local, contraste tonal y divisores finos.",
+      "Navegación manual, fuentes visibles y notas para exponer."
+    ],
+    "rules": [
+      {
+        "name": "The Apertura y Cierre Rule",
+        "body": "El verde enmarca el relato; las diapositivas intermedias explican sobre marfil.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do conservar fuentes y límites del alcance junto a la explicación.",
+      "Do elegir la composición según el argumento y mantener una jerarquía clara.",
+      "Do mantener navegación manual, foco visible y alternativa de movimiento reducido.",
+      "Do tratar esta guía como propia de la presentación, sin trasladarla automáticamente a la aplicación."
+    ],
+    "donts": [
+      "Don't presentar la captura histórica como una sesión en vivo.",
+      "Don't sustituir la identidad verde y dorada por la paleta genérica de la consulta inicial.",
+      "Don't introducir reproducción automática en una sustentación controlada por quien expone."
+    ]
+  }
+}
