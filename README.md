@@ -97,13 +97,11 @@ La verificación estática no sustituye las pruebas de integración de las fases
 
 ## Equipo
 
-Los nombres se completarán con los integrantes reales. Los frentes son asignaciones sugeridas, no evidencia de contribuciones existentes.
-
 | Integrante | Frente sugerido |
 |---|---|
-| Por asignar A | Productos, Redis e Inventario |
-| Por asignar B | Clientes, seguridad y frontend |
-| Por asignar C | Préstamos, Kafka y recuperación |
-| Por asignar D | Datos, modelo y MLOps |
+| Sebastián Giraldo | Productos, Redis e Inventario |
+| Martin Restrepo | Clientes, seguridad y frontend |
+| Sebastián Giraldo | Préstamos, Kafka y recuperación |
+| Miguel Ángel Zuleta | Datos, modelo y MLOps |
 
 Los archivos originales del enunciado y los dos CSV se conservan en la raíz.
