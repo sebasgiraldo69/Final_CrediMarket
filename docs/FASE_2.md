@@ -6,17 +6,17 @@ La base ejecutable incluye cuatro procesos FastAPI con `/health`, `/ready`, docu
 
 ## Arranque
 
-Requisitos: Docker Desktop con motor Linux/WSL2 activo, Docker Compose y Python 3 para scripts del host. El proyecto usa imágenes Linux; las dependencias Python/Node de ejecución se instalan dentro de las imágenes. La primera construcción necesita conexión a los registros de contenedores, PyPI y npm.
+Requisitos: Docker Desktop con motor Linux/WSL2 activo, Docker Compose y [uv](https://docs.astral.sh/uv/) para los scripts del host (uv descarga el Python indicado en `.python-version` si no hay uno compatible). El proyecto usa imágenes Linux; las dependencias Python/Node de ejecución se instalan dentro de las imágenes. La primera construcción necesita conexión a los registros de contenedores, PyPI y npm.
 
 Desde la raíz, en PowerShell:
 
 ```powershell
-python -m pip install -r requirements-bootstrap.txt
-python scripts/bootstrap.py
+uv sync
+uv run python scripts/bootstrap.py
 docker compose config --quiet
 docker compose up -d --build --wait --wait-timeout 300
 docker compose ps --all
-python scripts/check_infrastructure.py
+uv run python scripts/check_infrastructure.py
 ```
 
 El primer arranque tarda más por las descargas y la creación de topics/ACL Kafka. `kafka-volume-init` prepara el propietario del volumen para el usuario no root de Kafka; `kafka-init` crea topics y ACL. Ambos deben terminar con código 0: son trabajos de inicialización, no servicios que deban permanecer activos. Las migraciones de cada API se ejecutan antes de Uvicorn. Docker usa `/health` para arrancar la infraestructura; no confundir esa señal con disponibilidad del flujo de crédito.
@@ -62,9 +62,9 @@ docker compose start
 ## Pruebas reproducibles
 
 ```powershell
-python scripts/check_infrastructure.py
-python scripts/check_infrastructure.py --restart
-python scripts/validate_contracts.py
+uv run python scripts/check_infrastructure.py
+uv run python scripts/check_infrastructure.py --restart
+uv run python scripts/validate_contracts.py
 ```
 
 La primera prueba comprueba proxy/frontend, correlación HTTP, health/readiness, migraciones, usuarios sin privilegios de administrador, denegación de conexiones entre bases, metadatos Kafka y MLflow. La variante `--restart` reinicia solo los contenedores de este proyecto, verifica timestamps de las bases y conserva un mensaje diagnóstico Kafka, un run y un artefacto MLflow. No borra volúmenes.
@@ -75,9 +75,9 @@ El experimento `infrastructure-smoke` de MLflow está etiquetado como prueba de 
 
 Cada servicio tiene `app/main.py`, `alembic.ini` y su propio directorio de migraciones. La revisión 0001 crea únicamente `infrastructure_metadata`; las tablas de negocio se agregan en fases posteriores. `shared/` contiene solo arranque, conexión configurable, logs y comprobaciones; no contiene modelos de negocio compartidos ni consultas cruzadas.
 
-Imágenes fijadas: Python 3.12.12, PostgreSQL 17.6, Kafka 4.1.0, Redis 8.2.1, Node 22.20.0 y Nginx 1.28.0. MLflow 3.4.0. Los archivos `requirements.lock` incluyen dependencias transitivas y hashes; `package-lock.json` bloquea el frontend. El build instala con `pip --require-hashes` y `npm ci`. Las imágenes tienen etiqueta fija, no digest inmutable; conservar digests del build si se exige reproducción binaria exacta.
+Imágenes fijadas: Python 3.12.12, PostgreSQL 17.6, Kafka 4.1.0, Redis 8.2.1, Node 22.20.0 y Nginx 1.28.0. MLflow 3.4.0. Los archivos `uv.lock` (raíz e `infra/mlflow`) incluyen dependencias transitivas y hashes; `package-lock.json` bloquea el frontend. El build instala con `uv sync --frozen` (uv 0.13.3 fijado por versión y digest) y `npm ci`. Las imágenes tienen etiqueta fija, no digest inmutable; conservar digests del build si se exige reproducción binaria exacta.
 
-Las fuentes editables son `infra/python/requirements.in`, `infra/mlflow/requirements.in` y `frontend/package.json`. Resolver nuevamente los locks dentro de Python 3.12 Linux / Node 22 antes de actualizar dependencias; no regenerarlos en un entorno Windows diferente y asumir equivalencia.
+Las fuentes editables son `pyproject.toml` (microservicios y herramientas locales), `infra/mlflow/pyproject.toml` (MLflow y entrenamiento) y `frontend/package.json`; ver «Dependencias Python» en el README. `uv.lock` es universal (Linux, macOS y Windows), así que puede regenerarse en cualquier equipo con `uv lock`.
 
 Limitaciones de alcance: un nodo Kafka no ofrece alta disponibilidad; los consumidores de negocio/outbox llegan en fase 6; autorización HTTP en fase 3; pipeline en fase 8. Las pantallas actuales son navegación y estado de conectividad, con los módulos futuros identificados como no implementados.
 

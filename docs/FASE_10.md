@@ -6,12 +6,12 @@ Interfaz integrada para recorrer todas las operaciones exigidas desde el navegad
 
 ```powershell
 docker compose up -d --build --wait --wait-timeout 300
-python -m pip install -r requirements-e2e.txt
-python -m playwright install chromium
-python scripts/check_phase10.py
+uv sync --group test
+uv run --group test playwright install chromium
+uv run --group test python scripts/check_phase10.py
 ```
 
-Abrir http://localhost:8080. Las rutas son directas y sobreviven a la recarga: `/catalogo`, `/solicitudes`, `/clientes`, `/inventario`, `/modelo`, `/acceso`. Para tener un administrador: `python scripts/gestionar_admin.py crear admin@ejemplo.com <contraseña>`.
+Abrir http://localhost:8080. Las rutas son directas y sobreviven a la recarga: `/catalogo`, `/solicitudes`, `/clientes`, `/inventario`, `/modelo`, `/acceso`. Para tener un administrador: `uv run python scripts/gestionar_admin.py crear admin@ejemplo.com <contraseña>`.
 
 ## Módulos
 

@@ -49,8 +49,7 @@ Las filas válidas se aplican aunque otras sean rechazadas. El informe guarda ca
 ## Verificación
 
 ```powershell
-python -m pip install -r requirements-contracts.txt
-python scripts/check_phase3.py
+uv run python scripts/check_phase3.py
 ```
 
 Prueba de integración contra HTTP y PostgreSQL reales: registro/login, correo normalizado, rollback de duplicados, propietario y roles, firma/vencimiento/audiencia de tokens, edición concurrente, validación financiera, carga de las 12.000 filas dos veces sin duplicación, informe persistido, filas inválidas, límites y respuestas compatibles con los contratos de fase 1.

@@ -52,8 +52,8 @@ Los trabajadores viven en el proceso de cada API, con un hilo consumidor y otro 
 ## Arranque
 
 ```powershell
-python -m pip install -r requirements-bootstrap.txt
-python scripts/bootstrap.py
+uv sync
+uv run python scripts/bootstrap.py
 docker compose up -d --build --wait --wait-timeout 300
 ```
 
@@ -62,8 +62,8 @@ Las migraciones se aplican antes de arrancar los trabajadores. Los datos y cuent
 ## Pruebas
 
 ```powershell
-python scripts/check_phase6.py
-python scripts/check_phase6.py --faults
+uv run python scripts/check_phase6.py
+uv run python scripts/check_phase6.py --faults
 ```
 
 El segundo comando interrumpe temporalmente Kafka y reinicia servicios. Ambos conservan datos sintéticos de prueba; las existencias de prueba tienen UUID propios. No eliminan volúmenes. La prueba del contador de reintentos inyecta una excepción dentro de una transacción y verifica los intervalos persistidos sin esperar los 80 segundos completos.
@@ -73,10 +73,10 @@ Consultar `validacion-fase-6.md` para los resultados realmente ejecutados y sus 
 ## Inspección y diagnóstico
 
 ```powershell
-python scripts/kafka_ops.py status --service inventario
-python scripts/kafka_ops.py status --service prestamos
-python scripts/kafka_ops.py lag --service inventario
-python scripts/kafka_ops.py lag --service prestamos
+uv run python scripts/kafka_ops.py status --service inventario
+uv run python scripts/kafka_ops.py status --service prestamos
+uv run python scripts/kafka_ops.py lag --service inventario
+uv run python scripts/kafka_ops.py lag --service prestamos
 docker compose logs --tail 80 inventario prestamos
 ```
 
@@ -85,13 +85,13 @@ docker compose logs --tail 80 inventario prestamos
 Para validar de nuevo un mensaje fallido sin ejecutar efectos:
 
 ```powershell
-python scripts/kafka_ops.py replay --service inventario --failure-id UUID_DEL_FALLO
+uv run python scripts/kafka_ops.py replay --service inventario --failure-id UUID_DEL_FALLO
 ```
 
 Para volver a encolarlo después de corregir la causa:
 
 ```powershell
-python scripts/kafka_ops.py requeue --service inventario --failure-id UUID_DEL_FALLO
+uv run python scripts/kafka_ops.py requeue --service inventario --failure-id UUID_DEL_FALLO
 ```
 
 El reenvío utiliza las credenciales del productor original y conserva el event_id. Si los bytes originales no son válidos, se requiere `--replacement archivo_corregido.json`, con un event_id nuevo. Conservar correlation_id permite relacionar la corrección. Esta herramienta valida los contratos; no modifica offsets de grupos ni borra la evidencia de DLQ. Si el mensaje ya tuvo efecto, inbox impide repetirlo.

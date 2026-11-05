@@ -15,17 +15,17 @@ El sistema está diseñado para ser clonado e inicializado en un entorno con Doc
 git clone <URL_DEL_REPOSITORIO>
 cd Final_CrediMarket
 
-# 2. Instalar dependencias del script de inicialización
-python -m pip install -r requirements-bootstrap.txt
+# 2. Instalar las dependencias de los scripts del host (grupo `tools` de uv)
+uv sync
 
 # 3. Generar archivo .env y pares de claves RSA locales
-python scripts/bootstrap.py
+uv run python scripts/bootstrap.py
 
 # 4. Construir y levantar todos los contenedores con healthchecks
 docker compose up -d --build --wait --wait-timeout 300
 
 # 5. Ejecutar verificación de infraestructura base
-python scripts/check_infrastructure.py
+uv run python scripts/check_infrastructure.py
 ```
 
 Al completar estos pasos, los 9 contenedores del stack se encuentran en estado saludable (`healthy`), con esquemas migrados en sus respectivas bases de datos y topics creados en Kafka.
@@ -62,7 +62,7 @@ Para la ejecución de la demostración y evaluación, el entorno cuenta con dos 
 Para crear administradores adicionales en cualquier momento:
 
 ```powershell
-python scripts/gestionar_admin.py crear nuevo_admin@credimarket.com Password12345678!
+uv run python scripts/gestionar_admin.py crear nuevo_admin@credimarket.com Password12345678!
 ```
 
 ---
@@ -111,12 +111,12 @@ El microservicio de Préstamos opera con el modelo promovido de forma desacoplad
    Si se levanta el stack en un equipo nuevo donde la base de datos de MLflow no contenga las corridas históricas, estas pueden reproducirse ejecutando:
 
    ```powershell
-   python scripts/run_phase7_training.py
+   uv run python scripts/run_phase7_training.py
    ```
 
 4. **Promoción y Rollback**:
-   - Promover v2: `python scripts/promote_model.py --version riesgo-v2`
-   - Rollback a v1: `python scripts/promote_model.py --version riesgo-v1`
+   - Promover v2: `uv run python scripts/promote_model.py --version riesgo-v2`
+   - Rollback a v1: `uv run python scripts/promote_model.py --version riesgo-v1`
 
 ---
 
@@ -126,20 +126,20 @@ El repositorio cuenta con scripts de validación automatizada para cada etapa de
 
 ```powershell
 # 1. Validación estática de contratos y esquemas OpenAPI / Eventos
-python scripts/validate_contracts.py
+uv run python scripts/validate_contracts.py
 
 # 2. Pruebas de integración por microservicio
-python scripts/check_infrastructure.py
-python scripts/check_phase3.py     # Clientes e importador
-python scripts/check_phase4.py     # Productos y Redis
-python scripts/check_phase5.py     # Inventario y reservas atómicas
-python scripts/check_phase6.py     # Kafka, outbox y DLQ
-python scripts/check_phase7.py     # Entrenamiento y métricas ML
-python scripts/check_phase8.py     # Paridad offline vs API (AC10)
-python scripts/check_phase9.py     # Flujo completo de préstamos
-python scripts/check_phase10.py    # Interfaz gráfica y navegación
-python scripts/check_phase11.py    # MLOps, drift y rollback
-python scripts/check_phase13.py    # Verificación global de entrega y sustentación
+uv run python scripts/check_infrastructure.py
+uv run python scripts/check_phase3.py     # Clientes e importador
+uv run python scripts/check_phase4.py     # Productos y Redis
+uv run python scripts/check_phase5.py     # Inventario y reservas atómicas
+uv run python scripts/check_phase6.py     # Kafka, outbox y DLQ
+uv run python scripts/check_phase7.py     # Entrenamiento y métricas ML
+uv run python scripts/check_phase8.py     # Paridad offline vs API (AC10)
+uv run python scripts/check_phase9.py     # Flujo completo de préstamos
+uv run --group test python scripts/check_phase10.py    # Interfaz gráfica y navegación
+uv run python scripts/check_phase11.py    # MLOps, drift y rollback
+uv run python scripts/check_phase13.py    # Verificación global de entrega y sustentación
 ```
 
 ---

@@ -8,11 +8,10 @@ Desde la raíz con Docker Desktop activo:
 
 ```powershell
 docker compose up -d --build --wait --wait-timeout 300
-python -m pip install --target .local/e2e -r requirements-acceptance.txt
-$env:PYTHONPATH = (Join-Path (Get-Location) '.local/e2e')
+uv sync --group test
 $env:PLAYWRIGHT_BROWSERS_PATH = (Join-Path (Get-Location) '.local/pw-browsers')
-python -m playwright install chromium
-python scripts/check_phase12.py
+uv run --group test playwright install chromium
+uv run --group test python scripts/check_phase12.py
 ```
 
 La suite es extensa: compara 200 predicciones, ejecuta Chromium, interrumpe servicios, demuestra rollback y espera la expiración real del TTL. Usa datos sintéticos nuevos y conserva sus registros. No elimina bases, volúmenes ni cuentas anteriores. Durante los ensayos puede haber indisponibilidad temporal de Redis, Inventario, Préstamos, Productos y Kafka.
@@ -22,13 +21,13 @@ Cada ejecución crea `docs/evidencias/fase12-<fecha>-<id>/` con logs y `results.
 Para continuar una ejecución después de corregir un fallo:
 
 ```powershell
-python scripts/check_phase12.py --resume docs/evidencias/fase12-IDENTIFICADOR
+uv run --group test python scripts/check_phase12.py --resume docs/evidencias/fase12-IDENTIFICADOR
 ```
 
 Se vuelven a ejecutar las suites fallidas o pendientes. Si una corrección afecta suites previamente aprobadas, pueden repetirse explícitamente:
 
 ```powershell
-python scripts/check_phase12.py --resume docs/evidencias/fase12-IDENTIFICADOR --only productos redis final
+uv run --group test python scripts/check_phase12.py --resume docs/evidencias/fase12-IDENTIFICADOR --only productos redis final
 ```
 
 ## Cobertura y evidencia

@@ -73,7 +73,7 @@ Implementación del microservicio Inventario, control de existencias con aislami
 Para ejecutar la verificación automatizada contra la infraestructura real:
 
 ```powershell
-python scripts/check_phase5.py
+uv run python scripts/check_phase5.py
 ```
 
 Resultados obtenidos en la ejecución:

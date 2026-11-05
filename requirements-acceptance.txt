@@ -1,2 +1,0 @@
--r requirements-contracts.txt
--r requirements-e2e.txt

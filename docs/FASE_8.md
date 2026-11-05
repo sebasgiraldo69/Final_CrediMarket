@@ -8,13 +8,13 @@ Con el stack de Docker Compose activo:
 
 ```powershell
 # Promover explícitamente la versión riesgo-v1 y generar inferencia batch
-python scripts/promote_model.py --version riesgo-v1
+uv run python scripts/promote_model.py --version riesgo-v1
 
 # Ejecutar todas las pruebas de integración, permisos, validación, paridad AC10 y disponibilidad (503)
-python scripts/check_phase8.py
+uv run python scripts/check_phase8.py
 
 # Comprobar que toda la infraestructura reporta /ready = 200 (incluyendo model='ok' en Préstamos)
-python scripts/check_infrastructure.py
+uv run python scripts/check_infrastructure.py
 ```
 
 También se puede inspeccionar la documentación interactiva OpenAPI del servicio en http://localhost:8080/api/prestamos/docs.

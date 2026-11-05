@@ -1,0 +1,29 @@
+[project]
+name = "credimarket-mlflow"
+version = "0.1.0"
+description = "Servidor MLflow 3.4.0 y entorno de entrenamiento offline de CrediMarket."
+requires-python = ">=3.12,<3.13"
+# Servidor MLflow con PostgreSQL como backend de metadatos (infra/mlflow/start.py).
+dependencies = [
+    "mlflow==3.4.0",
+    "psycopg[binary]==3.2.10",
+    "SQLAlchemy==2.0.43",
+]
+
+[dependency-groups]
+# El entrenamiento (ml/src, scripts/run_phase7_training.py y scripts/run_phase11.py) se ejecuta dentro de
+# este mismo contenedor. Estas versiones deben coincidir con las de `dependencies` en models/*/manifest.json
+# y con el grupo `inference` del proyecto raíz.
+training = [
+    "joblib==1.6.0",
+    "numpy==2.5.4",
+    "pandas==2.3.3",
+    "scikit-learn==1.9.1",
+]
+
+[tool.uv]
+# Proyecto independiente del raíz: el servidor MLflow resuelve versiones de fastapi, starlette y redis
+# distintas de las de los microservicios y no debe unificarse con ellos.
+package = false
+required-version = ">=0.13.3"
+default-groups = ["training"]

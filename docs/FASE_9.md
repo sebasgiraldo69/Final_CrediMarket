@@ -10,13 +10,13 @@ Con el stack de Docker Compose activo y saludable:
 
 ```powershell
 # Ejecutar la suite completa de pruebas de aceptación de la Fase 9:
-python scripts/check_phase9.py
+uv run python scripts/check_phase9.py
 
 # Verificar que los contratos OpenAPI y schemas de eventos sigan conformes:
-python scripts/validate_contracts.py
+uv run python scripts/validate_contracts.py
 
 # Comprobar la infraestructura global y estado de migraciones:
-python scripts/check_infrastructure.py
+uv run python scripts/check_infrastructure.py
 ```
 
 También se puede inspeccionar la documentación interactiva OpenAPI en:

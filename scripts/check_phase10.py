@@ -9,7 +9,8 @@ Recorre la interfaz real servida en http://127.0.0.1:${FRONTEND_PORT}, sin respu
 - Errores: API caída y recuperación, sesión vencida, navegación por rol, persistencia tras recargar.
 - Móvil: 375 px sin desplazamiento horizontal.
 
-Requisitos: stack levantado y `python -m pip install -r requirements-e2e.txt && python -m playwright install chromium`.
+Requisitos: stack levantado y `uv sync --group test && uv run --group test playwright install chromium`.
+Ejecutar con `uv run --group test python scripts/check_phase10.py`.
 """
 import json
 from pathlib import Path

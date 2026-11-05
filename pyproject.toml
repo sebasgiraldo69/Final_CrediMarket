@@ -1,0 +1,55 @@
+[project]
+name = "credimarket"
+version = "0.1.0"
+description = "Entorno Python de CrediMarket: herramientas locales, backend, inferencia y pruebas."
+requires-python = ">=3.12,<3.13"
+# Nada se instala por defecto: cada entorno elige sus grupos (ver README, sección «Dependencias Python»).
+dependencies = []
+
+[dependency-groups]
+# Herramientas que se ejecutan en el equipo local: scripts/bootstrap.py y los validadores de contratos.
+tools = [
+    "cryptography==45.0.7",
+    "jsonschema==4.26.0",
+]
+# Pruebas de aceptación desde el navegador (scripts/check_phase10.py y scripts/check_phase12*.py).
+test = [
+    { include-group = "tools" },
+    "playwright==1.52.0",
+]
+# Runtime común de los cuatro microservicios (infra/python/Dockerfile).
+backend = [
+    "fastapi==0.118.0",
+    "uvicorn==0.37.0",
+    "SQLAlchemy==2.0.43",
+    "psycopg[binary]==3.2.10",
+    "alembic==1.16.5",
+    "redis==6.4.0",
+    "confluent-kafka==2.11.1",
+    "PyJWT[crypto]==2.10.1",
+    "cryptography==45.0.7",
+    "argon2-cffi==25.1.0",
+    "email-validator==2.2.0",
+    "python-multipart==0.0.20",
+    "jsonschema==4.25.1",
+]
+# Inferencia del modelo de riesgo; solo la imagen de Préstamos la suma al backend.
+# Estas versiones deben coincidir con las de `dependencies` en models/*/manifest.json.
+inference = [
+    "joblib==1.6.0",
+    "numpy==2.5.4",
+    "pandas==2.3.3",
+    "scikit-learn==1.9.1",
+]
+
+[tool.uv]
+# El código de la aplicación no es un paquete: se copia a la imagen y se ejecuta con PYTHONPATH.
+package = false
+required-version = ">=0.13.3"
+default-groups = ["tools"]
+# Los servicios usan jsonschema 4.25.1 y las herramientas locales 4.26.0 (versiones heredadas de los
+# requirements originales). Se resuelven por separado y no se instalan en el mismo entorno.
+conflicts = [
+    [{ group = "backend" }, { group = "tools" }],
+    [{ group = "backend" }, { group = "test" }],
+]

@@ -8,10 +8,10 @@ Con el stack de Docker Compose activo (`mlflow` en `http://localhost:5000`):
 
 ```powershell
 # Re-ejecutar EDA, particiones y entrenamiento en MLflow (opcional; los artefactos ya están versionados)
-python scripts/run_phase7_training.py
+uv run python scripts/run_phase7_training.py
 
 # Ejecutar la suite de validación e integridad de la Fase 7
-python scripts/check_phase7.py
+uv run python scripts/check_phase7.py
 ```
 
 También se pueden inspeccionar las 7 ejecuciones, métricas comparativas y artefactos directamente en la interfaz web de MLflow: http://localhost:5000 (experimento `credimarket-riesgo-v1`).

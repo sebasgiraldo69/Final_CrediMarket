@@ -95,7 +95,7 @@ Este documento establece el orden secuencial de casos de prueba y demostración 
 - **Acción**:
   1. Ejecutar la sección de concurrencia de la suite de pruebas:
      ```powershell
-     python scripts/check_phase9.py
+     uv run python scripts/check_phase9.py
      ```
 - **Resultado observable**:
   - En la terminal se observa el resultado del caso AC04:
@@ -150,7 +150,7 @@ Este documento establece el orden secuencial de casos de prueba y demostración 
 - **Acción**:
   1. Ejecutar la suite de fallos controlados:
      ```powershell
-     python scripts/check_phase12_faults.py
+     uv run python scripts/check_phase12_faults.py
      ```
 - **Resultado observable**:
   - Los procesos terminan abruptamente antes de confirmar `sent_at` en outbox o antes de confirmar offsets de Kafka.
@@ -166,16 +166,16 @@ Este documento establece el orden secuencial de casos de prueba y demostración 
   2. Mostrar la versión activa (`riesgo-v1`), su hash SHA-256 y umbral (`0.26`).
   3. Ejecutar el script de monitoreo de drift en terminal:
      ```powershell
-     python scripts/monitor_model.py
+     uv run python scripts/monitor_model.py
      ```
   4. Promover la versión alternativa `riesgo-v2`:
      ```powershell
-     python scripts/promote_model.py --version riesgo-v2
+     uv run python scripts/promote_model.py --version riesgo-v2
      ```
   5. Refrescar la página web del modelo para confirmar que ahora informa `riesgo-v2`.
   6. Realizar el rollback seguro a la versión original `riesgo-v1`:
      ```powershell
-     python scripts/promote_model.py --version riesgo-v1
+     uv run python scripts/promote_model.py --version riesgo-v1
      ```
 - **Resultado observable**:
   - El archivo `models/active_model.json` se actualiza de forma atómica.

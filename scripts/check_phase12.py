@@ -50,7 +50,7 @@ def main():
     output.mkdir(parents=True, exist_ok=bool(args.resume))
     child_env = dict(os.environ, PYTHONIOENCODING='utf-8', PYTHONUNBUFFERED='1',
         CREDIMARKET_EVIDENCE_DIR=str(output), PLAYWRIGHT_BROWSERS_PATH=str(ROOT / '.local/pw-browsers'))
-    child_env['PYTHONPATH'] = os.pathsep.join([str(ROOT / '.local/e2e'), str(ROOT), child_env.get('PYTHONPATH', '')])
+    child_env['PYTHONPATH'] = os.pathsep.join([str(ROOT), child_env.get('PYTHONPATH', '')])
     ledger = {'run_id': run_id, 'started_at': now.isoformat(),
         'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         'fixtures_retained': True, 'results': {}}

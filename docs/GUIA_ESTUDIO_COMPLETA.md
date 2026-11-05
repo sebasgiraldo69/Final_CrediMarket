@@ -220,8 +220,8 @@ La fase 11 incorporó v2 con regresión logística C=0,5, comparación, promoci�
 Promoción y retorno explícitos, cuando quieras hacer el ejercicio:
 
 ```powershell
-python scripts/promote_model.py --version riesgo-v2 --restart
-python scripts/promote_model.py --version riesgo-v1 --rollback --restart
+uv run python scripts/promote_model.py --version riesgo-v2 --restart
+uv run python scripts/promote_model.py --version riesgo-v1 --rollback --restart
 ```
 
 Estos comandos sí cambian la versión activa y reinician Préstamos. Hazlos en un ensayo controlado y verifica la ficha del modelo después.
@@ -246,10 +246,10 @@ Comandos de operación desde la raíz:
 docker compose up -d --build --wait --wait-timeout 300
 docker compose ps
 docker compose logs --tail 80 prestamos inventario
-python scripts/validate_contracts.py
+uv run python scripts/validate_contracts.py
 ```
 
-La suite completa `python scripts/check_phase12.py` crea datos sintéticos, tarda varios minutos y detiene temporalmente servicios. No es necesaria para abrir la aplicación. Las cuentas demo escritas en fase 13 no se crean automáticamente; al revisar el último pull sus credenciales devolvieron 401 en este equipo. `check_phase13.py` depende de esas cuentas y no sustituye la suite completa.
+La suite completa `uv run --group test python scripts/check_phase12.py` crea datos sintéticos, tarda varios minutos y detiene temporalmente servicios. No es necesaria para abrir la aplicación. Las cuentas demo escritas en fase 13 no se crean automáticamente; al revisar el último pull sus credenciales devolvieron 401 en este equipo. `check_phase13.py` depende de esas cuentas y no sustituye la suite completa.
 
 ## 14. Recorrido que debes dominar sin apuntes
 

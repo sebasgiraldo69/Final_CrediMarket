@@ -51,7 +51,7 @@ Implementación del microservicio Productos, catálogo tecnológico, integració
 Para ejecutar la verificación automatizada contra la infraestructura real:
 
 ```powershell
-python scripts/check_phase4.py
+uv run python scripts/check_phase4.py
 ```
 
 Prueba realizada el 19 de octubre de 2026:

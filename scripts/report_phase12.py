@@ -18,8 +18,8 @@ def main():
     base = folder.relative_to(ROOT / 'docs').as_posix()
     sources = subprocess.check_output(['rg', '--files', 'services', 'shared', 'scripts', 'ml/src',
         'frontend/src', 'infra', 'contracts'], cwd=ROOT, text=True).splitlines()
-    sources += ['compose.yaml', 'requirements-acceptance.txt', 'requirements-contracts.txt',
-        'requirements-e2e.txt', 'models/active_model.json', 'models/riesgo-v1/manifest.json',
+    sources += ['compose.yaml', 'pyproject.toml', 'uv.lock', 'infra/mlflow/pyproject.toml', 'infra/mlflow/uv.lock',
+        'models/active_model.json', 'models/riesgo-v1/manifest.json',
         'models/riesgo-v1/pipeline.joblib', 'models/riesgo-v2/manifest.json', 'models/riesgo-v2/pipeline.joblib',
         'prestamos_entrenamiento.csv', 'solicitudes_nuevas.csv']
     hashes = {name.replace('\\','/'): hashlib.sha256((ROOT / name).read_bytes()).hexdigest()

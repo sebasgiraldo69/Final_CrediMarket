@@ -6,3 +6,5 @@
 Dockerfile text eol=lf
 *.docx binary
 *.csv text eol=lf
+*.toml text eol=lf
+uv.lock text eol=lf
