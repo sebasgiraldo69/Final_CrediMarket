@@ -7,3 +7,13 @@ Abre `index.html` directamente en un navegador. HTML autónomo: tipografía e im
 Para imprimir, usa orientación horizontal, gráficos de fondo activados y encabezados/pies del navegador desactivados. Las fuentes de información aparecen al pie y en las notas. Las cifras y la captura son evidencia histórica, no resultados de pruebas nuevas.
 
 Diseño: UI UX Pro Max, adaptado a la identidad verde y dorada de CrediMarket. Revisión: Impeccable. IBM Plex Sans distribuida bajo SIL Open Font License, incluida en assets/OFL.txt. La captura proviene de docs/evidencias/fase12-20261021T220337-78a0d4/AC15-recovered.png.
+
+## Archivos de revisión
+
+Las capturas y registros se consolidaron en esta carpeta tras el cambio de nombre a `Implementacion`:
+
+- `revision/capturas/finales/`: portada, arquitectura, modelo y vista móvil finales.
+- `revision/capturas/iniciales/`: capturas anteriores al pulido.
+- `revision/registros/`: snapshots de la revisión en navegador; son evidencia histórica y sus rutas antiguas no son dependencias.
+
+El HTML es autónomo: no depende de las capturas ni de la carpeta anterior con tilde.

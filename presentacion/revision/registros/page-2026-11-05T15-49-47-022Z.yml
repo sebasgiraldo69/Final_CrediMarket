@@ -1,0 +1,42 @@
+- generic [ref=f3e2]:
+  - banner [ref=f3e3]:
+    - generic [ref=f3e4]: CrediMarket
+    - paragraph [ref=f3e5]: Sustentación del proyecto · 10–15 min
+  - main [ref=f3e6]:
+    - region "4. Cuatro servicios, responsabilidades claras" [ref=f3e39]:
+      - heading "Cuatro servicios, responsabilidades claras" [level=2] [ref=f3e40]
+      - generic [ref=f3e41]:
+        - img "React y Nginx acceden a cuatro microservicios con bases independientes; Kafka comunica Préstamos e Inventario; el modelo está dentro de Préstamos" [ref=f3e42]:
+          - generic [ref=f3e62]:
+            - generic [ref=f3e63]: React + Nginx · APIs HTTP
+            - generic [ref=f3e64]: Clientes
+            - generic [ref=f3e65]: Productos
+            - generic [ref=f3e66]: Préstamos
+            - generic [ref=f3e67]: Inventario
+            - generic [ref=f3e68]: Acceso y perfil
+            - generic [ref=f3e69]: Catálogo y precio
+            - generic [ref=f3e70]: Modelo en memoria
+            - generic [ref=f3e71]: Stock y reservas
+            - generic [ref=f3e72]: clientes_db
+            - generic [ref=f3e73]: productos_db
+            - generic [ref=f3e74]: prestamos_db
+            - generic [ref=f3e75]: inventario_db
+            - generic [ref=f3e76]: Redis · caché
+            - generic [ref=f3e77]: Entrenamiento + MLflow → artefacto
+            - generic [ref=f3e78]: Kafka · comandos y resultados
+        - paragraph [ref=f3e79]: PostgreSQL aloja bases separadas. Préstamos consulta Clientes y Productos por API; reconcilia reservas con Inventario.
+      - paragraph [ref=f3e80]: "Fuente: docs/arquitectura.md · compose.yaml"
+      - generic [ref=f3e81]: 04 / 14
+  - navigation "Controles de presentación" [ref=f3e27]:
+    - generic [ref=f3e28]:
+      - button "Diapositiva anterior" [ref=f3e29] [cursor=pointer]: Anterior
+      - status [ref=f3e30]: 4 / 14
+      - button "Diapositiva siguiente" [ref=f3e31] [cursor=pointer]: Siguiente
+    - generic [ref=f3e32]: Flechas para navegar · N para notas
+    - generic [ref=f3e33]:
+      - button "Índice" [ref=f3e34] [cursor=pointer]
+      - button "Pantalla completa" [ref=f3e35] [cursor=pointer]
+      - button "Imprimir / PDF" [ref=f3e36] [cursor=pointer]
+  - group [ref=f3e37]:
+    - generic "Notas para exponer" [ref=f3e38] [cursor=pointer]
+  - status
